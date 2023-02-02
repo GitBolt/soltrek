@@ -1,0 +1,39 @@
+.controls {
+  border-radius: 10px;
+  margin-right: 15rem;
+}
+
+.controls > :first-child {
+  border-radius: 10px 10px 0 0;
+}
+
+.controls > :last-child {
+  border-radius: 0 0 10px 10px;
+  border: none;
+}
+
+.controls > button {
+  background-color: #3e3a6d4d;
+  transition: 200ms;
+  padding: 10px;
+  border-bottom: 1px solid #303557;
+}
+
+.controls > button:hover {
+  background-color: #FF0099;
+}
+
+.controls > button > svg > path {
+  filter: invert(100%) brightness(100%)
+}
+
+.minimap {
+  background-color: #08080a80;
+  border-radius: 1rem;
+}
+
+.minimap > svg {
+  border-radius: 1rem;
+  height: fit-content;
+  margin-bottom: -3px;
+}
