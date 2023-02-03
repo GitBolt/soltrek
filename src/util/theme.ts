@@ -95,12 +95,18 @@ export const theme = extendTheme({
           justifyContent: "space-between",
           padding: "0 2rem",
           w: "100%",
+          boxShadow: "none",
           h: "3.8rem",
+          transition:"100ms",
           bg: 'transparent',
           color: 'blue.200',
           _hover: {
             bg: "bg.300",
           },
+          _active: {
+            filter: "brightness(110%)",
+            transform: "translate(0, 2px)",
+          }
         },
       },
     },
