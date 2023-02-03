@@ -96,6 +96,8 @@ const Sidebar = () => {
                     <ListItem w="100%" p="0 2rem 0 0">
                       <Button
                         variant="sidebar"
+                        fontWeight="500"
+                        color="blue.300"
                         onClick={() => { }}
                       >
                         {subItem.title}

@@ -1,6 +1,10 @@
 import { extendTheme } from '@chakra-ui/react';
 
 export const theme = extendTheme({
+  fonts: {
+    body: `'Inter', sans-serif`,
+    heading: `'Inter', sans-serif`,
+  },
   colors: {
     bg: {
       100: '#14131F',
@@ -50,6 +54,7 @@ export const theme = extendTheme({
     },
     Button: {
       baseStyle: {
+        fontWeight:"600",
         boxShadow: "4px 4px 0px -1px rgba(0, 0, 0, 0.15)",
         _active: {
           transform: "scale(0.95)",
@@ -97,7 +102,7 @@ export const theme = extendTheme({
           w: "100%",
           boxShadow: "none",
           h: "3.8rem",
-          transition:"100ms",
+          transition: "100ms",
           bg: 'transparent',
           color: 'blue.200',
           _hover: {
@@ -105,7 +110,7 @@ export const theme = extendTheme({
           },
           _active: {
             filter: "brightness(110%)",
-            transform: "translate(0, 2px)",
+            transform: "none",
           }
         },
       },
