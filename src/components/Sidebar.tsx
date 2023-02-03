@@ -37,7 +37,7 @@ const Sidebar = () => {
       pos: "fixed",
       h: "100vh",
       w: "20rem",
-      bg: "#151421CC",
+      bg: "bg.100",
       zIndex: 2,
       border: "1px solid #2C294A",
       flexFlow: "column"
@@ -47,7 +47,7 @@ const Sidebar = () => {
       <List spacing={3}>
         {sidebarItems.map((item, index) => (
           <ListItem key={item.title}>
-            <Button bg="none" color="#8482EB" fontSize="1.5rem" onClick={() => toggleSub(index)} w="90%" rightIcon={<ChevronRightIcon />}>
+            <Button variant="sidebar" onClick={() => toggleSub(index)} w="90%" rightIcon={<ChevronRightIcon />}>
               {item.title}
             </Button>
             {item.sub && showSub[index] && (
