@@ -49,10 +49,20 @@ export const theme = extendTheme({
       },
     },
     Button: {
+      baseStyle: {
+        boxShadow: "4px 4px 0px -1px rgba(0, 0, 0, 0.15)",
+        _active: {
+          transform: "scale(0.95)",
+        }
+      },
       variants: {
         filled: {
           bg: 'blue.400',
           color: 'white',
+          w: "9rem",
+          h: "3.8rem",
+          fontSize: "1.9rem",
+          borderRadius: "0.6rem",
           _hover: {
             filter: "brightness(120%)",
             _disabled: {
@@ -65,18 +75,27 @@ export const theme = extendTheme({
           color: 'blue.400',
           border: "1px solid",
           borderColor: "blue.400",
+          w: "9rem",
+          h: "3.8rem",
+          fontSize: "1.9rem",
+          borderRadius: "0.6rem",
           _hover: {
+            bg: "transparent",
             filter: "brightness(120%)",
             _disabled: {
               bgColor: 'blue.500',
             },
           },
+          _active: {
+            bg: "transparent",
+          }
         },
         sidebar: {
-          fontSize: "1.5rem",
-          textAlign: "start",
-          w:"100%",
-          h:"3.8rem",
+          fontSize: "1.8rem",
+          justifyContent: "space-between",
+          padding: "0 2rem",
+          w: "100%",
+          h: "3.8rem",
           bg: 'transparent',
           color: 'blue.200',
           _hover: {

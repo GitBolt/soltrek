@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { useReactFlow } from 'reactflow';
-import { Flex, Button, List, ListItem, ListIcon } from '@chakra-ui/react'
+import { Flex, Button, List, ListItem, ListIcon, Divider } from '@chakra-ui/react'
 import Branding from '@/components/Branding';
-import { ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
 const sidebarItems = [
   {
-    title: "hi",
-    type: "hit",
+    title: "Input",
+    type: "input",
+    sub: [
+      {
+        title: "hi3",
+        type: "hit3"
+      }
+    ]
   },
   {
-    title: "hi2",
+    title: "Math",
     type: "hit2",
     sub: [
       {
@@ -36,7 +42,7 @@ const Sidebar = () => {
     <Flex sx={{
       pos: "fixed",
       h: "100vh",
-      w: "20rem",
+      w: "25rem",
       bg: "bg.100",
       zIndex: 2,
       border: "1px solid #2C294A",
@@ -44,18 +50,27 @@ const Sidebar = () => {
     }}>
       <Branding />
 
-      <List spacing={3}>
+      <Divider />
+
+      <Flex w="100%" p="0 2rem" justify="space-between" my="2rem">
+        <Button variant="outline">Load</Button>
+        <Button variant="filled">Save</Button>
+      </Flex>
+      <List>
         {sidebarItems.map((item, index) => (
           <ListItem key={item.title}>
-            <Button variant="sidebar" onClick={() => toggleSub(index)} w="90%" rightIcon={<ChevronRightIcon />}>
+            <Button
+              variant="sidebar"
+              onClick={() => toggleSub(index)}
+              rightIcon={item.sub.length ? (showSub[index] ? <ChevronDownIcon /> : <ChevronRightIcon />) : undefined}>
               {item.title}
             </Button>
-            {item.sub && showSub[index] && (
+            {item.sub.length && showSub[index] && (
               <Flex pl={5}>
                 {item.sub.map(subItem => (
                   <ListItem key={subItem.title}>
-                    <Button bg="none" color="#8482EB" fontSize="1.5rem" onClick={() => toggleSub(index)} w="90%" rightIcon={<ChevronRightIcon />}>
-                      {item.title}
+                    <Button bg="none" color="#8482EB" fontSize="1.5rem" onClick={() => toggleSub(index)} w="90%">
+                      {subItem.title}
                     </Button>
                   </ListItem>
                 ))}
