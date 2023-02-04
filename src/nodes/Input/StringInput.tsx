@@ -31,7 +31,7 @@ const StringInputNode: FC<NodeProps<InputNodeType>> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            ['string' + id]: string,
+            [id || '']: string,
           };
         }
         return node;

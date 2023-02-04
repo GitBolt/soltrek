@@ -26,11 +26,25 @@ const Edge = ({
     targetPosition,
   });
 
-  const { setEdges } = useReactFlow()
+  const { setEdges, getEdge, setNodes } = useReactFlow()
+
+  const removeNodeData = (targetNodeId: string, sourceNodeId: string) => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === targetNodeId) {
+          const { [sourceNodeId]: removed, ...rest } = node.data;
+          node.data = rest;
+        }
+        return node;
+      }))
+  };
 
   const onEdgeClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     event.stopPropagation();
     setEdges((eds) => eds.filter((e) => e.id !== id));
+    const edge = getEdge(id)
+    if (!edge || !edge.target || !edge.source) return
+    removeNodeData(edge.target, edge.source)
 
   };
   return (
@@ -50,7 +64,7 @@ const Edge = ({
         className="edgebutton-foreignobject"
         requiredExtensions="http://www.w3.org/1999/xhtml"
       >
-        <CloseButton onClick={(event) => onEdgeClick(event, id)} color="magenta.300" size="lg"/>
+        <CloseButton onClick={(event) => onEdgeClick(event, id)} color="magenta.300" size="lg" />
       </foreignObject>
     </>
   );
