@@ -1,54 +1,15 @@
 import React, { useState } from 'react';
 import { useReactFlow } from 'reactflow';
-import { Flex, Button, List, ListItem, ListIcon, Divider, Stack } from '@chakra-ui/react'
+import { Flex, Button, List, ListItem, Divider } from '@chakra-ui/react'
 import Branding from '@/components/Branding';
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { SidebarItemType } from '@/types/sidebar';
 import { createNodeId, createNodePos } from '@/util/randomData';
 
-const sidebarItems: SidebarItemType[] = [
-  {
-    title: "Input",
-    type: "input",
-    sub: [
-      {
-        title: "String Input",
-        type: "stringInput"
-      },
-      {
-        title: "Integer Input",
-        type: "hit3"
-      },
-      {
-        title: "Button",
-        type: "hit3"
-      }
-    ]
-  },
-  {
-    title: "Math",
-    type: "hit2",
-    sub: [
-      {
-        title: "hi3",
-        type: "hit3"
-      }
-    ]
-  },
-  {
-    title: "Function",
-    type: "function",
-    sub: [
-      {
-        title: "Get Price",
-        type: "getPrice"
-      }
-    ]
-  }
-]
-
-
-const Sidebar = () => {
+type Props = {
+  sidebarItems: SidebarItemType[]
+}
+const Sidebar = ({ sidebarItems }: Props) => {
   const { setNodes } = useReactFlow();
   const [showSublist, setShowSublist] = useState<{ [key: number]: boolean }>({});
 
