@@ -9,7 +9,7 @@ import ReactFlow, {
   BackgroundVariant,
 } from 'reactflow';
 import styles from '@/styles/Playground.module.css'
-
+import { nodeTypes } from '@/nodes';
 
 const Playground = function Playground() {
   const [nodes, _setNodes, onNodesChange] = useNodesState([]);
@@ -23,6 +23,7 @@ const Playground = function Playground() {
   return (
     <ReactFlow
       nodes={nodes}
+      nodeTypes={nodeTypes}
       edges={edges}
       proOptions={{ hideAttribution: true }}
       onNodesChange={onNodesChange}

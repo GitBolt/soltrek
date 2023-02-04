@@ -18,7 +18,6 @@ export const theme = extendTheme({
       300: "#7166EACC",
       400: "#3E369B",
       500: "#7058FF",
-      600: "#322F58"
     },
     magenta: {
       100: "#DD117F",

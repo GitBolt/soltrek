@@ -12,7 +12,7 @@ const sidebarItems: SidebarItemType[] = [
     sub: [
       {
         title: "String Input",
-        type: "hit3"
+        type: "stringInput"
       },
       {
         title: "Integer Input",
