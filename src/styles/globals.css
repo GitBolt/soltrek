@@ -25,3 +25,18 @@ body {
 .react-flow {
   background-color: #14131f;
 }
+
+.react-flow__edge .react-flow__edge-path {
+  stroke: #DD11B1;
+  stroke-width: 2;
+  stroke-opacity: 0.75;
+}
+
+
+.react-flow__handle {
+  width: 10px !important;
+  height: 20px !important;
+  border-radius: 5px !important;
+  background-color: #DD11B1 !important;
+  border: 1px solid #DD11B1 !important;
+}

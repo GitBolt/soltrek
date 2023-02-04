@@ -10,6 +10,7 @@ import ReactFlow, {
 } from 'reactflow';
 import styles from '@/styles/Playground.module.css'
 import { nodeTypes } from '@/nodes';
+import NodeEdge from '@/components/NodeEdge';
 
 const Playground = function Playground() {
   const [nodes, _setNodes, onNodesChange] = useNodesState([]);
@@ -29,6 +30,7 @@ const Playground = function Playground() {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
+      edgeTypes={{ default: NodeEdge }}
     >
       <Controls className={styles.controls} position="bottom-right" />
       <MiniMap

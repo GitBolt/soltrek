@@ -34,6 +34,16 @@ const sidebarItems: SidebarItemType[] = [
         type: "hit3"
       }
     ]
+  },
+  {
+    title: "Function",
+    type: "function",
+    sub: [
+      {
+        title: "Get Price",
+        type: "getPrice"
+      }
+    ]
   }
 ]
 
