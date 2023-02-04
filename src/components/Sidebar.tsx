@@ -4,6 +4,7 @@ import { Flex, Button, List, ListItem, ListIcon, Divider, Stack } from '@chakra-
 import Branding from '@/components/Branding';
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { SidebarItemType } from '@/types/sidebar';
+import { createNodeId, createNodePos } from '@/util/randomData';
 
 const sidebarItems: SidebarItemType[] = [
   {
@@ -36,9 +37,20 @@ const sidebarItems: SidebarItemType[] = [
   }
 ]
 
+
 const Sidebar = () => {
   const { setNodes } = useReactFlow();
   const [showSublist, setShowSublist] = useState<{ [key: number]: boolean }>({});
+
+
+  const addNode = (type: string) => {
+    setNodes((nodes) => nodes.concat({
+      id: createNodeId(),
+      position: createNodePos(),
+      type,
+      data: {}
+    }))
+  }
 
   const toggleSublist = (index: number) => {
     setShowSublist({
@@ -98,7 +110,7 @@ const Sidebar = () => {
                         variant="sidebar"
                         fontWeight="500"
                         color="blue.300"
-                        onClick={() => { }}
+                        onClick={() => addNode(subItem.type)}
                       >
                         {subItem.title}
                       </Button>
