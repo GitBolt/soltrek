@@ -14,7 +14,7 @@ const BaseNode: FC<NodeProps & { children?: React.ReactNode, title: string }> = 
       border="1px solid"
       borderColor={selected ? "magenta.300" : 'gray.200'}
       borderRadius="10px"
-      boxShadow={selected ? '0px 0px 20px #aa2c5b' : ''}
+      boxShadow={selected ? '0px 0px 15px #732562' : ''}
     >
       <Flex
         backgroundColor="gray.100"

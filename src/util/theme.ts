@@ -28,14 +28,20 @@ export const theme = extendTheme({
     gray: {
       100: "#322F58",
       200: "#2E2C48",
+      300: "#2E2C48", // Only to override default chakra's gray 300
     },
     error: "#B02A2A"
   },
   components: {
     Input: {
-      parts: ['field'],
       baseStyle: {
         field: {
+          _focus: {
+            outline: "none"
+          },
+          _focusVisible: {
+            border: 'none'
+          },
           color: 'blue.500',
           _placeholder: {
             color: 'blue.500',
@@ -45,15 +51,19 @@ export const theme = extendTheme({
             color: 'gray.200',
             opacity: '80%',
           },
+          _hover: {
+            borderColor: 'blue.100',
+          }
         },
       },
       defaultProps: {
         errorBorderColor: 'error',
+        focusBorderColor: "blue.200",
       },
     },
     Button: {
       baseStyle: {
-        fontWeight:"600",
+        fontWeight: "600",
         boxShadow: "4px 4px 0px -1px rgba(0, 0, 0, 0.15)",
         _active: {
           transform: "scale(0.95)",

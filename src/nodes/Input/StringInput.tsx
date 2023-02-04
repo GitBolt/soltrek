@@ -13,7 +13,7 @@ const StringInputNode: FC<NodeProps<InputNodeType>> = (props) => {
   const [currentTarget, setCurrentTarget] = useState<string[]>([])
   const { setNodes } = useReactFlow()
   const [timerId, setTimerId] = useState<NodeJS.Timeout | null>();
-  
+
   const id = useNodeId()
 
   const updateText = (text: string) => {
@@ -55,14 +55,12 @@ const StringInputNode: FC<NodeProps<InputNodeType>> = (props) => {
     <div>
       <BaseNode {...props} title="String Input">
         <Input
-          placeholder={props.data.placeholder || "Enter some text here..."} style={{
-            background: "transparent",
-            border: "1px solid #2C294A",
-            borderRadius: "5px",
-            width: "80%",
-            height: "30px",
-            color: "white"
-          }} id={props.id} onChange={(e) => updateText(e.target.value)} />
+          fontSize="1.2rem"
+          h="3rem"
+          w="90%"
+          placeholder={props.data.placeholder || "Enter some text here..."}
+          id={props.id}
+          onChange={(e) => updateText(e.target.value)} />
 
         <Handle position={Position.Right} type="source" onConnect={(e) => handleConnect(e)} />
       </BaseNode>
