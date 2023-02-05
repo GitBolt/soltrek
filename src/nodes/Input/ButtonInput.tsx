@@ -9,21 +9,11 @@ type InputNodeType = {
 
 const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
 
-  const [string, setString] = useState<string>('')
+  const [bool, setBool] = useState<boolean>(false)
   const [currentTarget, setCurrentTarget] = useState<string[]>([])
   const { setNodes } = useReactFlow()
-  const [timerId, setTimerId] = useState<NodeJS.Timeout | null>();
 
   const id = useNodeId()
-
-  const updateText = (text: string) => {
-    if (timerId) clearTimeout(timerId);
-
-    setTimerId(setTimeout(() => {
-      setString(text);
-      currentTarget.forEach((target) => updateNodeData(target))
-    }, 200));
-  };
 
   const updateNodeData = (nodeId: string) => {
     setNodes((nds) =>
@@ -31,7 +21,7 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            [id || '']: string,
+            [id || '']: !bool,
           };
         }
         return node;
@@ -48,7 +38,7 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
     if (!currentTarget) return
     currentTarget.forEach((target) => updateNodeData(target))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [string])
+  }, [bool])
 
 
   return (
@@ -60,7 +50,7 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
           w="15rem"
           variant="filled"
           id={props.id}
-          onClick={(e) => updateText('')}>Run</Button>
+          onClick={(e) => setBool(!bool)}>Run</Button>
 
         <Handle position={Position.Right} type="source" onConnect={(e) => handleConnect(e)} />
       </BaseNode>

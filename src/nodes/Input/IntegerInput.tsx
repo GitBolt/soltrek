@@ -16,7 +16,7 @@ type InputNodeType = {
 
 const IntegerInputNode: FC<NodeProps<InputNodeType>> = (props) => {
 
-  const [string, setString] = useState<number>(0)
+  const [number, setnumber] = useState<number>(0)
   const [currentTarget, setCurrentTarget] = useState<string[]>([])
   const { setNodes } = useReactFlow()
   const [timerId, setTimerId] = useState<NodeJS.Timeout | null>();
@@ -27,7 +27,7 @@ const IntegerInputNode: FC<NodeProps<InputNodeType>> = (props) => {
     if (timerId) clearTimeout(timerId);
 
     setTimerId(setTimeout(() => {
-      setString(number);
+      setnumber(number);
       currentTarget.forEach((target) => updateNodeData(target))
     }, 200));
   };
@@ -38,7 +38,7 @@ const IntegerInputNode: FC<NodeProps<InputNodeType>> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            [id || '']: string,
+            [id || '']: number,
           };
         }
         return node;
@@ -55,7 +55,7 @@ const IntegerInputNode: FC<NodeProps<InputNodeType>> = (props) => {
     if (!currentTarget) return
     currentTarget.forEach((target) => updateNodeData(target))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [string])
+  }, [number])
 
 
   return (
