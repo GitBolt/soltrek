@@ -33,6 +33,35 @@ export const theme = extendTheme({
     error: "#B02A2A"
   },
   components: {
+
+    NumberInput: {
+      baseStyle: {
+        field: {
+          _focus: {
+            outline: "none"
+          },
+          _focusVisible: {
+            border: 'none'
+          },
+          color: 'blue.500',
+          _placeholder: {
+            color: 'blue.500',
+            opacity: '45%',
+          },
+          _disabled: {
+            color: 'gray.200',
+            opacity: '80%',
+          },
+          _hover: {
+            borderColor: 'blue.100',
+          }
+        },
+      },
+      defaultProps: {
+        errorBorderColor: 'error',
+        focusBorderColor: "blue.200",
+      },
+    },
     Input: {
       baseStyle: {
         field: {

@@ -10,11 +10,11 @@ export const sidebarItems = [
       },
       {
         title: "Integer Input",
-        type: "hit3"
+        type: "integerInput"
       },
       {
         title: "Button",
-        type: "hit3"
+        type: "buttonInput"
       }
     ]
   },
