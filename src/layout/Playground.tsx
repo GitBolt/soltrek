@@ -7,23 +7,45 @@ import ReactFlow, {
   useEdgesState,
   addEdge,
   BackgroundVariant,
+  useKeyPress,
+  Connection,
 } from 'reactflow';
 import styles from '@/styles/Playground.module.css'
 import { nodeTypes } from '@/nodes';
 import NodeEdge from '@/components/NodeEdge';
-import useKeyPress from '@/util/useKeyPress';
+import useCtrlA from '@/util/useCtrlA';
 
 const Playground = function Playground() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
 
-  const onConnect = useCallback((params: any) =>
+  const onConnect = useCallback((params: Connection) =>
     setEdges((eds) => addEdge(params, eds))
     , [setEdges]
   );
 
-  const isCtrlA = useKeyPress()
+  const isCtrlA = useCtrlA()
+
+
+  const press = useKeyPress('Backspace')
+  
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        const values = Object.keys(node.data)
+        values.forEach((value) => {
+          if (!nodes.map((nd) => nd.id).includes(value)) {
+            const { [value]: removed, ...rest } = node.data;
+            node.data = rest;
+          }
+        })
+        return node;
+      }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [press]);
+
+
 
   useEffect(() => {
 

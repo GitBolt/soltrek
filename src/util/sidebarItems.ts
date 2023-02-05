@@ -20,11 +20,11 @@ export const sidebarItems = [
   },
   {
     title: "Math",
-    type: "hit2",
+    type: "math",
     sub: [
       {
-        title: "hi3",
-        type: "hit3"
+        title: "Add",
+        type: "add"
       }
     ]
   },
