@@ -17,13 +17,14 @@ const TextOutputNode: FC<NodeProps> = (props) => {
     console.log(currentNode)
     const symbolData: string[] = Object.values(currentNode?.data)
     setText(symbolData[0])
+    console.log(symbolData[0])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNodeObj?.data])
 
   return (
     <BaseNode {...props} title="Text output">
       {text ?
-        <Text fontSize="2rem" color="blue.500">${text}</Text> :
+        <Text fontSize="1.5rem" color="blue.500" maxW="85%" whiteSpace="nowrap">{text}</Text> :
         <Text color="gray.100" fontSize="1.8rem">Nothing to show here...</Text>}
       <Handle position={Position.Left} type="target" />
     </BaseNode >

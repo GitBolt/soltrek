@@ -31,6 +31,8 @@ const BaseNode: FC<NodeProps & { children?: React.ReactNode, title: string }> = 
       <Flex
         height="calc(100% - 20px)"
         alignItems="center"
+        overflowY="auto"
+        w="100%"
         justifyContent="center"
       >
         {children}

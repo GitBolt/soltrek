@@ -1,3 +1,4 @@
+import KeypairNode from "./Crypto/Keypair";
 import GetPriceNode from "./Functions/GetPrice";
 import ButtonInputNode from "./Input/ButtonInput";
 import IntegerInputNode from "./Input/IntegerInput";
@@ -12,6 +13,7 @@ export const nodeTypes = {
   buttonInput: ButtonInputNode,
   textOutput: TextOutputNode,
   colorOutput: ColorOutputNode,
+  keypair: KeypairNode,
   add: AddNode,
   getPrice: GetPriceNode
 }

@@ -33,6 +33,20 @@ export const sidebarItems = [
     ]
   },
   {
+    title: "Crypto",
+    type: "crypto",
+    sub: [
+      {
+        title: "Keypair",
+        type: "keypair"
+      },
+      {
+        title: "Color Output",
+        type: "colorOutput"
+      },
+    ]
+  },
+  {
     title: "Math",
     type: "math",
     sub: [
