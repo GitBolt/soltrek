@@ -19,6 +19,20 @@ export const sidebarItems = [
     ]
   },
   {
+    title: "Output",
+    type: "output",
+    sub: [
+      {
+        title: "Text Output",
+        type: "textOutput"
+      },
+      {
+        title: "Color Output",
+        type: "colorOutput"
+      },
+    ]
+  },
+  {
     title: "Math",
     type: "math",
     sub: [
