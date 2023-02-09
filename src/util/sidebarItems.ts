@@ -65,5 +65,15 @@ export const sidebarItems = [
         type: "getPrice"
       }
     ]
+  },
+  {
+    title: "Explorer",
+    type: "Explorer",
+    sub: [
+      {
+        title: "Get Token Details",
+        type: "getTokenDetails"
+      }
+    ]
   }
 ]

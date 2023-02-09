@@ -7,8 +7,9 @@ const BaseNode: FC<NodeProps & { children?: React.ReactNode, title: string }> = 
   return (
     <Flex
       backgroundColor="bg.400"
-      width="220px"
-      height="100px"
+      w="220px"
+      h="100px"
+      overflow="auto"
       flexDirection="column"
       alignItems="center"
       border="1px solid"
@@ -29,11 +30,12 @@ const BaseNode: FC<NodeProps & { children?: React.ReactNode, title: string }> = 
         </Text>
       </Flex>
       <Flex
-        height="calc(100% - 20px)"
+        h="100%"
         alignItems="center"
         overflowY="auto"
-        w="100%"
+        width="100%"
         justifyContent="center"
+        flexWrap="wrap"
       >
         {children}
       </Flex>
