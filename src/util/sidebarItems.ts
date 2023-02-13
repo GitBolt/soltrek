@@ -40,10 +40,6 @@ export const sidebarItems = [
         title: "Keypair",
         type: "keypair"
       },
-      {
-        title: "Color Output",
-        type: "colorOutput"
-      },
     ]
   },
   {
