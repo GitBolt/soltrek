@@ -3,12 +3,12 @@ import { NodeProps } from 'reactflow';
 import { Text, Flex } from '@chakra-ui/react';
 
 const BaseNode: FC<NodeProps & { children?: React.ReactNode, title: string }> = ({ children, title, selected }) => {
-
   return (
     <Flex
       backgroundColor="bg.400"
-      w="220px"
-      h="100px"
+      minW="220px"
+      h="auto"
+      minH="100px"
       overflow="auto"
       flexDirection="column"
       alignItems="center"
@@ -30,7 +30,8 @@ const BaseNode: FC<NodeProps & { children?: React.ReactNode, title: string }> = 
         </Text>
       </Flex>
       <Flex
-        h="100%"
+        h="auto"
+        minH="80px"
         alignItems="center"
         overflowY="auto"
         width="100%"
@@ -42,5 +43,6 @@ const BaseNode: FC<NodeProps & { children?: React.ReactNode, title: string }> = 
     </Flex>
   );
 };
+
 
 export default memo(BaseNode);

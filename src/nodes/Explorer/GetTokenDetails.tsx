@@ -19,7 +19,7 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
     console.log(currentNode)
     const symbolData: string[] = Object.values(currentNode?.data)
     if (symbolData && symbolData.length) {
-      fetch(`https://hyper.solana.fm/v3/token?address=${symbolData[0]}`)
+      fetch(`https://hyper.solana.fm/v3/token?address=${symbolData.join(',')}`)
         .then((res) => res.json())
         .then((data) => {
           if (!data) {
@@ -27,7 +27,7 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
             console.log("error")
             setError("Token not supported")
           } else {
-            setTokenDetails(JSON.stringify(data, null, 2));
+            setTokenDetails(JSON.stringify(data, null, 4));
           }
         })
         .catch((error) => {
@@ -43,11 +43,12 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
   return (
     <BaseNode {...props} title="Fetch Token Mint Details">
       {tokenDetails ?
-        <Text fontSize="2rem" color="blue.500">{tokenDetails.toLocaleString()}</Text> :
-        <Text color="gray.100" fontSize="1.8rem">{error || 'Nothing to show here...'}</Text>}
+        <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">{tokenDetails.toLocaleString()}</Text> :
+        <Text color="gray.100" fontSize="1.5rem">{error || 'Nothing to show here...'}</Text>}
       <Handle position={Position.Left} type="target" />
     </BaseNode >
   );
+  
 };
 
 export default GetTokenDetailsNode;
