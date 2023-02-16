@@ -22,9 +22,11 @@ export const FuzzySearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [filteredItems, setFilteredItems] = useState<SidebarItemType[]>([]);
+  const [filteredItems, setFilteredItems] = useState<SidebarItemType[]>(sidebarItems);
   const { setNodes } = useReactFlow()
   const listRef = useRef(null)
+
+  const initialFocusRef = useRef();
 
   const addNode = (type: string) => {
     setNodes((nodes) => nodes.concat({
@@ -40,6 +42,11 @@ export const FuzzySearch = () => {
       event.preventDefault()
       setIsOpen(true);
       inputRef.current?.focus();
+    }
+
+    if (event.key === "Escape" && isOpen) {
+      event.preventDefault()
+      setIsOpen(false)
     }
   };
 
@@ -67,7 +74,7 @@ export const FuzzySearch = () => {
   useEffect(() => {
     // Filter the items based on the search value
     if (searchValue.trim() === '') {
-      setFilteredItems([]);
+      setFilteredItems(sidebarItems);
       return;
     }
 
@@ -80,10 +87,19 @@ export const FuzzySearch = () => {
 
 
   return (
-    <Popover isOpen={isOpen}>
+    <Popover isOpen={isOpen} initialFocusRef={inputRef}>
       <PopoverContent w="100vw" h="100vh" bg="#00000040">
         <Grid placeContent="center" h="100%" w="100%">
-          <Flex ref={listRef} bg="bg.400" h="40rem" w="40rem" flexFlow="column" align="center" p="1rem" borderRadius="1rem">
+          <Flex
+            ref={listRef}
+            overflow="auto"
+            bg="bg.400"
+            h="40rem"
+            w="40rem"
+            flexFlow="column"
+            align="center"
+            p="1rem"
+            borderRadius="1rem">
             <Input
               ref={inputRef}
               placeholder="Search..."
