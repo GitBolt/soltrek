@@ -1,17 +1,40 @@
-# Sol Build
+<p align="center">
+  <a href="https://twitter.com/soltrek_io">
+    <img
+      alt="SOL Trek"
+      src="https://media.discordapp.net/attachments/865444983762452520/1075913428545327166/Group_72.png"
+      width="150"
+    />
+  </a>
+</p>
 
-## Introduction
+# SOL Trek
 
-Sol Build is an education learning node-based playground for learning Solana Development.
+SOL Trek is a Solana learning playground that allows new developers to learn, develop and play with Solana without needing to write code. 
 
-Originally built for Solana's Grizzlython Hackathon, Sol Build aims to onboard new developers with a hands-on learning experience. 
+<br />
+It provides a user-friendly, no-code environment where users can create nodes for various actions, such as string input, token transfers, fetching token details, generating keypairs, and more.
 
-## Tech stack
+> This project is being developed for the Solana Grizzlython Hackathon under the Tools and Infra category.
 
-Sol Build is built with the following technologies:
-- Next.js
-- TypeScript
-- React-Flow
+## Roadmap
+- Integration with Seahorse Lang to enable basic Python code execution.
+- Integration with more Solana programs such as Solend, Metaplex, and more.
+- Adding tutorials and built-in modules for different concepts such as transactions, PDAs, accounts, and more.
+- Adding a multiplayer option for real-time collaboration between developers.
 
-## Contribution
-The code for all the component nodes can be found in the "nodes" folder inside the "src" directory.
+## Code overview
+
+This project is built with Next.js and Chakra UI for the frontend, while the node-based environment utilizes the React Flow library (https://reactflow.dev). 
+
+The `src` folder is the entry point for the main website source code. The `node` folder contains all the nodes that the user can create. Each node is organized into its own file within a subfolder based on the category of actions it performs.
+
+## Getting Started
+
+To get started with SOL Trek, clone this repository and run the following commands:
+
+```sh
+yarn install
+yarn dev
+```
+
