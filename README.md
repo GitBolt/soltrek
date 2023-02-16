@@ -15,7 +15,9 @@ SOL Trek is a Solana learning playground that allows new developers to learn, de
 <br />
 It provides a user-friendly, no-code environment where users can create nodes for various actions, such as string input, token transfers, fetching token details, generating keypairs, and more.
 
-> This project is being developed for the Solana Grizzlython Hackathon under the Tools and Infra category.
+<br/>
+
+> **This project is being developed for the Solana Grizzlython Hackathon under the Tools and Infra category.**
 
 ## Roadmap
 - Integration with Seahorse Lang to enable basic Python code execution.
