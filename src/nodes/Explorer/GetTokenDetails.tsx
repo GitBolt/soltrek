@@ -17,7 +17,7 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
   useEffect(() => {
     if (!nodeId) return
     const currentNode = getNode(nodeId)
-    console.log(currentNode)
+    console.log("Get token details: ", currentNode)
     const symbolData: string[] = Object.values(currentNode?.data)
     if (symbolData && symbolData.length) {
       fetch(`https://hyper.solana.fm/v3/token?address=${symbolData.join(',')}`)

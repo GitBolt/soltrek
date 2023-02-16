@@ -26,7 +26,6 @@ export const FuzzySearch = () => {
   const { setNodes } = useReactFlow()
   const listRef = useRef(null)
 
-  const initialFocusRef = useRef();
 
   const addNode = (type: string) => {
     setNodes((nodes) => nodes.concat({
@@ -52,8 +51,7 @@ export const FuzzySearch = () => {
 
   const handleClickOutside = (e: any) => {
     if (!listRef.current || !e.target) return;
-    console.log(listRef.current)
-    console.log(e.target)
+
     // @ts-ignore
     if (!listRef.current.contains(e.target)) {
       setIsOpen(false);
@@ -68,6 +66,7 @@ export const FuzzySearch = () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("click", handleClickOutside);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 

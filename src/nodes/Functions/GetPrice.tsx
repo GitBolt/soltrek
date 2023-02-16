@@ -33,7 +33,7 @@ const GetPriceNode: FC<NodeProps> = (props) => {
   useEffect(() => {
     if (!nodeId) return
     const currentNode = getNode(nodeId)
-    console.log(currentNode)
+    console.log("Get price: ", currentNode)
     const symbolData: string[] = Object.values(currentNode?.data)
     if (symbolData && symbolData.length) {
       fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${symbolData[0]}&vs_currencies=usd`)

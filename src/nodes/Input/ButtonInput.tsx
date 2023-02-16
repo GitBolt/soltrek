@@ -9,37 +9,52 @@ type InputNodeType = {
 
 const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
 
-  const [bool, setBool] = useState<boolean>(false)
   const [currentTarget, setCurrentTarget] = useState<string[]>([])
-  const { setNodes } = useReactFlow()
+  const { setNodes, setEdges } = useReactFlow()
 
   const id = useNodeId()
 
   const updateNodeData = (nodeId: string) => {
-    setNodes((nds) =>
-      nds.map((node) => {
+    setEdges((edges) => {
+      return edges.map((edge) => {
+        if (edge.source === id) {
+          return { ...edge, animated: true };
+        }
+        return edge;
+      });
+    });
+    setNodes((nodes) => {
+      return nodes.map((node) => {
         if (node.id === nodeId) {
-          node.data = {
-            ...node.data,
-            ['btn' + id || '']: true,
-          };
+          const newData = { ...node.data, [`btn${id}`]: true };
+          return { ...node, data: newData };
         }
         return node;
-      }))
-
+      });
+    });
+  
     setTimeout(() => {
-      setNodes((nds) =>
-        nds.map((node) => {
+      setNodes((nodes) => {
+        return nodes.map((node) => {
           if (node.id === nodeId) {
-            node.data = {
-              ...node.data,
-              ['btn' + id || '']: false,
-            };
+            const newData = { ...node.data, [`btn${id}`]: false };
+            return { ...node, data: newData };
           }
           return node;
-        }))
-    }, 1000)
-  }
+        });
+      });
+  
+      setEdges((edges) => {
+        return edges.map((edge) => {
+          if (edge.source === id) {
+            return { ...edge, animated: false };
+          }
+          return edge;
+        });
+      });
+    }, 500);
+  };
+  
 
   const handleConnect = (e: Connection) => {
     if (!e.target) return

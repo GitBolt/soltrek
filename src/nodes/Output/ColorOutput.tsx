@@ -14,7 +14,7 @@ const ColorOutputNode: FC<NodeProps> = (props) => {
   useEffect(() => {
     if (!nodeId) return
     const currentNode = getNode(nodeId)
-    console.log(currentNode)
+    console.log("Color output :", currentNode)
     const symbolData: string[] = Object.values(currentNode?.data)
     setColor(symbolData[0])
     // eslint-disable-next-line react-hooks/exhaustive-deps
