@@ -8,9 +8,13 @@ import { CustomHandle } from '@/layout/CustomHandle';
 
 const KeypairNode: FC<NodeProps> = (props) => {
   const [kp, setKp] = useState<Keypair>(new Keypair());
-  const { setNodes } = useReactFlow()
+  const [currentTargetPrivKey, setCurrentTargetPrivKey] = useState<string[]>([])
+  const [currentTargetPubKey, setCurrentTargetPubKey] = useState<string[]>([])
+  const { setNodes, getNode } = useReactFlow()
   const nodeId = useNodeId()
   const nodes = useNodes()
+
+  const currentNodeObj = nodes.find((node) => node.id == nodeId)
 
 
   const updateNodeData = (nodeId: string, data: string) => {
@@ -26,16 +30,45 @@ const KeypairNode: FC<NodeProps> = (props) => {
       }))
   }
 
+
+  useEffect(() => {
+    if (!nodeId) return
+    const currentNode = getNode(nodeId)
+    const symbolData: string[] = Object.keys(currentNode?.data)
+    if (symbolData && symbolData.length) {
+      symbolData.forEach((key) => {
+        if (key.startsWith('btn')) {
+          if (currentNode?.data[key] == true) {
+            setKp(new Keypair())
+          }
+        }
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentNodeObj?.data])
+
+
   const handleConnectPubKey = (e: Connection) => {
     if (!e.target) return
     updateNodeData(e.target, kp.publicKey.toBase58())
-  };
+    setCurrentTargetPubKey([...currentTargetPubKey, e.target])
 
+  };
+  
 
   const handleConnectPrivKey = (e: Connection) => {
     if (!e.target) return
     updateNodeData(e.target, b58.encode(kp.secretKey))
+    setCurrentTargetPrivKey([...currentTargetPrivKey, e.target])
+
   };
+
+  useEffect(() => {
+    currentTargetPrivKey.forEach((target) => updateNodeData(target, b58.encode(kp.secretKey)))
+    currentTargetPubKey.forEach((target) => updateNodeData(target, kp.publicKey.toBase58()))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [kp])
+
 
 
   return (

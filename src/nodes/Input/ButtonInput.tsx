@@ -21,11 +21,24 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            [id || '']: !bool,
+            ['btn' + id || '']: true,
           };
         }
         return node;
       }))
+
+    setTimeout(() => {
+      setNodes((nds) =>
+        nds.map((node) => {
+          if (node.id === nodeId) {
+            node.data = {
+              ...node.data,
+              ['btn' + id || '']: false,
+            };
+          }
+          return node;
+        }))
+    }, 1000)
   }
 
   const handleConnect = (e: Connection) => {
@@ -34,11 +47,6 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
     updateNodeData(e.target)
   };
 
-  useEffect(() => {
-    if (!currentTarget) return
-    currentTarget.forEach((target) => updateNodeData(target))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bool])
 
 
   return (
@@ -50,7 +58,11 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
           w="15rem"
           variant="filled"
           id={props.id}
-          onClick={(e) => setBool(!bool)}>Run</Button>
+          onClick={(e) => {
+            if (!currentTarget) return
+            currentTarget.forEach((target) => updateNodeData(target))
+          }}
+        >Run</Button>
 
         <Handle position={Position.Right} type="source" onConnect={(e) => handleConnect(e)} />
       </BaseNode>
