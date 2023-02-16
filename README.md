@@ -8,30 +8,33 @@
   </a>
 </p>
 
-> **This project is being developed for the [Solana Grizzlython Hackathon](https://solana.com/grizzlython) under the Tools and Infra category.**
+> *This project is being developed for the [Solana Grizzlython Hackathon](https://solana.com/grizzlython).
 
 # SOL Trek
 
 SOL Trek is a Solana learning playground that allows new developers to learn, develop and play with Solana without needing to write code. 
 
-<br />
-It provides a user-friendly, no-code environment where users can create nodes for various actions, such as string input, token transfers, fetching token details, generating keypairs, and more.
+## How does it work?
+It provides a user-friendly, no-code environment where users can create nodes for various actions, such as string input, token transfers, fetching token details, generating keypairs, and more. The nodes can be connected to each other to combine and perform various different actions.
 
-## Roadmap
+## Feature lineup
+- Accounts & PDAs
+- Adding nodes for certain program interactions (Candymachine for example)
+- Adding tutorials and built-in modules for different concepts that can be loaded.
 - Integration with Seahorse Lang to enable basic Python code execution.
-- Integration with more Solana programs such as Solend, Metaplex, and more.
-- Adding tutorials and built-in modules for different concepts such as transactions, PDAs, accounts, and more.
 - Adding a multiplayer option for real-time collaboration between developers.
 
+## Terminology
+**Node**: Individual blocks a user can add to the playground from the sidebar or through Command + K.
+**Edge**: The curvy magenta line which connects nodes.
+**Handle**: The points through which an edge emerges or leads to. It can be either of type source (input) or target (output).
+
 ## Code overview
-
-This project is built with Next.js and Chakra UI for the frontend, while the node-based environment utilizes the React Flow library (https://reactflow.dev). 
-
-The `src` folder is the entry point for the main website source code. The `node` folder contains all the nodes that the user can create. Each node is organized into its own file within a subfolder based on the category of actions it performs.
+This project is built with Next.js and Chakra UI, while the node-based environment utilizes the [React Flow](https://reactflow.dev) library.
+The [node](https://github.com/GitBolt/soltrek/tree/main/src/nodes) folder contains all the nodes that the user can create. Each node is organized into its own file within a subfolder based on the category of actions it performs.
 
 ## Getting Started
-
-To get started with SOL Trek, clone this repository and run the following commands:
+To get started with contributing to SOL Trek, clone this repository and run the following commands:
 
 ```sh
 yarn install
