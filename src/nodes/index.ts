@@ -7,12 +7,14 @@ import StringInputNode from "./Input/StringInput";
 import AddNode from "./Math/AddNode";
 import ColorOutputNode from "./Output/ColorOutput";
 import TextOutputNode from "./Output/TextOutput";
+import TransactionNode from "./Web3/Transaction";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
   integerInput: IntegerInputNode,
   buttonInput: ButtonInputNode,
   textOutput: TextOutputNode,
+  transaction: TransactionNode,
   colorOutput: ColorOutputNode,
   getTokenDetails: GetTokenDetailsNode,
   keypair: KeypairNode,

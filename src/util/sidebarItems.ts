@@ -71,5 +71,15 @@ export const sidebarItems = [
         type: "getTokenDetails"
       }
     ]
+  },
+  {
+    title: "Web3",
+    type: "Web3",
+    sub: [
+      {
+        title: "Transaction",
+        type: "transaction"
+      }
+    ]
   }
 ]
