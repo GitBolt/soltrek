@@ -36,6 +36,8 @@ const Sidebar = ({ sidebarItems }: Props) => {
       h: "100vh",
       w: "25rem",
       bg: "bg.100",
+      overflowY:"auto",
+      overflowX:"hidden",
       zIndex: 2,
       border: "1px solid #2C294A",
       flexFlow: "column"
@@ -49,7 +51,7 @@ const Sidebar = ({ sidebarItems }: Props) => {
         <Button variant="filled">Save</Button>
       </Flex>
 
-      <List>
+      <List mb="2rem">
         {sidebarItems.map((item, index) => (
           <ListItem key={item.title}>
             <Button
