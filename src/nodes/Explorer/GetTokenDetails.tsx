@@ -2,6 +2,7 @@ import React, { useState, useEffect, FC } from 'react';
 import { Handle, Position, NodeProps, useNodes, useNodeId, useReactFlow } from 'reactflow';
 import BaseNode from '@/layout/BaseNode';
 import { Text } from '@chakra-ui/react';
+import { CustomHandle } from '@/layout/CustomHandle';
 
 const GetTokenDetailsNode: FC<NodeProps> = (props) => {
   const [tokenDetails, setTokenDetails] = useState<string | undefined>(undefined);
@@ -43,12 +44,13 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
   return (
     <BaseNode {...props} title="Fetch Token Mint Details">
       {tokenDetails ?
-        <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">{tokenDetails.toLocaleString()}</Text> :
-        <Text color="gray.100" fontSize="1.5rem">{error || 'Nothing to show here...'}</Text>}
-      <Handle position={Position.Left} type="target" />
+        <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="2rem">{tokenDetails.toLocaleString()}</Text> :
+        <Text color="gray.100" fontSize="1.5rem">{error || 'Empty...'}</Text>}
+
+      <CustomHandle pos="left" type="target" label="Mint" />
     </BaseNode >
   );
-  
+
 };
 
 export default GetTokenDetailsNode;

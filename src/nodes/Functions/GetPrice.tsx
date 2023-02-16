@@ -62,7 +62,7 @@ const GetPriceNode: FC<NodeProps> = (props) => {
     <BaseNode {...props} title="Fetch Price">
       {price ?
         <Text fontSize="2rem" color="blue.500">${price.toLocaleString()}</Text> :
-        <Text color="gray.100" fontSize="1.8rem">{error || 'Nothing to show here...'}</Text>}
+        <Text color="gray.100" fontSize="1.8rem">{error || 'Empty...'}</Text>}
       <Handle position={Position.Left} type="target" />
       <Handle position={Position.Right} type="source" onConnect={(e) => handleConnect(e)} />
     </BaseNode >

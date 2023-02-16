@@ -25,7 +25,7 @@ const TextOutputNode: FC<NodeProps> = (props) => {
     <BaseNode {...props} title="Text output">
       {text ?
         <Text fontSize="1.5rem" color="blue.500" mx="2rem" whiteSpace="nowrap">{text}</Text> :
-        <Text color="gray.100" fontSize="1.8rem">Nothing to show here...</Text>}
+        <Text color="gray.100" fontSize="1.8rem">Empty...</Text>}
       <Handle position={Position.Left} type="target" />
     </BaseNode >
   );

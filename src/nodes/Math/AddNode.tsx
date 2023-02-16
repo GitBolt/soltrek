@@ -30,7 +30,7 @@ const AddNode: FC<NodeProps> = (props) => {
     <BaseNode {...props} title="Add two numbers">
       {price ?
         <Text fontSize="2rem" color="blue.500">{price.toLocaleString()}</Text> :
-        <Text color="gray.100" fontSize="1.8rem">Nothing to show here...</Text>}
+        <Text color="gray.100" fontSize="1.8rem">Empty...</Text>}
       <Handle position={Position.Left} type="target" style={{ marginTop: "-0.7rem" }} id="a"/>
       <Handle position={Position.Left} type="target" style={{ marginTop: "2.5rem" }} id="b"/>
     </BaseNode >

@@ -4,6 +4,7 @@ import BaseNode from '@/layout/BaseNode';
 import { Text } from '@chakra-ui/react';
 import { Keypair } from '@solana/web3.js';
 import b58 from 'bs58';
+import { CustomHandle } from '@/layout/CustomHandle';
 
 const KeypairNode: FC<NodeProps> = (props) => {
   const [kp, setKp] = useState<Keypair>(new Keypair());
@@ -39,9 +40,9 @@ const KeypairNode: FC<NodeProps> = (props) => {
 
   return (
     <BaseNode {...props} title="Keypair Object">
-      <Handle position={Position.Left} type="target" />
-      <Handle position={Position.Right} type="source" id="a" onConnect={(e) => handleConnectPubKey(e)} style={{ marginTop: "-0.7rem" }} />
-      <Handle position={Position.Right} type="source" id="b" onConnect={(e) => handleConnectPrivKey(e)} style={{ marginTop: "2.5rem" }} />
+      <CustomHandle pos="left" type="target" label="Generate" />
+      <CustomHandle pos="right" type="source" id="a" label="Public Key" onConnect={(e: any) => handleConnectPubKey(e)} style={{ marginTop: "-0.7rem" }} />
+      <CustomHandle pos={Position.Right} type="source" id="b" label="Private Key" onConnect={(e: any) => handleConnectPrivKey(e)} style={{ marginTop: "2.5rem" }} />
     </BaseNode >
   );
 };

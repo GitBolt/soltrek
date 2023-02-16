@@ -6,13 +6,17 @@ interface Props {
   type: "source" | "target",
   label?: string,
   onConnect?: any
+  id?: string,
+  style?: object,
 }
 
 export const CustomHandle = ({
   pos,
   type,
   label,
-  onConnect
+  id,
+  onConnect,
+  style
 }: Props) => {
 
   const PosKp = {
@@ -23,8 +27,9 @@ export const CustomHandle = ({
     <Handle
       position={PosKp[pos]}
       type={type}
-      style={{ overflow: "visible" }}
+      style={style}
       onConnect={onConnect}
+      id={id}
     >
       {label &&
         <div style={{
