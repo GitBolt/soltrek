@@ -8,7 +8,7 @@
   </a>
 </p>
 
-> *This project is being developed for the [Solana Grizzlython Hackathon](https://solana.com/grizzlython).
+> *This project is being developed for the [Solana Grizzlython Hackathon](https://solana.com/grizzlython).*
 
 # SOL Trek
 
