@@ -3,7 +3,7 @@
     <img
       alt="SOL Trek"
       src="https://media.discordapp.net/attachments/865444983762452520/1075913428545327166/Group_72.png"
-      width="150"
+      width="160"
     />
   </a>
 </p>
@@ -12,12 +12,13 @@
 
 # SOL Trek
 
-SOL Trek is a Solana learning playground that allows new developers to learn, develop and play with Solana without needing to write code. 
+SOL Trek is a Solana learning playground that allows new developers to learn, develop and play with Solana without needing to write code.
 
 ## How does it work?
 It provides a user-friendly, no-code environment where users can create nodes for various actions, such as string input, token transfers, fetching token details, generating keypairs, and more. The nodes can be connected to each other to combine and perform various different actions.
 
 ## Feature lineup
+- Finishing Solana.fm explorer integration
 - Accounts & PDAs
 - Adding nodes for certain program interactions (Candymachine for example)
 - Adding tutorials and built-in modules for different concepts that can be loaded.
@@ -25,9 +26,9 @@ It provides a user-friendly, no-code environment where users can create nodes fo
 - Adding a multiplayer option for real-time collaboration between developers.
 
 ## Terminology
-**Node**: Individual blocks a user can add to the playground from the sidebar or through Command + K.
-**Edge**: The curvy magenta line which connects nodes.
-**Handle**: The points through which an edge emerges or leads to. It can be either of type source (input) or target (output).
+- **Node**: Individual blocks a user can add to the playground from the sidebar or through Command + K.
+- **Edge**: The curvy magenta coloured line which connects nodes.
+- **Handle**: The points through which an edge emerges or leads to. It can be either of type source (input) or target (output).
 
 ## Code overview
 This project is built with Next.js and Chakra UI, while the node-based environment utilizes the [React Flow](https://reactflow.dev) library.
