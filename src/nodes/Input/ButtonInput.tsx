@@ -14,9 +14,10 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
 
   const id = useNodeId()
 
-  const updateNodeData = (nodeId: string) => {
+  const updateNodeData = (nodeId: string, animate?: boolean) => {
 
-    setEdges((edgs) =>
+    if (animate){ 
+      setEdges((edgs) =>
       edgs.map((ed) => {
         if (ed.source == id) {
           ed.animated = true
@@ -24,6 +25,8 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
         }
         return ed;
       }))
+    }
+
     setNodes((nds) =>
       nds.map((node) => {
         if (node.id === nodeId) {
@@ -55,7 +58,7 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
           }
           return ed;
         }))
-    }, 500)
+    }, 300)
   }
 
   const handleConnect = (e: Connection) => {
@@ -77,7 +80,7 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
           id={props.id}
           onClick={(e) => {
             if (!currentTarget) return
-            currentTarget.forEach((target) => updateNodeData(target))
+            currentTarget.forEach((target) => updateNodeData(target, true))
           }}
         >Run</Button>
 
