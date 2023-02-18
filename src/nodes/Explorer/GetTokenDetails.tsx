@@ -28,7 +28,7 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
             console.log("error")
             setError("Token not supported")
           } else {
-            setTokenDetails(JSON.stringify(data, null, 4));
+            setTokenDetails(JSON.stringify(data, null, 2));
           }
         })
         .catch((error) => {
@@ -44,7 +44,7 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
   return (
     <BaseNode {...props} title="Fetch Token Mint Details">
       {tokenDetails ?
-        <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="2rem">{tokenDetails.toLocaleString()}</Text> :
+        <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="4rem">{tokenDetails.toLocaleString()}</Text> :
         <Text color="gray.100" fontSize="1.5rem">{error || 'Empty...'}</Text>}
 
       <CustomHandle pos="left" type="target" label="Mint" />
