@@ -7,6 +7,7 @@ import StringInputNode from "./Input/StringInput";
 import AddNode from "./Math/AddNode";
 import ColorOutputNode from "./Output/ColorOutput";
 import TextOutputNode from "./Output/TextOutput";
+import SendSOL from "./Web3/SendSOL";
 import TransactionNode from "./Web3/Transaction";
 
 export const nodeTypes = {
@@ -17,6 +18,7 @@ export const nodeTypes = {
   transaction: TransactionNode,
   colorOutput: ColorOutputNode,
   getTokenDetails: GetTokenDetailsNode,
+  sendSOL: SendSOL,
   keypair: KeypairNode,
   add: AddNode,
   getPrice: GetPriceNode

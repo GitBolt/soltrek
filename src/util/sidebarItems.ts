@@ -79,6 +79,10 @@ export const sidebarItems = [
       {
         title: "Transaction",
         type: "transaction"
+      },
+      {
+        title: "Send SOL",
+        type: "sendSOL"
       }
     ]
   }
