@@ -17,19 +17,6 @@ SOL Trek is a Solana learning playground that allows new developers to learn, de
 ## How does it work?
 It provides a user-friendly, no-code environment where users can create nodes for various actions, such as string input, token transfers, fetching token details, generating keypairs, and more. The nodes can be connected to each other to combine and perform various different actions.
 
-## Feature lineup
-- Finishing Solana.fm explorer integration
-- Accounts & PDAs
-- Adding nodes for certain program interactions (Candymachine for example)
-- Adding tutorials and built-in modules for different concepts that can be loaded.
-- Integration with Seahorse Lang to enable basic Python code execution.
-- Adding a multiplayer option for real-time collaboration between developers.
-
-## Terminology
-- **Node**: Individual blocks a user can add to the playground from the sidebar or through Command + K.
-- **Edge**: The curvy magenta coloured line which connects nodes.
-- **Handle**: The points through which an edge emerges or leads to. It can be either of type source (input) or target (output).
-
 ## Code overview
 This project is built with Next.js and Chakra UI, while the node-based environment utilizes the [React Flow](https://reactflow.dev) library.
 The [node](https://github.com/GitBolt/soltrek/tree/main/src/nodes) folder contains all the nodes that the user can create. Each node is organized into its own file within a subfolder based on the category of actions it performs.
@@ -41,4 +28,17 @@ To get started with contributing to SOL Trek, clone this repository and run the 
 yarn install
 yarn dev
 ```
+All required nodes that need to be added are mentioned in the [Wiki](https://github.com/GitBolt/soltrek/wiki), have a look into it if you want to add any new node!
 
+## Terminology
+- **Node**: Individual blocks a user can add to the playground from the sidebar or through Command + K.
+- **Edge**: The curvy magenta coloured line which connects nodes.
+- **Handle**: The points through which an edge emerges or leads to. It can be either of type source (input) or target (output).
+
+## Rough Feature lineup
+- Finishing Solana.fm explorer integration
+- Accounts & PDAs
+- Adding nodes for certain program interactions (Candymachine for example)
+- Adding tutorials and built-in modules for different concepts that can be loaded.
+- Integration with Seahorse Lang to enable basic Python code execution.
+- Adding a multiplayer option for real-time collaboration between developers.
