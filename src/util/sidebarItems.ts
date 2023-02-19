@@ -1,4 +1,3 @@
-
 export const sidebarItems = [
   {
     title: "Input",
@@ -6,17 +5,17 @@ export const sidebarItems = [
     sub: [
       {
         title: "String Input",
-        type: "stringInput"
+        type: "stringInput",
       },
       {
         title: "Integer Input",
-        type: "integerInput"
+        type: "integerInput",
       },
       {
         title: "Button",
-        type: "buttonInput"
-      }
-    ]
+        type: "buttonInput",
+      },
+    ],
   },
   {
     title: "Output",
@@ -24,13 +23,13 @@ export const sidebarItems = [
     sub: [
       {
         title: "Text Output",
-        type: "textOutput"
+        type: "textOutput",
       },
       {
         title: "Color Output",
-        type: "colorOutput"
+        type: "colorOutput",
       },
-    ]
+    ],
   },
   {
     title: "Crypto",
@@ -38,9 +37,9 @@ export const sidebarItems = [
     sub: [
       {
         title: "Keypair",
-        type: "keypair"
+        type: "keypair",
       },
-    ]
+    ],
   },
   {
     title: "Math",
@@ -48,9 +47,9 @@ export const sidebarItems = [
     sub: [
       {
         title: "Add",
-        type: "add"
-      }
-    ]
+        type: "add",
+      },
+    ],
   },
   {
     title: "Function",
@@ -58,9 +57,9 @@ export const sidebarItems = [
     sub: [
       {
         title: "Get Price",
-        type: "getPrice"
-      }
-    ]
+        type: "getPrice",
+      },
+    ],
   },
   {
     title: "Explorer",
@@ -68,9 +67,9 @@ export const sidebarItems = [
     sub: [
       {
         title: "Get Token Details",
-        type: "getTokenDetails"
-      }
-    ]
+        type: "getTokenDetails",
+      },
+    ],
   },
   {
     title: "Web3",
@@ -78,8 +77,12 @@ export const sidebarItems = [
     sub: [
       {
         title: "Transaction",
-        type: "transaction"
-      }
-    ]
-  }
-]
+        type: "transaction",
+      },
+      {
+        title: "PDA",
+        type: "pda",
+      },
+    ],
+  },
+];

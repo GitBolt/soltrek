@@ -8,7 +8,7 @@ import AddNode from "./Math/AddNode";
 import ColorOutputNode from "./Output/ColorOutput";
 import TextOutputNode from "./Output/TextOutput";
 import TransactionNode from "./Web3/Transaction";
-
+import PDANode from "./Web3/PDA";
 export const nodeTypes = {
   stringInput: StringInputNode,
   integerInput: IntegerInputNode,
@@ -19,5 +19,6 @@ export const nodeTypes = {
   getTokenDetails: GetTokenDetailsNode,
   keypair: KeypairNode,
   add: AddNode,
-  getPrice: GetPriceNode
-}
+  getPrice: GetPriceNode,
+  PDA: PDANode,
+};
