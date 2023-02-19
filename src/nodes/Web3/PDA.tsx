@@ -1,11 +1,10 @@
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
-import { generatePDA } from "@/util/genratePDA";
-import { Text } from "@chakra-ui/react";
+import { createPDA, generatePDA } from "@/util/genratePDA";
+import { VStack } from "@chakra-ui/react";
 import React, { FC, useEffect, useState } from "react";
 import {
   Connection,
-  Handle,
   NodeProps,
   Position,
   useNodeId,
@@ -14,10 +13,9 @@ import {
 } from "reactflow";
 
 const PDA: FC<NodeProps> = (props) => {
-  const [genratedPda, setGenratedPda] = useState<string | undefined>("");
-  const [seed, setSeed] = useState<string>("");
-  const [programId, setProgramId] = useState<string>("");
-  const [bump, setBump] = useState<string>("");
+  const [generatedPda, setGeneratedPda] = useState<string | undefined>("");
+  const [currentPDA, setCurrentPDA] = useState<string[]>([]);
+
   const { getNode, setNodes } = useReactFlow();
   const nodeId = useNodeId();
   const nodes = useNodes();
@@ -37,20 +35,37 @@ const PDA: FC<NodeProps> = (props) => {
       })
     );
   };
-  const updateProgramId = (e: Connection) => {
+  const updatePDA = (e: Connection) => {
     if (!e.target) return;
-    updateNodeData(e.target, programId);
+    updateNodeData(e.target, generatedPda as string);
+    setCurrentPDA([...currentPDA, e.target]);
   };
+  useEffect(() => {
+    currentPDA.forEach((target) =>
+      updateNodeData(target, generatedPda as string)
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [generatedPda]);
   useEffect(() => {
     if (!nodeId) return;
     const currentNode = getNode(nodeId);
     const symbolData: string[] = Object.values(currentNode?.data);
-    if (seed && bump && programId) {
-      const newPDA = generatePDA(programId, seed, bump);
+    if (
+      symbolData &&
+      symbolData.length &&
+      symbolData[0] &&
+      symbolData[2] &&
+      symbolData[1]
+    ) {
+      const newPDA = createPDA(
+        symbolData[0],
+        Buffer.from(symbolData[2]),
+        Number(symbolData[1])
+      );
       if (newPDA) {
-        setGenratedPda(newPDA.toBase58());
+        setGeneratedPda(newPDA.toBase58());
       } else {
-        setGenratedPda(undefined);
+        setGeneratedPda(undefined);
       }
     }
 
@@ -59,25 +74,48 @@ const PDA: FC<NodeProps> = (props) => {
   return (
     <>
       <BaseNode {...props} title="PDA">
-        {genratedPda ? (
-          <Text fontSize="2rem" color="blue.500">
-            {genratedPda}
-          </Text>
-        ) : (
-          <Text color="gray.100" fontSize="1.8rem">
-            {"Empty..."}
-          </Text>
-        )}
-        <CustomHandle
-          pos="right"
-          type="source"
-          id="a"
-          label="Program Id"
-          onConnect={(e: any) => {
-            updateProgramId(e);
-          }}
-          style={{ marginTop: "-0.7rem" }}
-        />
+        {generatedPda}
+        <VStack gap={6}>
+          <CustomHandle
+            pos="left"
+            type="target"
+            id="a"
+            label="Program Id"
+            style={{ marginTop: "-1.8rem" }}
+          />
+          <CustomHandle
+            pos="left"
+            type="target"
+            id="b"
+            label="bump"
+            style={{ marginTop: "0.8rem" }}
+          />
+          <CustomHandle
+            pos="left"
+            type="target"
+            id="c"
+            label="seed"
+            style={{ marginTop: "3.5rem" }}
+          />
+          <CustomHandle
+            pos="right"
+            type="source"
+            id="c"
+            label="PDA"
+            onConnect={(e: any) => {
+              updatePDA(e);
+            }}
+            style={{ marginTop: "-0.7rem" }}
+          />
+          <CustomHandle
+            pos={Position.Right}
+            type="source"
+            id="c"
+            label="Curve"
+            onConnect={(e: any) => {}}
+            style={{ marginTop: "3rem" }}
+          />
+        </VStack>
       </BaseNode>
     </>
   );
