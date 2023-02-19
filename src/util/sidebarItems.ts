@@ -81,7 +81,7 @@ export const sidebarItems = [
       },
       {
         title: "PDA",
-        type: "pda",
+        type: "PDA",
       },
     ],
   },
