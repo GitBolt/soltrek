@@ -16,7 +16,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
   const [txid, setTxid] = useState<string | undefined>("");
   const [currentPDA, setCurrentPDA] = useState<string[]>([]);
 
-  const { getNode, setNodes } = useReactFlow();
+  const { getNode, setNodes, setEdges } = useReactFlow();
   const nodeId = useNodeId();
   const nodes = useNodes();
 
@@ -58,9 +58,28 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
     const rpcUrl = nodeValues.find((value) => typeof value == 'string' && value.startsWith('https://'))
     console.log(run, receiver, rpcUrl)
     if (run && receiver) {
+
+      setEdges((edgs) =>
+        edgs.map((ed) => {
+          if (ed.source == nodeId) {
+            ed.animated = true
+            return ed
+          }
+          return ed;
+        }))
+
       const connection = new Connection(rpcUrl || "https://api.devnet.solana.com")
       connection.requestAirdrop(new PublicKey(receiver), 2)
         .then((res) => setTxid(res))
+        .then(() => setEdges((edgs) =>
+          edgs.map((ed) => {
+            if (ed.source == nodeId) {
+              ed.animated = false
+              return ed
+            }
+            return ed;
+          }))
+        )
     }
 
 
