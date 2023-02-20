@@ -23,6 +23,7 @@ export const FuzzySearch = () => {
   const [searchValue, setSearchValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [filteredItems, setFilteredItems] = useState<SidebarItemType[]>(sidebarItems);
+  const [activeItem, setActiveItem] = useState<number>(-1)
   const { setNodes } = useReactFlow()
   const listRef = useRef(null)
 
@@ -47,6 +48,13 @@ export const FuzzySearch = () => {
       event.preventDefault()
       setIsOpen(false)
     }
+
+    if (event.key === "Enter") {
+      event.preventDefault()
+      console.log(filteredItems)
+      addNode(filteredItems[0].sub[0].type)
+    }
+
   };
 
   const handleClickOutside = (e: any) => {
@@ -66,8 +74,8 @@ export const FuzzySearch = () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("click", handleClickOutside);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredItems]);
 
 
   useEffect(() => {
@@ -79,8 +87,12 @@ export const FuzzySearch = () => {
 
     setFilteredItems(
       sidebarItems
-        .filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()) || item.sub.some(sub => sub.title.toLowerCase().includes(searchValue.toLowerCase())))
-        .map(item => ({ ...item, sub: item.sub.filter(sub => sub.title.toLowerCase().includes(searchValue.toLowerCase())) }))
+        .filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase())
+          || item.sub.some(sub => sub.title.toLowerCase().includes(searchValue.toLowerCase())))
+        .map(item => ({
+          ...item,
+          sub: item.sub.filter(sub => sub.title.toLowerCase().includes(searchValue.toLowerCase()))
+        }))
     );
   }, [searchValue]);
 
@@ -110,20 +122,19 @@ export const FuzzySearch = () => {
               onChange={(event) => setSearchValue(event.target.value)}
             />
 
-            {!filteredItems.length && <Text>Start typing...</Text>}
             <List w="90%">
               {filteredItems.map((item) => (
                 <ListItem key={item.title}>
                   <Text
-                  fontSize="1.6rem"
-                  color="blue.200"
-                  fontWeight={500}
+                    fontSize="1.6rem"
+                    color="blue.200"
+                    fontWeight={500}
                   >
                     {item.title}
                   </Text>
 
                   {item.sub.length && (
-                    <List ml="0rem">
+                    <List>
                       {item.sub.map((subItem, index) => (
                         <Flex key={subItem.title} align="center">
                           <Divider
