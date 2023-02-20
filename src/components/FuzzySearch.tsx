@@ -114,14 +114,16 @@ export const FuzzySearch = () => {
             <List w="90%">
               {filteredItems.map((item) => (
                 <ListItem key={item.title}>
-                  <Button
-                    variant="sidebar"
+                  <Text
+                  fontSize="1.6rem"
+                  color="blue.200"
+                  fontWeight={500}
                   >
                     {item.title}
-                  </Button>
+                  </Text>
 
                   {item.sub.length && (
-                    <List ml="4rem">
+                    <List ml="0rem">
                       {item.sub.map((subItem, index) => (
                         <Flex key={subItem.title} align="center">
                           <Divider
@@ -133,7 +135,7 @@ export const FuzzySearch = () => {
                             borderRadius="2rem" />
                           <Divider
                             orientation='horizontal'
-                            w="2.5rem"
+                            w="2rem"
                             borderColor="gray.100"
                             borderWidth="2px"
                             borderRadius="2rem" />
