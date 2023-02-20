@@ -1,7 +1,8 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Handle, Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
+import { Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
 import BaseNode from '@/layout/BaseNode';
 import { Text } from '@chakra-ui/react';
+import { CustomHandle } from '@/layout/CustomHandle';
 
 const GetPriceNode: FC<NodeProps> = (props) => {
   const [price, setPrice] = useState<number | undefined>(undefined);
@@ -25,7 +26,7 @@ const GetPriceNode: FC<NodeProps> = (props) => {
       }))
   }
 
-  const handleConnect = (e: Connection) => {
+  const CustomHandleConnect = (e: Connection) => {
     if (!e.target) return
     updateNodeData(e.target)
   };
@@ -63,8 +64,8 @@ const GetPriceNode: FC<NodeProps> = (props) => {
       {price ?
         <Text fontSize="2rem" color="blue.500">${price.toLocaleString()}</Text> :
         <Text color="gray.100" fontSize="1.8rem">{error || 'Empty...'}</Text>}
-      <Handle position={Position.Left} type="target" />
-      <Handle position={Position.Right} type="source" onConnect={(e) => handleConnect(e)} />
+      <CustomHandle pos={Position.Left} type="target" />
+      <CustomHandle pos={Position.Right} type="source" onConnect={(e: any) => CustomHandleConnect(e)} />
     </BaseNode >
   );
 };

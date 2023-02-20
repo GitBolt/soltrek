@@ -1,7 +1,8 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Handle, Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
+import { Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
 import BaseNode from '@/layout/BaseNode';
 import { Text } from '@chakra-ui/react';
+import { CustomHandle } from '@/layout/CustomHandle';
 
 const TextOutputNode: FC<NodeProps> = (props) => {
   const [text, setText] = useState<string | undefined>(undefined);
@@ -25,7 +26,7 @@ const TextOutputNode: FC<NodeProps> = (props) => {
       {text ?
         <Text fontSize="1.5rem" color="blue.500" mx="2rem" whiteSpace="nowrap">{text}</Text> :
         <Text color="gray.100" fontSize="1.8rem">Empty...</Text>}
-      <Handle position={Position.Left} type="target" />
+      <CustomHandle pos={Position.Left} type="target" />
     </BaseNode >
   );
 };
