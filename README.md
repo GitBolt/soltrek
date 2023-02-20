@@ -28,7 +28,9 @@ To get started with contributing to SOL Trek, clone this repository and run the 
 yarn install
 yarn dev
 ```
-All required nodes that need to be added are mentioned in the [Wiki](https://github.com/GitBolt/soltrek/wiki), have a look into it if you want to add any new node!
+Make sure to read [CONTRIBUTING.md](https://github.com/GitBolt/soltrek/blob/main/CONTRIBUTING.md) before getting started!
+<br/>
+All required nodes that need to be added are mentioned in the [Wiki](https://github.com/GitBolt/soltrek/wiki), have a look into it if you want to add anything new!
 
 ## Terminology
 - **Node**: Individual blocks a user can add to the playground from the sidebar or through Command + K.
