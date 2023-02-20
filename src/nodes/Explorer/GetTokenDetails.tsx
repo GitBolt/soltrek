@@ -1,8 +1,9 @@
 import React, { useState, useEffect, FC } from 'react';
 import { Handle, Position, NodeProps, useNodes, useNodeId, useReactFlow } from 'reactflow';
 import BaseNode from '@/layout/BaseNode';
-import { Text } from '@chakra-ui/react';
+import { Box, Text, useClipboard } from '@chakra-ui/react';
 import { CustomHandle } from '@/layout/CustomHandle';
+import { CheckIcon, CopyIcon } from '@chakra-ui/icons';
 
 const GetTokenDetailsNode: FC<NodeProps> = (props) => {
   const [tokenDetails, setTokenDetails] = useState<string | undefined>(undefined);
@@ -11,6 +12,7 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
   const nodeId = useNodeId()
   const nodes = useNodes()
 
+  const { hasCopied, setValue, onCopy } = useClipboard(tokenDetails || '')
   const currentNodeObj = nodes.find((node) => node.id == nodeId)
 
 
@@ -29,6 +31,7 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
             setError("Token not supported")
           } else {
             setTokenDetails(JSON.stringify(data, null, 2));
+            setValue(JSON.stringify(data, null, 2));
           }
         })
         .catch((error) => {
@@ -44,7 +47,14 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
   return (
     <BaseNode {...props} title="Fetch Token Mint Details">
       {tokenDetails ?
-        <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="4rem">{tokenDetails.toLocaleString()}</Text> :
+        <>
+          <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="4rem">{tokenDetails.toLocaleString()}</Text>
+          <Box pos="absolute" top="3rem" right="1rem">
+            {hasCopied ? <CheckIcon color="blue.200" w="1.5rem" h="1.5rem" /> :
+              <CopyIcon onClick={onCopy} color="blue.200" w="1.5rem" h="1.5rem" />}
+          </Box>
+        </>
+        :
         <Text color="gray.100" fontSize="1.5rem">{error || 'Empty...'}</Text>}
 
       <CustomHandle pos="left" type="target" label="Mint" />
