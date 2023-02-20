@@ -8,6 +8,7 @@ interface Props {
   onConnect?: any
   id?: string,
   style?: object,
+  optional?: boolean
 }
 
 export const CustomHandle = ({
@@ -16,7 +17,8 @@ export const CustomHandle = ({
   label,
   id,
   onConnect,
-  style
+  style,
+  optional
 }: Props) => {
 
   const PosKp = {
@@ -27,7 +29,11 @@ export const CustomHandle = ({
     <Handle
       position={PosKp[pos]}
       type={type}
-      style={style}
+      style={{
+        backgroundColor: optional ? '#BF0073CC' : '#DD11B1',
+        borderColor: optional ? "#BF0073CC" : "#DD11B1",
+        ...style
+      }}
       onConnect={onConnect}
       id={id}
     >
@@ -37,9 +43,9 @@ export const CustomHandle = ({
           fontWeight: "800",
           fontSize: "1rem",
           direction: pos === "right" ? "rtl" : "ltr",
-          color: "#BF0073",
+          color: optional ? "#BF0073CC" : "#DD11B1",
           transform: `translate(${pos == "left" ? '15px' : '-108px'}, 2px)`
-        }}>{label}
+        }}>{optional ? '_' : ''}{label}
         </div>}
     </Handle >
   )

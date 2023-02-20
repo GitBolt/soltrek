@@ -74,7 +74,6 @@ const PDA: FC<NodeProps> = (props) => {
   return (
     <>
       <BaseNode {...props} title="PDA">
-        {generatedPda}
         <VStack gap={6}>
           <CustomHandle
             pos="left"
@@ -87,34 +86,34 @@ const PDA: FC<NodeProps> = (props) => {
             pos="left"
             type="target"
             id="b"
-            label="bump"
+            label="Bump"
             style={{ marginTop: "0.8rem" }}
           />
           <CustomHandle
             pos="left"
             type="target"
             id="c"
-            label="seed"
+            label="Seed"
             style={{ marginTop: "3.5rem" }}
           />
           <CustomHandle
             pos="right"
             type="source"
-            id="c"
+            id="d"
             label="PDA"
             onConnect={(e: any) => {
               updatePDA(e);
             }}
             style={{ marginTop: "-0.7rem" }}
           />
-          <CustomHandle
+          {/* <CustomHandle
             pos={Position.Right}
             type="source"
             id="c"
             label="Curve"
             onConnect={(e: any) => {}}
             style={{ marginTop: "3rem" }}
-          />
+          /> */}
         </VStack>
       </BaseNode>
     </>

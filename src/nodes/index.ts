@@ -8,7 +8,9 @@ import AddNode from "./Math/AddNode";
 import ColorOutputNode from "./Output/ColorOutput";
 import TextOutputNode from "./Output/TextOutput";
 import TransactionNode from "./Web3/Transaction";
-import PDANode from "./Web3/PDA";
+import PDANode from "./Crypto/PDA";
+import RequestAirdrop from "./Web3/RequestAirdrop";
+
 export const nodeTypes = {
   stringInput: StringInputNode,
   integerInput: IntegerInputNode,
@@ -18,6 +20,7 @@ export const nodeTypes = {
   colorOutput: ColorOutputNode,
   getTokenDetails: GetTokenDetailsNode,
   keypair: KeypairNode,
+  requestAirdrop: RequestAirdrop,
   add: AddNode,
   getPrice: GetPriceNode,
   PDA: PDANode,

@@ -39,6 +39,10 @@ export const sidebarItems = [
         title: "Keypair",
         type: "keypair",
       },
+      {
+        title: "PDA",
+        type: "PDA",
+      },
     ],
   },
   {
@@ -80,8 +84,8 @@ export const sidebarItems = [
         type: "transaction",
       },
       {
-        title: "PDA",
-        type: "PDA",
+        title: "Airdrop",
+        type: "requestAirdrop",
       },
     ],
   },
