@@ -1,7 +1,8 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Handle, Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
+import { Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
 import BaseNode from '@/layout/BaseNode';
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
+import { CustomHandle } from '@/layout/CustomHandle';
 
 const ColorOutputNode: FC<NodeProps> = (props) => {
   const [color, setColor] = useState<string | undefined>(undefined);
@@ -23,7 +24,7 @@ const ColorOutputNode: FC<NodeProps> = (props) => {
   return (
     <BaseNode {...props} title="Colour output / display">
       <Box bgColor={color || '#FFFFFF'} w="15rem" h="5rem" borderRadius="1rem"/>
-      <Handle position={Position.Left} type="target" />
+      <CustomHandle pos={Position.Left} type="target" />
     </BaseNode >
   );
 };

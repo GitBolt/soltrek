@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import BaseNode from '@/layout/BaseNode';
-import { Handle, Position, NodeProps, Connection, useReactFlow, useNodeId } from 'reactflow';
+import { Position, NodeProps, Connection, useReactFlow, useNodeId } from 'reactflow';
 import { Button } from '@chakra-ui/react';
+import { CustomHandle } from '@/layout/CustomHandle';
 
 type InputNodeType = {
   placeholder: string;
@@ -61,7 +62,7 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
     }, 300)
   }
 
-  const handleConnect = (e: Connection) => {
+  const CustomHandleConnect = (e: Connection) => {
     if (!e.target) return
     setCurrentTarget([...currentTarget, e.target])
     // updateNodeData(e.target)
@@ -84,7 +85,7 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
           }}
         >Run</Button>
 
-        <Handle position={Position.Right} type="source" onConnect={(e) => handleConnect(e)} />
+        <CustomHandle pos={Position.Right} type="source" onConnect={(e: any) => CustomHandleConnect(e)} />
       </BaseNode>
     </div>
   );

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Handle, Position, NodeProps, useEdges, updateEdge, useNodes, useNodeId, useReactFlow } from 'reactflow';
+import { Position, NodeProps, useNodes, useNodeId, useReactFlow } from 'reactflow';
 import BaseNode from '@/layout/BaseNode';
-import { createHandleId } from '@/util/randomData';
 import { Text } from '@chakra-ui/react';
+import { CustomHandle } from '@/layout/CustomHandle';
 
 const AddNode: FC<NodeProps> = (props) => {
   const [price, setPrice] = useState<number | undefined>(undefined);
@@ -31,8 +31,8 @@ const AddNode: FC<NodeProps> = (props) => {
       {price ?
         <Text fontSize="2rem" color="blue.500">{price.toLocaleString()}</Text> :
         <Text color="gray.100" fontSize="1.8rem">Empty...</Text>}
-      <Handle position={Position.Left} type="target" style={{ marginTop: "-0.7rem" }} id="a"/>
-      <Handle position={Position.Left} type="target" style={{ marginTop: "2.5rem" }} id="b"/>
+      <CustomHandle pos={Position.Left} type="target" style={{ marginTop: "-0.7rem" }} id="a"/>
+      <CustomHandle pos={Position.Left} type="target" style={{ marginTop: "2.5rem" }} id="b"/>
     </BaseNode >
   );
 };

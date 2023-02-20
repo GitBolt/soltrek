@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
 import {
-  Handle,
   Position,
   NodeProps,
   useNodes,
@@ -10,6 +9,7 @@ import {
 } from "reactflow";
 import BaseNode from "@/layout/BaseNode";
 import { Text } from "@chakra-ui/react";
+import { CustomHandle } from "@/layout/CustomHandle";
 
 const CreateToken: FC<NodeProps> = (props) => {
   const [price, setPrice] = useState<number | undefined>(undefined);
@@ -78,11 +78,11 @@ const CreateToken: FC<NodeProps> = (props) => {
           {error || "Empty..."}
         </Text>
       )}
-      <Handle position={Position.Left} type="target" />
-      <Handle
-        position={Position.Right}
+      <CustomHandle pos={Position.Left} type="target" />
+      <CustomHandle
+        pos={Position.Right}
         type="source"
-        onConnect={(e) => handleConnect(e)}
+        onConnect={(e: any) => handleConnect(e)}
       />
     </BaseNode>
   );
