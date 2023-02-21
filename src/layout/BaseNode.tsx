@@ -1,21 +1,28 @@
-import React, { memo, FC } from 'react';
-import { NodeProps } from 'reactflow';
-import { Text, Flex } from '@chakra-ui/react';
+import React, { memo, FC } from "react";
+import { NodeProps } from "reactflow";
+import { Text, Flex } from "@chakra-ui/react";
 
-const BaseNode: FC<NodeProps & { children?: React.ReactNode, title: string }> = ({ children, title, selected }) => {
+const BaseNode: FC<
+  NodeProps & {
+    children?: React.ReactNode;
+    title: string;
+    height?: string | undefined;
+    width?: string | undefined;
+  }
+> = ({ children, title, selected, height, width }) => {
   return (
     <Flex
       backgroundColor="bg.400"
-      minW="220px"
+      minW={width ? width : "220px"}
       h="auto"
-      minH="100px"
+      minH={height ? height : "100px"}
       overflow="auto"
       flexDirection="column"
       alignItems="center"
       border="1px solid"
-      borderColor={selected ? "magenta.300" : 'gray.200'}
+      borderColor={selected ? "magenta.300" : "gray.200"}
       borderRadius="10px"
-      boxShadow={selected ? '0px 0px 15px #732562' : ''}
+      boxShadow={selected ? "0px 0px 15px #732562" : ""}
     >
       <Flex
         backgroundColor="gray.100"
@@ -43,6 +50,5 @@ const BaseNode: FC<NodeProps & { children?: React.ReactNode, title: string }> = 
     </Flex>
   );
 };
-
 
 export default memo(BaseNode);

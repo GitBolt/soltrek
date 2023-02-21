@@ -53,7 +53,7 @@ const createMetaData = async (
   } as DataV2;
   return ON_CHAIN_METADATA;
 };
-const createNewMint = async (
+export const createNewMint = async (
   rpc: string | undefined,
   payer: web3.Keypair,
   mintKeypair: web3.Keypair,
