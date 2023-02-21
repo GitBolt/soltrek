@@ -87,6 +87,10 @@ export const sidebarItems = [
         title: "Airdrop",
         type: "requestAirdrop",
       },
+      {
+        title: "Create Token",
+        type: "createToken",
+      },
     ],
   },
 ];

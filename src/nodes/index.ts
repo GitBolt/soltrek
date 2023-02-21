@@ -11,6 +11,7 @@ import SendSOL from "./Web3/SendSOL";
 import TransactionNode from "./Web3/Transaction";
 import PDANode from "./Crypto/PDA";
 import RequestAirdrop from "./Web3/RequestAirdrop";
+import CreateTokenNode from "./Web3/createToken";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -26,4 +27,5 @@ export const nodeTypes = {
   add: AddNode,
   getPrice: GetPriceNode,
   PDA: PDANode,
+  createToken: CreateTokenNode,
 };
