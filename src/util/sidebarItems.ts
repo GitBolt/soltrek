@@ -91,6 +91,10 @@ export const sidebarItems = [
         title: "Create Token",
         type: "createToken",
       },
+      {
+        title: "Solana Pay",
+        type: "solanaPay",
+      },
     ],
   },
 ];
