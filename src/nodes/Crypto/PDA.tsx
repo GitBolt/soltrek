@@ -16,7 +16,7 @@ const PDA: FC<NodeProps> = (props) => {
   const [generatedPda, setGeneratedPda] = useState<string | undefined>("");
   const [currentPDA, setCurrentPDA] = useState<string[]>([]);
 
-  const { getNode, setNodes, getEdges, getEdge } = useReactFlow();
+  const { getNode, setNodes, getEdges } = useReactFlow();
   const nodeId = useNodeId();
   const nodes = useNodes();
 
@@ -40,32 +40,42 @@ const PDA: FC<NodeProps> = (props) => {
     updateNodeData(e.target, generatedPda as string);
     setCurrentPDA([...currentPDA, e.target]);
   };
+
+
   useEffect(() => {
     currentPDA.forEach((target) =>
       updateNodeData(target, generatedPda as string)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [generatedPda]);
+
+
   useEffect(() => {
     if (!nodeId) return;
+
     let edge_id = Object();
     const currentNode = getNode(nodeId);
     const edges = getEdges();
-    console.log(edges);
     edges.map((e) => {
       edge_id = {
         ...edge_id,
-        [e.targetHandle as any]: e.source,
+        [e.targetHandle as string]: e.source,
       };
     });
-    const symbolData: string[] = Object.values(currentNode?.data);
-    console.log(currentNode?.data, edge_id, "--ar");
 
-    if (symbolData && symbolData.length) {
+    const dataValues: string[] = Object.values(currentNode?.data);
+
+    if (dataValues && dataValues.length) {
+      console.log(edge_id)
+      const programId = currentNode?.data[String(edge_id["program_id"])]
+      const seed = currentNode?.data[String(edge_id["seed"])]
+      const bump = currentNode?.data[String(edge_id["bump"])]
+
+      if (!programId || !seed || !bump) return
       const newPDA = createPDA(
-        currentNode?.data[String(edge_id["program_id"])],
-        Buffer.from(currentNode?.data[String(edge_id["seed"])]),
-        Number(currentNode?.data[String(edge_id["bump"])])
+        programId,
+        Buffer.from(seed),
+        Number(bump)
       );
       if (newPDA) {
         setGeneratedPda(newPDA.toBase58());
