@@ -9,10 +9,10 @@ import {
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
-import { sendSOL, sendSPL } from "@/util/sendToken";
+import { sendSPL } from "@/util/sendToken";
 import { TransactionInstruction } from "@solana/web3.js";
 
-const SendSOL: FC<NodeProps> = (props) => {
+const SendToken: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
   const nodeId = useNodeId();
   const nodes = useNodes();
@@ -49,47 +49,59 @@ const SendSOL: FC<NodeProps> = (props) => {
       "reciver",
       "amount",
       "rpc",
+      "token",
     ]);
     if (currentNode && values) {
-      sendSOL(values["sender"], values["reciver"], values["amount"]).then(
-        (ix) => {
-          setIx(ix);
-        }
-      );
+      sendSPL(
+        values["tokens"],
+        values["sender"],
+        values["reciver"],
+        values["amount"],
+        values["rpc"]
+      ).then((ix) => {
+        setIx(ix);
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNodeObj?.data]);
 
   return (
-    <BaseNode height="130px" {...props} title="Send SOL">
+    <BaseNode height="160px" {...props} title="Send Tokens">
       <CustomHandle
         pos="left"
         type="target"
         id="rpc"
         label="RPC URL"
         optional
-        style={{ marginTop: "-3rem" }}
+        style={{ marginTop: "-4.4rem" }}
+      />
+      <CustomHandle
+        pos="left"
+        type="target"
+        id="token"
+        label="Token Address"
+        style={{ marginTop: "-2rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
         label="Sender Address"
         id={"sender"}
-        style={{ marginTop: "-0.7rem" }}
+        style={{ marginTop: "0.4rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
         label="Target Address"
         id={"reciver"}
-        style={{ marginTop: "1.8rem" }}
+        style={{ marginTop: "2.7rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
         id={"amount"}
         label="Amount"
-        style={{ marginTop: "4.3rem" }}
+        style={{ marginTop: "5rem" }}
       />
 
       <CustomHandle
@@ -105,4 +117,4 @@ const SendSOL: FC<NodeProps> = (props) => {
   );
 };
 
-export default SendSOL;
+export default SendToken;
