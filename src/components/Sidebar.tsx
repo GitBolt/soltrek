@@ -8,9 +8,11 @@ import { createNodeId, createNodePos } from '@/util/randomData';
 
 type Props = {
   sidebarItems: SidebarItemType[]
+  // onLoad: () => any,
+  // onSave: () => any,
 }
 const Sidebar = ({ sidebarItems }: Props) => {
-  const { setNodes } = useReactFlow();
+  const { setNodes, setEdges, setViewport } = useReactFlow();
   const [showSublist, setShowSublist] = useState<{ [key: number]: boolean }>({});
 
 
@@ -30,14 +32,24 @@ const Sidebar = ({ sidebarItems }: Props) => {
     });
   };
 
+  const { toObject } = useReactFlow()
+
+  const onLoad = () => {
+    const data = localStorage.getItem('state')
+    if (!data) return
+    const parsed = JSON.parse(data)
+    setNodes(parsed.nodes || [])
+    setEdges(parsed.edges || [])
+    setViewport(parsed.viewport || [])
+  }
   return (
     <Flex sx={{
       pos: "fixed",
       h: "100vh",
       w: "25rem",
       bg: "bg.100",
-      overflowY:"auto",
-      overflowX:"hidden",
+      overflowY: "auto",
+      overflowX: "hidden",
       zIndex: 2,
       border: "1px solid #2C294A",
       flexFlow: "column"
@@ -47,8 +59,8 @@ const Sidebar = ({ sidebarItems }: Props) => {
       <Divider />
 
       <Flex w="100%" p="0 2rem" justify="space-between" my="2rem">
-        <Button variant="outline">Load</Button>
-        <Button variant="filled">Save</Button>
+        <Button variant="outline" onClick={onLoad}>Load</Button>
+        <Button variant="filled" onClick={() => localStorage.setItem("state", JSON.stringify(toObject()))}>Save</Button>
       </Flex>
 
       <List mb="2rem">

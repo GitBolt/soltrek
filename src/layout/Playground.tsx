@@ -15,7 +15,10 @@ import { nodeTypes } from '@/nodes';
 import NodeEdge from '@/components/NodeEdge';
 import useCtrlA from '@/util/useCtrlA';
 
-const Playground = function Playground() {
+type Props = {
+  // setRfInstance: React.Dispatch<React.SetStateAction<any>>
+}
+const Playground = function Playground({ }: Props) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
@@ -29,7 +32,7 @@ const Playground = function Playground() {
 
 
   const press = useKeyPress('Backspace')
-  
+
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
