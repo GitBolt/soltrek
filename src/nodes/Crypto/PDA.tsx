@@ -16,7 +16,7 @@ const PDA: FC<NodeProps> = (props) => {
   const [generatedPda, setGeneratedPda] = useState<string | undefined>("");
   const [currentPDA, setCurrentPDA] = useState<string[]>([]);
 
-  const { getNode, setNodes } = useReactFlow();
+  const { getNode, setNodes, getEdges, getEdge } = useReactFlow();
   const nodeId = useNodeId();
   const nodes = useNodes();
 
@@ -48,19 +48,24 @@ const PDA: FC<NodeProps> = (props) => {
   }, [generatedPda]);
   useEffect(() => {
     if (!nodeId) return;
+    let edge_id = Object();
     const currentNode = getNode(nodeId);
+    const edges = getEdges();
+    console.log(edges);
+    edges.map((e) => {
+      edge_id = {
+        ...edge_id,
+        [e.targetHandle as any]: e.source,
+      };
+    });
     const symbolData: string[] = Object.values(currentNode?.data);
-    if (
-      symbolData &&
-      symbolData.length &&
-      symbolData[0] &&
-      symbolData[2] &&
-      symbolData[1]
-    ) {
+    console.log(currentNode?.data, edge_id, "--ar");
+
+    if (symbolData && symbolData.length) {
       const newPDA = createPDA(
-        symbolData[0],
-        Buffer.from(symbolData[2]),
-        Number(symbolData[1])
+        currentNode?.data[String(edge_id["program_id"])],
+        Buffer.from(currentNode?.data[String(edge_id["seed"])]),
+        Number(currentNode?.data[String(edge_id["bump"])])
       );
       if (newPDA) {
         setGeneratedPda(newPDA.toBase58());
@@ -78,28 +83,28 @@ const PDA: FC<NodeProps> = (props) => {
           <CustomHandle
             pos="left"
             type="target"
-            id="a"
+            id="program_id"
             label="Program Id"
             style={{ marginTop: "-1.8rem" }}
           />
           <CustomHandle
             pos="left"
             type="target"
-            id="b"
+            id="bump"
             label="Bump"
             style={{ marginTop: "0.8rem" }}
           />
           <CustomHandle
             pos="left"
             type="target"
-            id="c"
+            id="seed"
             label="Seed"
             style={{ marginTop: "3.5rem" }}
           />
           <CustomHandle
             pos="right"
             type="source"
-            id="d"
+            id="pda"
             label="PDA"
             onConnect={(e: any) => {
               updatePDA(e);
