@@ -13,6 +13,7 @@ import PDANode from "./Crypto/PDA";
 import RequestAirdrop from "./Web3/RequestAirdrop";
 import CreateTokenNode from "./Web3/CreateToken";
 import SendToken from "./Web3/SendToken";
+import SolanaPay from "./Web3/SolanaPay";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -30,4 +31,5 @@ export const nodeTypes = {
   PDA: PDANode,
   createToken: CreateTokenNode,
   sendToken: SendToken,
+  solanaPay: SolanaPay,
 };

@@ -61,6 +61,7 @@ export const sendSOL = async (
   toPubKey: PublicKey,
   amount: number
 ) => {
+  if (!fromPubKey || !toPubKey ||!amount) return
   try {
     const solTransfer = SystemProgram.transfer({
       fromPubkey: fromPubKey,

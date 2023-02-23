@@ -21,3 +21,26 @@ export const handleValue = (
   });
   return idValueMap;
 };
+
+
+export const stringify = (value: any, indent = 2): string => {
+  const spaces = ' '.repeat(indent);
+
+  if (typeof value === 'object' && value !== null) {
+    if (typeof value.toJSON === 'function') {
+      return stringify(value.toJSON());
+    } else if (Array.isArray(value)) {
+      const arrayValues = value.map((v: any) => stringify(v, indent)).join(`,\n${spaces}`);
+      return `[\n${spaces}${arrayValues}\n]`;
+    } else {
+      const objectValues = Object.entries(value)
+        .map(([key, val]) => `${spaces}${stringify(key)}: ${stringify(val, indent)}`)
+        .join(`,\n`);
+      return `{\n${objectValues}\n}`;
+    }
+  } else if (typeof value === 'string') {
+    return `"${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+  } else {
+    return String(value);
+  }
+};

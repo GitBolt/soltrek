@@ -48,7 +48,7 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
     <BaseNode {...props} title="Fetch Token Mint Details">
       {tokenDetails ?
         <>
-          <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="4rem">{tokenDetails.toLocaleString()}</Text>
+          <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="4rem" my="2rem">{tokenDetails.toLocaleString()}</Text>
           <Box pos="absolute" top="3rem" right="1rem">
             {hasCopied ? <CheckIcon color="blue.200" w="1.5rem" h="1.5rem" /> :
               <CopyIcon onClick={onCopy} color="blue.200" w="1.5rem" h="1.5rem" />}

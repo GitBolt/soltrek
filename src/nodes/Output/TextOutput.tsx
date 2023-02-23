@@ -1,9 +1,10 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Position, NodeProps, useNodes, useNodeId, useReactFlow } from 'reactflow';
+import { Position, NodeProps, useNodeId, useReactFlow } from 'reactflow';
 import BaseNode from '@/layout/BaseNode';
-import { Text, useClipboard, Button, Box } from '@chakra-ui/react';
+import { Text, useClipboard, Box } from '@chakra-ui/react';
 import { CustomHandle } from '@/layout/CustomHandle';
 import { CheckIcon, CopyIcon } from '@chakra-ui/icons';
+import { stringify } from '@/util/helper';
 
 const TextOutputNode: FC<NodeProps> = (props) => {
   const [text, setText] = useState<string | undefined>(undefined);
@@ -11,24 +12,24 @@ const TextOutputNode: FC<NodeProps> = (props) => {
   const { onCopy, setValue, hasCopied } = useClipboard(text || '');
 
   const nodeId = useNodeId()
-  const nodes = useNodes()
-  const currentNodeObj = nodes.find((node) => node.id == nodeId)
+  const currentNode = getNode(nodeId as string)
 
   useEffect(() => {
-    if (!nodeId) return
-    const currentNode = getNode(nodeId)
-    console.log("Text output: ", currentNode)
-    const symbolData: string[] = Object.values(currentNode?.data)
-    setText(symbolData[0])
-    setValue(symbolData[0])
+    const dataValues: string[] = Object.values(currentNode?.data)
+    let data: string | null = dataValues[0]
+    if (data) {
+      data = stringify(data)
+    }
+    setText(data || '')
+    setValue(data || '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNodeObj?.data])
+  }, [currentNode?.data])
 
   return (
     <BaseNode {...props} title="Text output">
       {text ?
         <>
-          <Text fontSize="1.5rem" color="blue.500" mx="2rem" whiteSpace="nowrap">{text}</Text>
+          <Text fontSize="1.5rem" color="blue.500" mx="2rem" whiteSpace="pre-wrap" my="2rem">{text}</Text>
           <Box pos="absolute" top="3rem" right="1rem">
             {hasCopied ? <CheckIcon color="blue.200" w="1.5rem" h="1.5rem" /> :
               <CopyIcon onClick={onCopy} color="blue.200" w="1.5rem" h="1.5rem" />}
@@ -42,3 +43,5 @@ const TextOutputNode: FC<NodeProps> = (props) => {
 };
 
 export default TextOutputNode;
+
+

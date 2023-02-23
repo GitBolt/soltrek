@@ -10,15 +10,13 @@ import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
 import { sendSOL } from "@/util/sendToken";
-import { TransactionInstruction } from "@solana/web3.js";
+import { PublicKey, TransactionInstruction } from "@solana/web3.js";
 
 
 const SendSOL: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
   const nodeId = useNodeId();
-  const [ix, setIx] = useState<
-    TransactionInstruction | TransactionInstruction[] | null
-  >([]);
+  const [ix, setIx] = useState<TransactionInstruction | null | undefined>(null);
   const currentNode = getNode(nodeId as string)
 
   const updateNodeData = (nodeId: string, data: any) => {
@@ -41,6 +39,7 @@ const SendSOL: FC<NodeProps> = (props) => {
   };
 
   useEffect(() => {
+    console.log("AAAAA", ix)
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "sender",
@@ -48,8 +47,8 @@ const SendSOL: FC<NodeProps> = (props) => {
       "amount",
       "rpc",
     ]);
-    if (currentNode && Object.values(values).length) {
-      sendSOL(values["sender"], values["receiver"], values["amount"]).then(
+    if (true) {
+      sendSOL(new PublicKey("54zLrV5fjWfVoXC8dsbgYvLRKEm5XTSDv4RYzCYr6kxN"), new PublicKey("54zLrV5fjWfVoXC8dsbgYvLRKEm5XTSDv4RYzCYr6kxN"), 20).then(
         (ix) => {
           setIx(ix);
         }
