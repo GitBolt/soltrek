@@ -10,7 +10,7 @@ import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
 import { sendSOL } from "@/util/sendToken";
-import { PublicKey, TransactionInstruction } from "@solana/web3.js";
+import { TransactionInstruction } from "@solana/web3.js";
 
 
 const SendSOL: FC<NodeProps> = (props) => {
@@ -47,8 +47,9 @@ const SendSOL: FC<NodeProps> = (props) => {
       "amount",
       "rpc",
     ]);
-    if (true) {
-      sendSOL(new PublicKey("54zLrV5fjWfVoXC8dsbgYvLRKEm5XTSDv4RYzCYr6kxN"), new PublicKey("54zLrV5fjWfVoXC8dsbgYvLRKEm5XTSDv4RYzCYr6kxN"), 20).then(
+
+    if (currentNode && Object.values(values).length) {
+      sendSOL(values["sender"], values["receiver"], values["amount"]).then(
         (ix) => {
           setIx(ix);
         }

@@ -57,15 +57,15 @@ export const sendSPL = async (
   }
 };
 export const sendSOL = async (
-  fromPubKey: PublicKey,
-  toPubKey: PublicKey,
+  fromPubKey: string,
+  toPubKey: string,
   amount: number
 ) => {
-  if (!fromPubKey || !toPubKey ||!amount) return
+  if (!fromPubKey || !toPubKey || !amount) return
   try {
     const solTransfer = SystemProgram.transfer({
-      fromPubkey: fromPubKey,
-      toPubkey: toPubKey,
+      fromPubkey: new PublicKey(fromPubKey),
+      toPubkey: new PublicKey(toPubKey),
       lamports: LAMPORTS_PER_SOL * amount,
     });
     return solTransfer;
