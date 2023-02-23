@@ -6,21 +6,24 @@ import {
   useNodeId,
   useReactFlow,
   Connection,
+  Node,
+  Edge,
 } from "reactflow";
 import BaseNode from "@/layout/BaseNode";
 import { Text } from "@chakra-ui/react";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { createNewMint } from "@/util/createTokem";
-import { Keypair, PublicKey } from "@solana/web3.js";
+import { Keypair, PublicKey, TransactionInstruction } from "@solana/web3.js";
 import base58 from "bs58";
+import { handleValue } from "@/util/helper";
 
 const CreateToken: FC<NodeProps> = (props) => {
-  const { getNode, setNodes } = useReactFlow();
+  const { getNode, setNodes, getEdges } = useReactFlow();
   const nodeId = useNodeId();
   const nodes = useNodes();
 
   const currentNodeObj = nodes.find((node) => node.id == nodeId);
-  const [tx, setTx] = useState<string>("");
+  const [ix, setIx] = useState<TransactionInstruction[]>([]);
   const updateNodeData = (nodeId: string, data: any) => {
     setNodes((nds) =>
       nds.map((node) => {
@@ -37,7 +40,7 @@ const CreateToken: FC<NodeProps> = (props) => {
 
   const handleConnect = (e: Connection) => {
     if (!e.target) return;
-    updateNodeData(e.target, tx);
+    updateNodeData(e.target, ix);
   };
 
   useEffect(() => {
@@ -46,26 +49,36 @@ const CreateToken: FC<NodeProps> = (props) => {
     console.log("Transaction: ", currentNode);
     const symbolData: string[] = Object.values(currentNode?.data);
     const nodeKeys: string[] = Object.keys(currentNode?.data);
+    const edges = getEdges();
+    const values = handleValue(currentNode, edges, [
+      "privatekey",
+      "rpc_url",
+      "publickey",
+      "name",
+      "symbol",
+      "description",
+      "image",
+    ]);
     const run = nodeKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
     if (symbolData && symbolData.length && run) {
       const mintKeypair = Keypair.generate();
       createNewMint(
-        symbolData[0] ?? undefined,
-        Keypair.fromSecretKey(base58.decode(symbolData[2])),
+        values["rpc_url"] ?? undefined,
+        Keypair.fromSecretKey(base58.decode(values["privatekey"])),
         mintKeypair,
-        new PublicKey(symbolData[3]),
-        new PublicKey(symbolData[3]),
-        new PublicKey(symbolData[3]),
-        symbolData[4], //name
-        symbolData[5], // symbol
-        symbolData[6], //des
-        symbolData[7] //image
+        new PublicKey(values["publickey"]),
+        new PublicKey(values["publickey"]),
+        new PublicKey(values["publickey"]),
+        values["name"], //name
+        values["symbol"], // symbol
+        values["description"], //des
+        values["image"] //image
       ).then((e) => {
         alert(e);
         console.log(e);
-        setTx(e);
+        setIx(e);
       });
     } else {
     }
@@ -77,7 +90,7 @@ const CreateToken: FC<NodeProps> = (props) => {
       <CustomHandle
         pos="left"
         type="target"
-        id="a"
+        id="rpc_url"
         label="RPC URL"
         optional
         style={{ marginTop: "-6.7rem" }}
@@ -85,49 +98,49 @@ const CreateToken: FC<NodeProps> = (props) => {
       <CustomHandle
         pos="left"
         type="target"
-        id="b"
+        id="run"
         label="Run"
         style={{ marginTop: "-4.7rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
-        id="c"
-        label="Secret Key"
+        id="privatekey"
+        label="Private Key"
         style={{ marginTop: "-2.7rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
-        id="d"
+        id="publickey"
         label="PublicKey"
         style={{ marginTop: "-0.7rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
-        id="e"
+        id="name"
         label="Token Name"
         style={{ marginTop: "1.3rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
-        id="f"
+        id="symbol"
         label="Symbol"
         style={{ marginTop: "3.3rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
-        id="g"
+        id="description"
         label="Description"
         style={{ marginTop: "5.3rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
-        id="h"
+        id="image"
         label="Image"
         style={{ marginTop: "7.3rem" }}
       />
@@ -136,7 +149,7 @@ const CreateToken: FC<NodeProps> = (props) => {
         pos="right"
         type="source"
         id="i"
-        label="Transcation"
+        label="Instruction"
       />
     </BaseNode>
   );

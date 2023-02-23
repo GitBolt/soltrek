@@ -15,7 +15,7 @@ import {
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { Metaplex } from "@metaplex-foundation/js";
 import { Web3Storage } from "web3.storage";
-import { SystemProgram, Transaction } from "@solana/web3.js";
+import { SystemProgram } from "@solana/web3.js";
 const METAPLEX_TOKEN_METADATA_PROGRAM_ADDRESS =
   "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
 
@@ -73,6 +73,7 @@ export const createNewMint = async (
   }
   const payerWallet = new NodeWallet(payer);
   const metaplex = new Metaplex(connection);
+  const ix: web3.TransactionInstruction[] = [];
   const data = await createMetaData(name, symbol, description, image);
   const requiredBalance = await getMinimumBalanceForRentExemptMint(connection);
   const [metadataPDA] = await web3.PublicKey.findProgramAddress(
@@ -88,57 +89,52 @@ export const createNewMint = async (
     destinationWallet
   );
 
-  const createNewTokenTransaction = new Transaction().add(
-    SystemProgram.createAccount({
-      fromPubkey: payer.publicKey,
-      newAccountPubkey: mintKeypair.publicKey,
-      space: MINT_SIZE,
-      lamports: requiredBalance,
-      programId: TOKEN_PROGRAM_ID,
-    }),
-    createInitializeMintInstruction(
-      mintKeypair.publicKey, //Mint Address
-      6, //Number of Decimals of New mint
-      mintAuthority, //Mint Authority
-      freezeAuthority, //Freeze Authority
-      TOKEN_PROGRAM_ID
-    ),
-    createAssociatedTokenAccountInstruction(
-      payer.publicKey, //Payer
-      tokenATA, //Associated token account
-      payer.publicKey, //token owner
-      mintKeypair.publicKey //Mint
-    ),
-    createMintToInstruction(
-      mintKeypair.publicKey, //Mint
-      tokenATA, //Destination Token Account
-      mintAuthority, //Authority
-      100000 * Math.pow(10, 6) //number of tokens
-    ),
-    createCreateMetadataAccountV2Instruction(
-      {
-        metadata: metadataPDA,
-        mint: mintKeypair.publicKey,
-        mintAuthority: mintAuthority,
-        payer: payer.publicKey,
-        updateAuthority: mintAuthority,
-      },
-      {
-        createMetadataAccountArgsV2: {
-          data: data,
-          isMutable: true,
-        },
-      }
-    )
-  );
-  const { blockhash } = await connection.getLatestBlockhash();
-  createNewTokenTransaction.recentBlockhash = blockhash;
-  createNewTokenTransaction.feePayer = payerWallet.publicKey;
-  const signedTx = await payerWallet.signTransaction(createNewTokenTransaction);
-
-  const txid = await connection.sendRawTransaction(signedTx.serialize(), {
-    preflightCommitment: "finalized",
-    // skipPreflight: true,
+  const ix1 = SystemProgram.createAccount({
+    fromPubkey: payer.publicKey,
+    newAccountPubkey: mintKeypair.publicKey,
+    space: MINT_SIZE,
+    lamports: requiredBalance,
+    programId: TOKEN_PROGRAM_ID,
   });
-  return txid;
+  ix.push(ix1);
+  const ix2 = createInitializeMintInstruction(
+    mintKeypair.publicKey, //Mint Address
+    6, //Number of Decimals of New mint
+    mintAuthority, //Mint Authority
+    freezeAuthority, //Freeze Authority
+    TOKEN_PROGRAM_ID
+  );
+  ix.push(ix2);
+  const ix3 = createAssociatedTokenAccountInstruction(
+    payer.publicKey, //Payer
+    tokenATA, //Associated token account
+    payer.publicKey, //token owner
+    mintKeypair.publicKey //Mint
+  );
+  ix.push(ix3);
+  const ix4 = createMintToInstruction(
+    mintKeypair.publicKey, //Mint
+    tokenATA, //Destination Token Account
+    mintAuthority, //Authority
+    100000 * Math.pow(10, 6) //number of tokens
+  );
+  ix.push(ix4);
+  const ix5 = createCreateMetadataAccountV2Instruction(
+    {
+      metadata: metadataPDA,
+      mint: mintKeypair.publicKey,
+      mintAuthority: mintAuthority,
+      payer: payer.publicKey,
+      updateAuthority: mintAuthority,
+    },
+    {
+      createMetadataAccountArgsV2: {
+        data: data,
+        isMutable: true,
+      },
+    }
+  );
+  ix.push(ix5);
+
+  return ix;
 };
