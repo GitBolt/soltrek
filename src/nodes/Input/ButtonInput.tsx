@@ -69,7 +69,6 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
   };
 
 
-
   return (
     <div>
       <BaseNode {...props} title="Clicky clicky Button">

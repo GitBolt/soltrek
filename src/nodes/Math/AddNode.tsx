@@ -1,38 +1,44 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Position, NodeProps, useNodes, useNodeId, useReactFlow } from 'reactflow';
+import { Position, NodeProps, useNodeId, useReactFlow } from 'reactflow';
 import BaseNode from '@/layout/BaseNode';
 import { Text } from '@chakra-ui/react';
 import { CustomHandle } from '@/layout/CustomHandle';
+import { handleValue } from '@/util/helper';
 
 const AddNode: FC<NodeProps> = (props) => {
-  const [price, setPrice] = useState<number | undefined>(undefined);
-  const { getNode } = useReactFlow()
+  const [sum, setSum] = useState<number>(0);
+  const { getNode, getEdges } = useReactFlow()
   const nodeId = useNodeId()
-  const nodes = useNodes()
 
-  const currentNodeObj = nodes.find((node) => node.id == nodeId)
+  const currentNode = getNode(nodeId as string)
 
   useEffect(() => {
     if (!nodeId) return
     const currentNode = getNode(nodeId)
-    const values = Object.values(currentNode?.data).map((item) => Number(item))
-    if (values) {
-      const res = values[0] + values[1]
-      setPrice(res)
+
+    const edges = getEdges()
+
+    const values = handleValue(currentNode, edges, [
+      "number1",
+      "number2",
+    ]);
+    if (values['number1'] && values['number2']) {
+      const res = values['number1'] + values['number2']
+      setSum(res)
     }
     else {
-      setPrice(undefined)
+      setSum(0)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNodeObj?.data])
+  }, [currentNode?.data])
 
   return (
     <BaseNode {...props} title="Add two numbers">
-      {price ?
-        <Text fontSize="2rem" color="blue.500">{price.toLocaleString()}</Text> :
+      {sum ?
+        <Text fontSize="2rem" color="blue.500">{sum.toLocaleString()}</Text> :
         <Text color="gray.100" fontSize="1.8rem">Empty...</Text>}
-      <CustomHandle pos={Position.Left} type="target" style={{ marginTop: "-0.7rem" }} id="a"/>
-      <CustomHandle pos={Position.Left} type="target" style={{ marginTop: "2.5rem" }} id="b"/>
+      <CustomHandle pos={Position.Left} type="target" label="Number 1" id="number1" style={{ marginTop: "-0.7rem" }} />
+      <CustomHandle pos={Position.Left} type="target" label="Number 2" id="number2" style={{ marginTop: "2.5rem" }} />
     </BaseNode >
   );
 };

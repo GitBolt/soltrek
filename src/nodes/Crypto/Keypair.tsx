@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Handle, Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
+import { Handle, Position, NodeProps, useNodeId, useReactFlow, Connection } from 'reactflow';
 import BaseNode from '@/layout/BaseNode';
 import { Text } from '@chakra-ui/react';
 import { Keypair } from '@solana/web3.js';
@@ -8,14 +8,13 @@ import { CustomHandle } from '@/layout/CustomHandle';
 
 const KeypairNode: FC<NodeProps> = (props) => {
   const [kp, setKp] = useState<Keypair>(new Keypair());
+
   const [currentTargetPrivKey, setCurrentTargetPrivKey] = useState<string[]>([])
   const [currentTargetPubKey, setCurrentTargetPubKey] = useState<string[]>([])
   const { setNodes, getNode } = useReactFlow()
   const nodeId = useNodeId()
-  const nodes = useNodes()
 
-  const currentNodeObj = nodes.find((node) => node.id == nodeId)
-
+  const currentNode = getNode(nodeId as string)
 
   const updateNodeData = (nodeId: string, data: string) => {
     setNodes((nds) =>
@@ -30,22 +29,15 @@ const KeypairNode: FC<NodeProps> = (props) => {
       }))
   }
 
-
   useEffect(() => {
-    if (!nodeId) return
-    const currentNode = getNode(nodeId)
-    const symbolData: string[] = Object.keys(currentNode?.data)
-    if (symbolData && symbolData.length) {
-      symbolData.forEach((key) => {
-        if (key.startsWith('btn')) {
-          if (currentNode?.data[key] == true) {
-            setKp(new Keypair())
-          }
-        }
-      })
-    }
+    const nodeKeys: string[] = Object.keys(currentNode?.data || {})
+    nodeKeys.forEach((key) => {
+      if (key.startsWith('btn') && currentNode?.data[key] == true) {
+        setKp(new Keypair())
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNodeObj?.data])
+  }, [currentNode?.data])
 
 
   const handleConnectPubKey = (e: Connection) => {
@@ -54,7 +46,6 @@ const KeypairNode: FC<NodeProps> = (props) => {
     setCurrentTargetPubKey([...currentTargetPubKey, e.target])
 
   };
-  
 
   const handleConnectPrivKey = (e: Connection) => {
     if (!e.target) return
@@ -73,9 +64,29 @@ const KeypairNode: FC<NodeProps> = (props) => {
 
   return (
     <BaseNode {...props} title="Keypair Object">
-      <CustomHandle pos="left" type="target" label="Generate" />
-      <CustomHandle pos="right" type="source" id="a" label="Public Key" onConnect={(e: any) => handleConnectPubKey(e)} style={{ marginTop: "-0.7rem" }} />
-      <CustomHandle pos={Position.Right} type="source" id="b" label="Private Key" onConnect={(e: any) => handleConnectPrivKey(e)} style={{ marginTop: "2.5rem" }} />
+
+      <CustomHandle
+        pos="left"
+        type="target"
+        id="generate"
+        label="Generate" />
+
+      <CustomHandle
+        pos="right"
+        type="source"
+        id="public_key"
+        label="Public Key"
+        onConnect={(e: any) => handleConnectPubKey(e)}
+        style={{ marginTop: "-0.7rem" }} />
+
+      <CustomHandle
+        pos={Position.Right}
+        type="source"
+        id="private_key"
+        label="Private Key"
+        onConnect={(e: any) => handleConnectPrivKey(e)}
+        style={{ marginTop: "2.5rem" }} />
+
     </BaseNode >
   );
 };
