@@ -88,6 +88,14 @@ export const sidebarItems = [
         type: "requestAirdrop",
       },
       {
+        title: "Send SOL",
+        type: "sendSOL",
+      },
+      {
+        title: "Send Token",
+        type: "sendToken",
+      },
+      {
         title: "Create Token",
         type: "createToken",
       },

@@ -9,17 +9,17 @@ import {
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
-import { sendSOL } from "@/util/sendToken";
+import { sendSPL } from "@/util/sendToken";
 import { TransactionInstruction } from "@solana/web3.js";
 
-
-const SendSOL: FC<NodeProps> = (props) => {
+const SendToken: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
   const nodeId = useNodeId();
+  const nodes = useNodes();
   const [ix, setIx] = useState<
     TransactionInstruction | TransactionInstruction[] | null
   >([]);
-  const currentNode = getNode(nodeId as string)
+  const currentNodeObj = nodes.find((node) => node.id == nodeId);
 
   const updateNodeData = (nodeId: string, data: any) => {
     setNodes((nds) =>
@@ -41,53 +41,67 @@ const SendSOL: FC<NodeProps> = (props) => {
   };
 
   useEffect(() => {
+    if (!nodeId) return;
+    const currentNode = getNode(nodeId);
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "sender",
       "receiver",
       "amount",
       "rpc",
+      "token",
     ]);
-    if (currentNode && Object.values(values).length) {
-      sendSOL(values["sender"], values["receiver"], values["amount"]).then(
-        (ix) => {
-          setIx(ix);
-        }
-      );
+    if (currentNode && values) {
+      sendSPL(
+        values["tokens"],
+        values["sender"],
+        values["receiver"],
+        values["amount"],
+        values["rpc"]
+      ).then((ix) => {
+        setIx(ix);
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNode?.data]);
+  }, [currentNodeObj?.data]);
 
   return (
-    <BaseNode height="130px" {...props} title="Send SOL">
+    <BaseNode height="160px" {...props} title="Send Tokens">
       <CustomHandle
         pos="left"
         type="target"
         id="rpc"
         label="RPC URL"
         optional
-        style={{ marginTop: "-3rem" }}
+        style={{ marginTop: "-4.4rem" }}
+      />
+      <CustomHandle
+        pos="left"
+        type="target"
+        id="token"
+        label="Token Address"
+        style={{ marginTop: "-2rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
         label="Sender Address"
         id={"sender"}
-        style={{ marginTop: "-0.7rem" }}
+        style={{ marginTop: "0.4rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
         label="Target Address"
-        id="receiver"
-        style={{ marginTop: "1.8rem" }}
+        id={"receiver"}
+        style={{ marginTop: "2.7rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
         id={"amount"}
         label="Amount"
-        style={{ marginTop: "4.3rem" }}
+        style={{ marginTop: "5rem" }}
       />
 
       <CustomHandle
@@ -103,4 +117,4 @@ const SendSOL: FC<NodeProps> = (props) => {
   );
 };
 
-export default SendSOL;
+export default SendToken;
