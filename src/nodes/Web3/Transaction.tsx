@@ -1,72 +1,120 @@
-import React, { useState, useEffect, FC } from 'react';
-import { Handle, Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
-import BaseNode from '@/layout/BaseNode';
-import { Text } from '@chakra-ui/react';
+import React, { useState, useEffect, FC } from "react";
+import {
+  NodeProps,
+  useNodes,
+  useNodeId,
+  useReactFlow,
+  Connection as RFCon,
+} from "reactflow";
+import BaseNode from "@/layout/BaseNode";
+import { CustomHandle } from "@/layout/CustomHandle";
+import { handleValue } from "@/util/helper";
+import { sendSPL } from "@/util/sendToken";
+import { TransactionInstruction, Transaction, Connection, Keypair, sendAndConfirmTransaction } from "@solana/web3.js";
 
-const Transaction: FC<NodeProps> = (props) => {
-  const [price, setPrice] = useState<number | undefined>(undefined);
-  const [error, setError] = useState<string>('');
-  const { getNode, setNodes } = useReactFlow()
-  const nodeId = useNodeId()
-  const nodes = useNodes()
+const TransactionNode: FC<NodeProps> = (props) => {
+  const { getNode, setNodes, getEdges } = useReactFlow();
+  const nodeId = useNodeId();
+  const nodes = useNodes();
+  const [ix, setIx] = useState<
+    TransactionInstruction | TransactionInstruction[] | null
+  >([]);
+  const currentNodeObj = nodes.find((node) => node.id == nodeId);
 
-  const currentNodeObj = nodes.find((node) => node.id == nodeId)
-
-  const updateNodeData = (nodeId: string) => {
+  const updateNodeData = (nodeId: string, data: any) => {
     setNodes((nds) =>
       nds.map((node) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            price,
+            data,
           };
         }
         return node;
-      }))
-  }
-
-  const handleConnect = (e: Connection) => {
-    if (!e.target) return
-    updateNodeData(e.target)
+      })
+    );
   };
 
-  useEffect(() => {
-    if (!nodeId) return
-    const currentNode = getNode(nodeId)
-    console.log("Transaction: ",currentNode)
-    const symbolData: string[] = Object.values(currentNode?.data)
-    if (symbolData && symbolData.length) {
-      fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${symbolData[0]}&vs_currencies=usd`)
-        .then((res) => res.json())
-        .then((data) => {
+  const handleConnect = (e: RFCon, data: any) => {
+    if (!e.target) return;
+    updateNodeData(e.target, data);
+  };
 
-          if (!data[symbolData[0]]) {
-            setPrice(undefined)
-            console.log("error")
-            setError("Token not supported")
-          } else {
-            setPrice(data[symbolData[0]].usd);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-    else {
-      setPrice(undefined)
-    }
+  const sendTx = async (connection: Connection, tx: Transaction, kp: Keypair) => {
+    const res = await sendAndConfirmTransaction(connection, tx, [kp])
+    return res
+  }
+  useEffect(() => {
+    if (!nodeId) return;
+    const currentNode = getNode(nodeId);
+    const dataKeys = Object.keys(currentNode?.data || {})
+    const edges = getEdges();
+    const values = handleValue(currentNode, edges, [
+      "rpc_url",
+      "signer",
+      "instructions"
+    ]);
+
+    const run = dataKeys.find(
+      (key) => key.startsWith("btn") && currentNode?.data[key] == true
+    );
+
+    console.log(values["instructions"], "s")
+    if (!values["signer"] || !values['instructions'] || !run) return
+    const tx = new Transaction()
+    const connection = new Connection(values["rpc_url"] || "https://api.devnet.solana.com")
+    const kp = Keypair.fromSecretKey(values['signer'])
+    sendTx(connection, tx, kp).then((res) => console.log(res))
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNodeObj?.data])
+  }, [currentNodeObj?.data]);
 
   return (
-    <BaseNode {...props} title="Fetch Price">
-      {price ?
-        <Text fontSize="2rem" color="blue.500">${price.toLocaleString()}</Text> :
-        <Text color="gray.100" fontSize="1.8rem">{error || 'Empty...'}</Text>}
-      <Handle position={Position.Left} type="target" />
-      <Handle position={Position.Right} type="source" onConnect={(e) => handleConnect(e)} />
-    </BaseNode >
+    <BaseNode height="160px" {...props} title="Transaction">
+      <CustomHandle
+        pos="left"
+        type="target"
+        id="rpc"
+        label="RPC URL"
+        optional
+        style={{ marginTop: "-4rem" }}
+      />
+      <CustomHandle
+        pos="left"
+        type="target"
+        id="send"
+        label="Send"
+        style={{ marginTop: "-1rem" }}
+      />
+
+      <CustomHandle
+        pos="left"
+        type="target"
+        label="Instructions"
+        id="instructions"
+        style={{ marginTop: "2.2rem" }}
+      />
+
+      <CustomHandle
+        pos="left"
+        type="target"
+        label="Private Key (Signer)"
+        id="signer"
+        style={{ marginTop: "5.5rem" }}
+      />
+
+      <CustomHandle
+        pos="right"
+        type="source"
+        onConnect={(e: any) => {
+          handleConnect(e, ix);
+        }}
+        id="signauture"
+        style={{ marginTop: "0.5rem" }}
+        label="Signature"
+      />
+    </BaseNode>
   );
 };
 
-export default Transaction;
+export default TransactionNode;
