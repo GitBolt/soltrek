@@ -9,17 +9,17 @@ import {
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
-import { sendSOL, sendSPL } from "@/util/sendToken";
+import { sendSOL } from "@/util/sendToken";
 import { TransactionInstruction } from "@solana/web3.js";
+
 
 const SendSOL: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
   const nodeId = useNodeId();
-  const nodes = useNodes();
   const [ix, setIx] = useState<
     TransactionInstruction | TransactionInstruction[] | null
   >([]);
-  const currentNodeObj = nodes.find((node) => node.id == nodeId);
+  const currentNode = getNode(nodeId as string)
 
   const updateNodeData = (nodeId: string, data: any) => {
     setNodes((nds) =>
@@ -41,24 +41,22 @@ const SendSOL: FC<NodeProps> = (props) => {
   };
 
   useEffect(() => {
-    if (!nodeId) return;
-    const currentNode = getNode(nodeId);
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "sender",
-      "reciver",
+      "receiver",
       "amount",
       "rpc",
     ]);
-    if (currentNode && values) {
-      sendSOL(values["sender"], values["reciver"], values["amount"]).then(
+    if (currentNode && Object.values(values).length) {
+      sendSOL(values["sender"], values["receiver"], values["amount"]).then(
         (ix) => {
           setIx(ix);
         }
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNodeObj?.data]);
+  }, [currentNode?.data]);
 
   return (
     <BaseNode height="130px" {...props} title="Send SOL">
@@ -81,7 +79,7 @@ const SendSOL: FC<NodeProps> = (props) => {
         pos="left"
         type="target"
         label="Target Address"
-        id={"reciver"}
+        id="receiver"
         style={{ marginTop: "1.8rem" }}
       />
       <CustomHandle

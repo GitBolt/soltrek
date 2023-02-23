@@ -46,7 +46,7 @@ const SendToken: FC<NodeProps> = (props) => {
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "sender",
-      "reciver",
+      "receiver",
       "amount",
       "rpc",
       "token",
@@ -55,7 +55,7 @@ const SendToken: FC<NodeProps> = (props) => {
       sendSPL(
         values["tokens"],
         values["sender"],
-        values["reciver"],
+        values["receiver"],
         values["amount"],
         values["rpc"]
       ).then((ix) => {
@@ -93,7 +93,7 @@ const SendToken: FC<NodeProps> = (props) => {
         pos="left"
         type="target"
         label="Target Address"
-        id={"reciver"}
+        id={"receiver"}
         style={{ marginTop: "2.7rem" }}
       />
       <CustomHandle

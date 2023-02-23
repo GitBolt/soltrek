@@ -1,17 +1,21 @@
 import React, { useState, useEffect, FC } from "react";
 import {
   NodeProps,
-  useNodes,
   useNodeId,
   useReactFlow,
   Connection,
 } from "reactflow";
+import base58 from "bs58";
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { createNewMint } from "@/util/createToken";
-import { Keypair, PublicKey, TransactionInstruction } from "@solana/web3.js";
-import base58 from "bs58";
+import {
+  Keypair,
+  PublicKey,
+  TransactionInstruction
+} from "@solana/web3.js";
 import { handleValue } from "@/util/helper";
+
 
 const CreateToken: FC<NodeProps> = (props) => {
 
@@ -41,7 +45,7 @@ const CreateToken: FC<NodeProps> = (props) => {
   };
 
   useEffect(() => {
-    const dataKeys: string[] = Object.keys(currentNode?.data);
+    const dataKeys: string[] = Object.keys(currentNode?.data || {});
 
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
