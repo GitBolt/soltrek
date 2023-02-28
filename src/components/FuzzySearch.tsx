@@ -155,6 +155,7 @@ export const FuzzySearch = () => {
                               variant="sidebar"
                               fontWeight="500"
                               color="blue.300"
+                              bg={filteredItems[0].sub[0] == subItem && filteredItems != sidebarItems ? 'bg.300' : ''}
                               onClick={() => addNode(subItem.type)}
                             >
                               {subItem.title}
