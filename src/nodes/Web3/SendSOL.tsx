@@ -9,15 +9,14 @@ import {
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
-import { sendSOL } from "@/util/sendToken";
+import { sendSOL, CodeSOL } from "@/util/sendToken";
 import { TransactionInstruction } from "@solana/web3.js";
-
 
 const SendSOL: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
   const nodeId = useNodeId();
   const [ix, setIx] = useState<TransactionInstruction | null | undefined>(null);
-  const currentNode = getNode(nodeId as string)
+  const currentNode = getNode(nodeId as string);
 
   const updateNodeData = (nodeId: string, data: any) => {
     setNodes((nds) =>
@@ -39,7 +38,7 @@ const SendSOL: FC<NodeProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log("AAAAA", ix)
+    console.log("AAAAA", ix);
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "sender",
@@ -59,7 +58,7 @@ const SendSOL: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
   return (
-    <BaseNode height="130px" {...props} title="Send SOL">
+    <BaseNode height="130px" code={CodeSOL} {...props} title="Send SOL">
       <CustomHandle
         pos="left"
         type="target"

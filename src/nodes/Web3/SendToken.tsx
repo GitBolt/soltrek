@@ -9,7 +9,7 @@ import {
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
-import { sendSPL } from "@/util/sendToken";
+import { sendSPL, CodeSPL } from "@/util/sendToken";
 import { TransactionInstruction } from "@solana/web3.js";
 
 const SendToken: FC<NodeProps> = (props) => {
@@ -66,7 +66,7 @@ const SendToken: FC<NodeProps> = (props) => {
   }, [currentNodeObj?.data]);
 
   return (
-    <BaseNode height="160px" {...props} title="Send Tokens">
+    <BaseNode height="160px" code={CodeSPL} {...props} title="Send Tokens">
       <CustomHandle
         pos="left"
         type="target"
