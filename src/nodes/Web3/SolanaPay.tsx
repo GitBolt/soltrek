@@ -1,13 +1,11 @@
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
-import { createPDA } from "@/util/genratePDA";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { createQR, encodeURL, TransferRequestURLFields } from "@solana/pay";
-import { Connection, Keypair, PublicKey } from "@solana/web3.js";
+import { Keypair, PublicKey } from "@solana/web3.js";
 import BigNumber from "bignumber.js";
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import {
-  Connection as RCon,
   NodeProps,
   useNodeId,
   useNodes,
@@ -15,43 +13,19 @@ import {
 } from "reactflow";
 
 const SolanaPay: FC<NodeProps> = (props) => {
-  const [txid, setTxid] = useState<string | undefined>("");
-  const [currentPDA, setCurrentPDA] = useState<string[]>([]);
 
   const qrRef = useRef<HTMLDivElement>(null);
   const reference = useMemo(() => Keypair.generate().publicKey, []);
 
-  const { getNode, setNodes, getEdges } = useReactFlow();
+  const { getNode, getEdges } = useReactFlow();
   const nodeId = useNodeId();
   const nodes = useNodes();
 
   const currentNodeObj = nodes.find((node) => node.id == nodeId);
 
-  const updateNodeData = (nodeId: string, data: string) => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === nodeId) {
-          node.data = {
-            ...node.data,
-            data,
-          };
-        }
-        return node;
-      })
-    );
-  };
-  const updatePDA = (e: RCon) => {
-    if (!e.target) return;
-    updateNodeData(e.target, txid as string);
-    setCurrentPDA([...currentPDA, e.target]);
-  };
-  useEffect(() => {
-    currentPDA.forEach((target) => updateNodeData(target, txid as string));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [txid]);
 
   const SolPayCode = `
-  const SolPay = ({recipient,splToken,amount}:Props)=>{
+  const SolPay = ({ recipient, splToken, amount}: Props)=>{
 
     const qr = useRef()
     useEffect(()=>{
