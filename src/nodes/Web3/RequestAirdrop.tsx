@@ -17,7 +17,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
   const { getNode, setNodes, setEdges, getEdges } = useReactFlow();
   const nodeId = useNodeId();
 
-  const currentNode = getNode(nodeId as string)
+  const currentNode = getNode(nodeId as string);
 
   const updateNodeData = (nodeId: string, data: string) => {
     setNodes((nds) =>
@@ -40,55 +40,62 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
   };
 
   useEffect(() => {
-    currentPDA.forEach((target) =>
-      updateNodeData(target, txid as string)
-    );
+    currentPDA.forEach((target) => updateNodeData(target, txid as string));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [txid]);
-
 
   useEffect(() => {
     const dataKeys: string[] = Object.keys(currentNode?.data || {});
 
-    const edges = getEdges()
-    const values = handleValue(currentNode, edges, [
-      "rpc_url",
-      "destination",
-    ]);
+    const edges = getEdges();
+    const values = handleValue(currentNode, edges, ["rpc_url", "destination"]);
 
     const run = dataKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
-    if (!Object.values(values).length || !run) return
+    if (!Object.values(values).length || !run) return;
 
     setEdges((edgs) =>
       edgs.map((ed) => {
         if (ed.source == nodeId) {
-          ed.animated = true
-          return ed
+          ed.animated = true;
+          return ed;
         }
         return ed;
-      }))
+      })
+    );
 
-    const connection = new Connection(values["rpc_url"] || "https://api.devnet.solana.com")
-    connection.requestAirdrop(new PublicKey(values["destination"]), 2)
+    const connection = new Connection(
+      values["rpc_url"] || "https://api.devnet.solana.com"
+    );
+    connection
+      .requestAirdrop(new PublicKey(values["destination"]), 2)
       .then((res) => setTxid(res))
-      .then(() => setEdges((edgs) =>
-        edgs.map((ed) => {
-          if (ed.source == nodeId) {
-            ed.animated = false
-            return ed
-          }
-          return ed;
-        }))
-      )
+      .then(() =>
+        setEdges((edgs) =>
+          edgs.map((ed) => {
+            if (ed.source == nodeId) {
+              ed.animated = false;
+              return ed;
+            }
+            return ed;
+          })
+        )
+      );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
 
+  const AirdropCode = `
+    const connection = new Connection(RPC_URL || "https://api.devnet.solana.com")
+    connection.requestAirdrop(new PublicKey(values["destination"]), 2)
+      .then((res) => console.log(res))
+      
+  `;
+
   return (
     <>
-      <BaseNode {...props} title="Request SOL Airdrop">
+      <BaseNode {...props} code={AirdropCode} title="Request SOL Airdrop">
         <CustomHandle
           pos="left"
           type="target"

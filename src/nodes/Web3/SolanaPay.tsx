@@ -18,8 +18,8 @@ const SolanaPay: FC<NodeProps> = (props) => {
   const [txid, setTxid] = useState<string | undefined>("");
   const [currentPDA, setCurrentPDA] = useState<string[]>([]);
 
-  const qrRef = useRef<HTMLDivElement>(null)
-  const reference = useMemo(() => Keypair.generate().publicKey, [])
+  const qrRef = useRef<HTMLDivElement>(null);
+  const reference = useMemo(() => Keypair.generate().publicKey, []);
 
   const { getNode, setNodes, getEdges } = useReactFlow();
   const nodeId = useNodeId();
@@ -46,12 +46,39 @@ const SolanaPay: FC<NodeProps> = (props) => {
     setCurrentPDA([...currentPDA, e.target]);
   };
   useEffect(() => {
-    currentPDA.forEach((target) =>
-      updateNodeData(target, txid as string)
-    );
+    currentPDA.forEach((target) => updateNodeData(target, txid as string));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [txid]);
 
+  const SolPayCode = `
+  const SolPay = ({recipient,splToken,amount}:Props)=>{
+
+    const qr = useRef()
+    useEffect(()=>{
+      if (!recipient || !splToken || !amount) return
+      const urlParams: TransferRequestURLFields = {
+        recipient: new PublicKey(recipient),
+        splToken: new PublicKey(splToken),
+        amount: BigNumber(amount),
+        reference,
+        label,
+        message,
+      }
+  
+      const url = encodeURL(urlParams)
+      const qr = createQR(url, 200, '#1B192F', "white")
+      if (qrRef.current && amount > 0) {
+        qrRef.current.innerHTML = ''
+        qr.append(qrRef.current)
+      }
+    },[])
+    return (
+      <>
+        <div ref={qr} />
+      </>
+    )
+  }
+  `;
   useEffect(() => {
     if (!nodeId) return;
     const currentNode = getNode(nodeId);
@@ -63,17 +90,17 @@ const SolanaPay: FC<NodeProps> = (props) => {
         [e.targetHandle as string]: e.source,
       };
     });
-
     const dataValues: string[] = Object.values(currentNode?.data);
     if (dataValues && dataValues.length) {
-      const recipient = currentNode?.data[String(edge_id["recipient"])]
-      const splToken = currentNode?.data[String(edge_id["spl_token"])]
-      const amount = currentNode?.data[String(edge_id["amount"])]
-      const label = currentNode?.data[String(edge_id["label"])] || "SOL Trek"
-      const message = currentNode?.data[String(edge_id["message"])] || "Solana Pay QR generated using SOL Trek"
+      const recipient = currentNode?.data[String(edge_id["recipient"])];
+      const splToken = currentNode?.data[String(edge_id["spl_token"])];
+      const amount = currentNode?.data[String(edge_id["amount"])];
+      const label = currentNode?.data[String(edge_id["label"])] || "SOL Trek";
+      const message =
+        currentNode?.data[String(edge_id["message"])] ||
+        "Solana Pay QR generated using SOL Trek";
 
-
-      if (!recipient || !splToken || !amount) return
+      if (!recipient || !splToken || !amount) return;
       const urlParams: TransferRequestURLFields = {
         recipient: new PublicKey(recipient),
         splToken: new PublicKey(splToken),
@@ -81,20 +108,20 @@ const SolanaPay: FC<NodeProps> = (props) => {
         reference,
         label,
         message,
-      }
+      };
 
-      const url = encodeURL(urlParams)
-      const qr = createQR(url, 200, '#1B192F', "white")
+      const url = encodeURL(urlParams);
+      const qr = createQR(url, 200, "#1B192F", "white");
       if (qrRef.current && amount > 0) {
-        qrRef.current.innerHTML = ''
-        qr.append(qrRef.current)
+        qrRef.current.innerHTML = "";
+        qr.append(qrRef.current);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNodeObj?.data]);
   return (
     <>
-      <BaseNode height="23rem" {...props} title="Solana Pay">
+      <BaseNode code={SolPayCode} height="23rem" {...props} title="Solana Pay">
         <VStack>
           <CustomHandle
             pos="left"
@@ -140,7 +167,7 @@ const SolanaPay: FC<NodeProps> = (props) => {
           color="gray.100"
           borderRadius="2rem"
         >
-          <Box sx={{ borderRadius: '2rem' }} ref={qrRef} />
+          <Box sx={{ borderRadius: "2rem" }} ref={qrRef} />
         </Flex>
       </BaseNode>
     </>

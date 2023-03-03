@@ -1,27 +1,16 @@
 import React, { useState, useEffect, FC } from "react";
-import {
-  NodeProps,
-  useNodeId,
-  useReactFlow,
-  Connection,
-} from "reactflow";
+import { NodeProps, useNodeId, useReactFlow, Connection } from "reactflow";
 import base58 from "bs58";
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
-import { createNewMint } from "@/util/createToken";
-import {
-  Keypair,
-  PublicKey,
-  TransactionInstruction
-} from "@solana/web3.js";
+import { CreateMintCode, createNewMint } from "@/util/createToken";
+import { Keypair, PublicKey, TransactionInstruction } from "@solana/web3.js";
 import { handleValue } from "@/util/helper";
 
-
 const CreateToken: FC<NodeProps> = (props) => {
-
   const { getNode, setNodes, getEdges } = useReactFlow();
   const nodeId = useNodeId();
-  const currentNode = getNode(nodeId as string)
+  const currentNode = getNode(nodeId as string);
 
   const [ix, setIx] = useState<TransactionInstruction[]>([]);
 
@@ -61,7 +50,7 @@ const CreateToken: FC<NodeProps> = (props) => {
     const run = dataKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
-    if (!Object.values(values).length || !run) return
+    if (!Object.values(values).length || !run) return;
 
     const mintKeypair = Keypair.generate();
 
@@ -86,7 +75,12 @@ const CreateToken: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
   return (
-    <BaseNode height="22rem" {...props} title="Create Token">
+    <BaseNode
+      code={CreateMintCode}
+      height="22rem"
+      {...props}
+      title="Create Token"
+    >
       <CustomHandle
         pos="left"
         type="target"

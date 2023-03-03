@@ -10,7 +10,13 @@ import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
 import { sendSPL } from "@/util/sendToken";
-import { TransactionInstruction, Transaction, Connection, Keypair, sendAndConfirmTransaction } from "@solana/web3.js";
+import {
+  TransactionInstruction,
+  Transaction,
+  Connection,
+  Keypair,
+  sendAndConfirmTransaction,
+} from "@solana/web3.js";
 
 const TransactionNode: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
@@ -39,38 +45,49 @@ const TransactionNode: FC<NodeProps> = (props) => {
     if (!e.target) return;
     updateNodeData(e.target, data);
   };
-
+  const CodeTx = `
   const sendTx = async (connection: Connection, tx: Transaction, kp: Keypair) => {
-    const res = await sendAndConfirmTransaction(connection, tx, [kp])
-    return res
-  }
+  const res = await sendAndConfirmTransaction(connection, tx, [kp])
+  return res
+}
+`;
+  const sendTx = async (
+    connection: Connection,
+    tx: Transaction,
+    kp: Keypair
+  ) => {
+    const res = await sendAndConfirmTransaction(connection, tx, [kp]);
+    return res;
+  };
   useEffect(() => {
     if (!nodeId) return;
     const currentNode = getNode(nodeId);
-    const dataKeys = Object.keys(currentNode?.data || {})
+    const dataKeys = Object.keys(currentNode?.data || {});
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "rpc_url",
       "signer",
-      "instructions"
+      "instructions",
     ]);
 
     const run = dataKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
 
-    console.log(values["instructions"], "s")
-    if (!values["signer"] || !values['instructions'] || !run) return
-    const tx = new Transaction()
-    const connection = new Connection(values["rpc_url"] || "https://api.devnet.solana.com")
-    const kp = Keypair.fromSecretKey(values['signer'])
-    sendTx(connection, tx, kp).then((res) => console.log(res))
-    
+    console.log(values["instructions"], "s");
+    if (!values["signer"] || !values["instructions"] || !run) return;
+    const tx = new Transaction();
+    const connection = new Connection(
+      values["rpc_url"] || "https://api.devnet.solana.com"
+    );
+    const kp = Keypair.fromSecretKey(values["signer"]);
+    sendTx(connection, tx, kp).then((res) => console.log(res));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNodeObj?.data]);
 
   return (
-    <BaseNode height="160px" {...props} title="Transaction">
+    <BaseNode code={CodeTx} height="160px" {...props} title="Transaction">
       <CustomHandle
         pos="left"
         type="target"
