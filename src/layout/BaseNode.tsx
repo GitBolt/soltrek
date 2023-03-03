@@ -49,12 +49,16 @@ const BaseNode: FC<
                 onOpen();
                 setCodeState(code);
               }}
-              variant={"unstyled"}
-              h={"max"}
+              fontSize="1.2rem"
+              variant="outline"
+              border="none"
+              color="magenta.100"
+              fontWeight={600}
+              borderRadius="0.5rem"
+              h="full"
+              boxShadow="none"
             >
-              <Text color="blue.100" fontWeight="600" fontSize="12px">
-                export
-              </Text>
+              View Code
             </Button>
           )}
         </Flex>
