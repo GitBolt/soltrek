@@ -46,10 +46,9 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
 
   useEffect(() => {
     const dataKeys: string[] = Object.keys(currentNode?.data || {});
-
+    
     const edges = getEdges();
     const values = handleValue(currentNode, edges, ["rpc_url", "destination"]);
-
     const run = dataKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );

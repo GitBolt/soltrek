@@ -1,5 +1,6 @@
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
+import { handleValue } from "@/util/helper";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { createQR, encodeURL, TransferRequestURLFields } from "@solana/pay";
 import { Keypair, PublicKey } from "@solana/web3.js";
@@ -8,7 +9,6 @@ import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import {
   NodeProps,
   useNodeId,
-  useNodes,
   useReactFlow,
 } from "reactflow";
 
@@ -19,13 +19,11 @@ const SolanaPay: FC<NodeProps> = (props) => {
 
   const { getNode, getEdges } = useReactFlow();
   const nodeId = useNodeId();
-  const nodes = useNodes();
-
-  const currentNodeObj = nodes.find((node) => node.id == nodeId);
+  const currentNode = getNode(nodeId as string);
 
 
   const SolPayCode = `
-  const SolPay = ({ recipient, splToken, amount}: Props)=>{
+  const SolanaPay = ({ recipient, splToken, amount}: Props)=>{
 
     const qr = useRef()
     useEffect(()=>{
@@ -53,46 +51,43 @@ const SolanaPay: FC<NodeProps> = (props) => {
     )
   }
   `;
+
   useEffect(() => {
     if (!nodeId) return;
-    const currentNode = getNode(nodeId);
-    let edge_id = Object();
     const edges = getEdges();
-    edges.map((e) => {
-      edge_id = {
-        ...edge_id,
-        [e.targetHandle as string]: e.source,
-      };
-    });
-    const dataValues: string[] = Object.values(currentNode?.data);
-    if (dataValues && dataValues.length) {
-      const recipient = currentNode?.data[String(edge_id["recipient"])];
-      const splToken = currentNode?.data[String(edge_id["spl_token"])];
-      const amount = currentNode?.data[String(edge_id["amount"])];
-      const label = currentNode?.data[String(edge_id["label"])] || "SOL Trek";
-      const message =
-        currentNode?.data[String(edge_id["message"])] ||
-        "Solana Pay QR generated using SOL Trek";
+    const values = handleValue(currentNode, edges, [
+      "sender",
+      "receiver",
+      "amount",
+      "rpc",
+    ]);
 
-      if (!recipient || !splToken || !amount) return;
-      const urlParams: TransferRequestURLFields = {
-        recipient: new PublicKey(recipient),
-        splToken: new PublicKey(splToken),
-        amount: BigNumber(amount),
-        reference,
-        label,
-        message,
-      };
+    const recipient = values["recipient"]
+    const splToken = values["spl_token"]
+    const amount = values["amount"]
+    const label = values["label"] || "SOL Trek";
+    const message = values["message"] ||
+      "Solana Pay QR generated using SOL Trek";
 
-      const url = encodeURL(urlParams);
-      const qr = createQR(url, 200, "#1B192F", "white");
-      if (qrRef.current && amount > 0) {
-        qrRef.current.innerHTML = "";
-        qr.append(qrRef.current);
-      }
+    if (!recipient || !splToken || !amount) return;
+    const urlParams: TransferRequestURLFields = {
+      recipient: new PublicKey(recipient),
+      splToken: new PublicKey(splToken),
+      amount: BigNumber(amount),
+      reference,
+      label,
+      message,
+    };
+
+    const url = encodeURL(urlParams);
+    const qr = createQR(url, 200, "#1B192F", "white");
+    if (qrRef.current && amount > 0) {
+      qrRef.current.innerHTML = "";
+      qr.append(qrRef.current);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNodeObj?.data]);
+  }, [currentNode?.data]);
   return (
     <>
       <BaseNode code={SolPayCode} height="23rem" {...props} title="Solana Pay">
