@@ -31,7 +31,7 @@ const KeypairNode: FC<NodeProps> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            data,
+            [nodeId]: data,
           };
         }
         return node;

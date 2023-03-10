@@ -53,13 +53,14 @@ const SolanaPay: FC<NodeProps> = (props) => {
   `;
 
   useEffect(() => {
-    if (!nodeId) return;
     const edges = getEdges();
+    console.log(currentNode)
     const values = handleValue(currentNode, edges, [
-      "sender",
-      "receiver",
+      "spl_token",
+      "recipient",
       "amount",
-      "rpc",
+      "label",
+      "message",
     ]);
 
     const recipient = values["recipient"]
@@ -69,6 +70,7 @@ const SolanaPay: FC<NodeProps> = (props) => {
     const message = values["message"] ||
       "Solana Pay QR generated using SOL Trek";
 
+    console.log(values, "aa")
     if (!recipient || !splToken || !amount) return;
     const urlParams: TransferRequestURLFields = {
       recipient: new PublicKey(recipient),
