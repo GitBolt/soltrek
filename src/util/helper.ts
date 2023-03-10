@@ -2,27 +2,29 @@ import { Edge, Node } from "reactflow";
 
 export const handleValue = (
   node: Node<any, string | undefined> | undefined,
-  edge: Edge[],
+  edges: Edge[],
   ids: string[]
 ) => {
   let idValueMap = Object();
-  let edge_id = Object();
-  edge.map((e) => {
-    edge_id = {
-      ...edge_id,
+  let value_id_map = Object();
+  edges.map((e) => {
+    console.log("wtf", e.targetHandle, e.source)
+    value_id_map = {
+      ...value_id_map,
       [e.targetHandle as any]: e.source,
     };
   });
   ids.map((e) => {
+    console.log("sui", value_id_map[e], e)
     idValueMap = {
       ...idValueMap,
-      [e]: node?.data[String(edge_id[e])],
+      [e]: node?.data[String(value_id_map[e])],
     };
   });
   return idValueMap;
 };
 
-
+// ChatGPT wrote this horrible code, but it works so I'm not touching it
 export const stringify = (value: any, indent = 2): string => {
   const spaces = ' '.repeat(indent);
 

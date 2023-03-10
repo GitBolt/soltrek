@@ -15,9 +15,9 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
   const [currentPDA, setCurrentPDA] = useState<string[]>([]);
 
   const { getNode, setNodes, setEdges, getEdges } = useReactFlow();
-  const nodeId = useNodeId();
+  const id = useNodeId();
 
-  const currentNode = getNode(nodeId as string);
+  const currentNode = getNode(id as string);
 
   const updateNodeData = (nodeId: string, data: string) => {
     setNodes((nds) =>
@@ -25,7 +25,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            data,
+            [id as string]: data,
           };
         }
         return node;
@@ -56,7 +56,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
 
     setEdges((edgs) =>
       edgs.map((ed) => {
-        if (ed.source == nodeId) {
+        if (ed.source == id) {
           ed.animated = true;
           return ed;
         }
@@ -73,7 +73,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
       .then(() =>
         setEdges((edgs) =>
           edgs.map((ed) => {
-            if (ed.source == nodeId) {
+            if (ed.source == id) {
               ed.animated = false;
               return ed;
             }

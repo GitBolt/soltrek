@@ -14,9 +14,9 @@ import { TransactionInstruction } from "@solana/web3.js";
 
 const SendSOL: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
-  const nodeId = useNodeId();
+  const id = useNodeId();
   const [ix, setIx] = useState<TransactionInstruction | null | undefined>(null);
-  const currentNode = getNode(nodeId as string);
+  const currentNode = getNode(id as string);
 
   const updateNodeData = (nodeId: string, data: any) => {
     setNodes((nds) =>
@@ -24,7 +24,7 @@ const SendSOL: FC<NodeProps> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            data,
+            [id as string]: data,
           };
         }
         return node;
@@ -38,7 +38,6 @@ const SendSOL: FC<NodeProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log("AAAAA", ix);
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "sender",

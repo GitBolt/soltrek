@@ -8,9 +8,7 @@ const ColorOutputNode: FC<NodeProps> = (props) => {
   const [color, setColor] = useState<string | undefined>(undefined);
   const { getNode } = useReactFlow()
   const nodeId = useNodeId()
-  const nodes = useNodes()
-
-  const currentNodeObj = nodes.find((node) => node.id == nodeId)
+  const currentNode = getNode(nodeId as string)
 
   useEffect(() => {
     if (!nodeId) return
@@ -19,11 +17,11 @@ const ColorOutputNode: FC<NodeProps> = (props) => {
     const symbolData: string[] = Object.values(currentNode?.data)
     setColor(symbolData[0])
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNodeObj?.data])
+  }, [currentNode?.data])
 
   return (
     <BaseNode {...props} title="Colour output / display">
-      <Box bgColor={color || '#FFFFFF'} w="15rem" h="5rem" borderRadius="1rem"/>
+      <Box bgColor={color || '#FFFFFF'} w="15rem" h="5rem" borderRadius="1rem" />
       <CustomHandle pos={Position.Left} type="target" />
     </BaseNode >
   );

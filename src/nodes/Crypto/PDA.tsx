@@ -15,9 +15,9 @@ const PDA: FC<NodeProps> = (props) => {
   const [currentPDA, setCurrentPDA] = useState<string[]>([]);
 
   const { getNode, setNodes, getEdges } = useReactFlow();
-  const nodeId = useNodeId();
+  const id = useNodeId();
 
-  const currentNode = getNode(nodeId as string)
+  const currentNode = getNode(id as string)
 
   const updateNodeData = (nodeId: string, data: string) => {
     setNodes((nds) =>
@@ -25,7 +25,7 @@ const PDA: FC<NodeProps> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            data,
+            [id as string]: data,
           };
         }
         return node;

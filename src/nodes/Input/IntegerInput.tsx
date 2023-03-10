@@ -38,7 +38,7 @@ const IntegerInputNode: FC<NodeProps<InputNodeType>> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            [id || '']: number,
+            [id as string]: number,
           };
         }
         return node;

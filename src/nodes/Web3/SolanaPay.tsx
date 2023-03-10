@@ -70,7 +70,6 @@ const SolanaPay: FC<NodeProps> = (props) => {
     const message = values["message"] ||
       "Solana Pay QR generated using SOL Trek";
 
-    console.log(values, "aa")
     if (!recipient || !splToken || !amount) return;
     const urlParams: TransferRequestURLFields = {
       recipient: new PublicKey(recipient),

@@ -9,8 +9,8 @@ import { handleValue } from "@/util/helper";
 
 const CreateToken: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
-  const nodeId = useNodeId();
-  const currentNode = getNode(nodeId as string);
+  const id = useNodeId();
+  const currentNode = getNode(id as string);
 
   const [ix, setIx] = useState<TransactionInstruction[]>([]);
 
@@ -20,7 +20,7 @@ const CreateToken: FC<NodeProps> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            data,
+            [id as string]: data,
           };
         }
         return node;

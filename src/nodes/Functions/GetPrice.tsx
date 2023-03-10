@@ -19,7 +19,7 @@ const GetPriceNode: FC<NodeProps> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            price,
+            [nodeId as string]: price,
           };
         }
         return node;

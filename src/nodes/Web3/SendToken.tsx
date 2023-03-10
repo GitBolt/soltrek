@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FC } from "react";
 import {
   NodeProps,
-  useNodes,
   useNodeId,
   useReactFlow,
   Connection,
@@ -14,12 +13,12 @@ import { TransactionInstruction } from "@solana/web3.js";
 
 const SendToken: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
-  const nodeId = useNodeId();
-  const nodes = useNodes();
+  const id = useNodeId();
+  const currentNode = getNode(id as string)
+
   const [ix, setIx] = useState<
     TransactionInstruction | TransactionInstruction[] | null
   >([]);
-  const currentNodeObj = nodes.find((node) => node.id == nodeId);
 
   const updateNodeData = (nodeId: string, data: any) => {
     setNodes((nds) =>
@@ -27,7 +26,7 @@ const SendToken: FC<NodeProps> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            data,
+            [id as string]: data,
           };
         }
         return node;
@@ -41,8 +40,6 @@ const SendToken: FC<NodeProps> = (props) => {
   };
 
   useEffect(() => {
-    if (!nodeId) return;
-    const currentNode = getNode(nodeId);
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "sender",
@@ -63,7 +60,7 @@ const SendToken: FC<NodeProps> = (props) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNodeObj?.data]);
+  }, [currentNode?.data]);
 
   return (
     <BaseNode height="160px" code={CodeSPL} {...props} title="Send Tokens">

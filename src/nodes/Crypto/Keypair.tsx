@@ -21,9 +21,9 @@ const KeypairNode: FC<NodeProps> = (props) => {
   );
   const [currentTargetPubKey, setCurrentTargetPubKey] = useState<string[]>([]);
   const { setNodes, getNode } = useReactFlow();
-  const nodeId = useNodeId();
+  const id = useNodeId();
 
-  const currentNode = getNode(nodeId as string);
+  const currentNode = getNode(id as string);
 
   const updateNodeData = (nodeId: string, data: string) => {
     setNodes((nds) =>
@@ -31,7 +31,7 @@ const KeypairNode: FC<NodeProps> = (props) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            [nodeId]: data,
+            [id as string]: data,
           };
         }
         return node;
