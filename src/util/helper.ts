@@ -8,14 +8,12 @@ export const handleValue = (
   let idValueMap = Object();
   let value_id_map = Object();
   edges.map((e) => {
-    console.log("wtf", e.targetHandle, e.source)
     value_id_map = {
       ...value_id_map,
       [e.targetHandle as any]: e.source,
     };
   });
   ids.map((e) => {
-    console.log("sui", value_id_map[e], e)
     idValueMap = {
       ...idValueMap,
       [e]: node?.data[String(value_id_map[e])],

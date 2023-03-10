@@ -14,6 +14,7 @@ import RequestAirdrop from "./Web3/RequestAirdrop";
 import CreateTokenNode from "./Web3/CreateToken";
 import SendToken from "./Web3/SendToken";
 import SolanaPay from "./Web3/SolanaPay";
+import GetTransactionNode from "./Explorer/GetTransaction";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -31,5 +32,6 @@ export const nodeTypes = {
   PDA: PDANode,
   createToken: CreateTokenNode,
   sendToken: SendToken,
+  getTransaction: GetTransactionNode,
   solanaPay: SolanaPay,
 };

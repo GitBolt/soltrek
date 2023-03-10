@@ -54,7 +54,6 @@ const SolanaPay: FC<NodeProps> = (props) => {
 
   useEffect(() => {
     const edges = getEdges();
-    console.log(currentNode)
     const values = handleValue(currentNode, edges, [
       "spl_token",
       "recipient",

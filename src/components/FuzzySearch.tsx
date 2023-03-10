@@ -51,7 +51,6 @@ export const FuzzySearch = () => {
 
     if (event.key === "Enter") {
       event.preventDefault()
-      console.log(filteredItems)
       addNode(filteredItems[0].sub[0].type)
     }
 

@@ -70,6 +70,10 @@ export const sidebarItems = [
     type: "Explorer",
     sub: [
       {
+        title: "Get Transaction",
+        type: "getTransaction",
+      },
+      {
         title: "Get Token Details",
         type: "getTokenDetails",
       },
