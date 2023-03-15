@@ -86,7 +86,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
   const AirdropCode = `
-    const connection = new Connection(RPC_URL || "https://api.devnet.solana.com")
+    const connection = new Connection(RPC_URL || "https://solana-devnet.g.alchemy.com/v2/uUAHkqkfrVERwRHXnj8PEixT8792zETN")
     connection.requestAirdrop(new PublicKey(values["destination"]), 2)
       .then((res) => console.log(res))
       

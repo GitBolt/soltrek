@@ -5,11 +5,9 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { CodeSPL } from "@/util/sendToken";
 export const CodeBlock = ({ code }: { code: any }) => {
   return (
     <CopyBlock
@@ -21,11 +19,14 @@ export const CodeBlock = ({ code }: { code: any }) => {
     />
   );
 };
+
+
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   code: string;
 }
+
 export const CodeModel = ({ code, isOpen, onClose }: Props) => {
   return (
     <Modal size={"6xl"} isOpen={isOpen} onClose={onClose}>

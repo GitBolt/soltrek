@@ -1,7 +1,9 @@
 import React, { memo, FC, useState } from "react";
 import { NodeProps } from "reactflow";
 import { Text, Flex, Button, useDisclosure } from "@chakra-ui/react";
-import { CodeModel } from "@/components/codeBlock";
+import { CodeModel } from "@/components/CodeBlock";
+
+
 const BaseNode: FC<
   NodeProps & {
     children?: React.ReactNode;

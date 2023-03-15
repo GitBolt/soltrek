@@ -78,7 +78,7 @@ const TransactionNode: FC<NodeProps> = (props) => {
     if (!values["signer"] || !values["instructions"] || !run) return;
     const tx = new Transaction();
     const connection = new Connection(
-      values["rpc_url"] || "https://api.devnet.solana.com"
+      values["rpc_url"] || "https://solana-devnet.g.alchemy.com/v2/uUAHkqkfrVERwRHXnj8PEixT8792zETN"
     );
     const kp = Keypair.fromSecretKey(values["signer"]);
     sendTx(connection, tx, kp).then((res) => console.log(res));
