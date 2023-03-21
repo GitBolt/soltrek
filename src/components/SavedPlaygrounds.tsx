@@ -82,10 +82,11 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
                   borderWidth="1px"
                   borderRadius="1rem"
                   flexFlow="column"
+                  borderColor={playground.multiplayer ? "#621E47" : "gray.100"}
                   align="center"
                   justify="start"
                   overflow="hidden">
-                  <Box w="100%" h="15rem" overflow="hidden">
+                  <Box w="100%" h="14rem" overflow="hidden">
                     <PreviewImage
                       src={playground.preview_url}
                     />
@@ -93,13 +94,17 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
 
                   <Divider />
                   <Flex
-
                     p="0rem 1rem"
                     flexFlow="column"
-                    justify="center" align="start" w="100%" h="5rem">
+                    justify="center"
+                    align="start"
+                    w="100%"
+                    h="5rem">
                     <Text fontSize="2rem" color="blue.100" fontWeight="500">{playground.name}</Text>
-                    <Text fontSize="1.1rem" color="blue.300" fontWeight="200">Created at: {new Date(Date.parse(playground.createdAt)).toLocaleString()}</Text>
-                    {playground.multiplayer && <Text fontSize="1.1rem" color="magenta.200" fontWeight="200">Multiplayer</Text>}
+                    <Flex justifyContent="space-between" w="100%">
+                      <Text fontSize="1.2rem" color="blue.300" fontWeight="200">Created at {new Date(Date.parse(playground.createdAt)).toLocaleString()}</Text>
+                      {playground.multiplayer && <Text fontSize="1.2rem" color="magenta.100" fontWeight="500">Multiplayer</Text>}
+                    </Flex>
                   </Flex>
                 </Flex>
               ))}
@@ -133,9 +138,7 @@ const PreviewImage = ({ src }: { src: string }) => {
       <img
         src={src}
         alt="Preview image"
-        width="100%"
-        height="100%"
-        style={{ objectFit: 'cover', display: loaded ? 'block' : 'none' }}
+        style={{ height:"100%", width:"100%", objectFit: "cover", display: loaded ? 'block' : 'none' }}
         onLoad={() => setLoaded(true)}
       />
     </>

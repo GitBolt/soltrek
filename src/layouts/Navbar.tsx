@@ -102,7 +102,7 @@ export const Navbar = ({
     const canvas = await html2canvas(container!, {
       ignoreElements: (element) => element.className === "solflare-wallet-adapter-iframe",
       width: window.screen.width,
-      height: window.screen.height + 100,
+      height: container?.offsetHeight,
     }); const imageData = canvas.toDataURL()
 
     const blob = dataURItoBlob(imageData)
