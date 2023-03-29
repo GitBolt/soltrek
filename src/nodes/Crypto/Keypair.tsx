@@ -10,7 +10,7 @@ import BaseNode from "@/layouts/BaseNode";
 import { Keypair } from "@solana/web3.js";
 import b58 from "bs58";
 import { CustomHandle } from "@/layouts/CustomHandle";
-import { handleValue } from "@/util/helper";
+import { handleValue } from "@/util/handleNodeValue";
 
 const KeypairNode: FC<NodeProps> = (props) => {
   const [kp, setKp] = useState<Keypair>(new Keypair());

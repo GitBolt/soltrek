@@ -1,28 +1,8 @@
-import { Edge, Node } from "reactflow";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor"
-
-export const handleValue = (
-  node: Node<any, string | undefined> | undefined,
-  edges: Edge[],
-  ids: string[]
-) => {
-  let idValueMap = Object();
-  let value_id_map = Object();
-  edges.map((e) => {
-    value_id_map = {
-      ...value_id_map,
-      [e.targetHandle as any]: e.source,
-    };
-  });
-  ids.map((e) => {
-    idValueMap = {
-      ...idValueMap,
-      [e]: node?.data[String(value_id_map[e])],
-    };
-  });
-  return idValueMap;
-};
+import * as bip39 from 'bip39';
+import * as ed25519 from 'ed25519-hd-key';
+import { Keypair } from '@solana/web3.js';
 
 // ChatGPT wrote this horrible code, but it works so I'm not touching it
 export const stringify = (value: any, indent = 2): string => {
@@ -101,3 +81,22 @@ export const getNetworkName = (rpc_url: string) => {
   }
 
 }
+
+
+export const mnemonicToKp = (mnemonic?: string) => {
+  const derivePath = "m/44'/501'/0'/0'";
+
+  let generatedMnemonic = mnemonic
+  if (!mnemonic) {
+    generatedMnemonic = bip39.generateMnemonic();
+  }
+
+  const seed = bip39.mnemonicToSeedSync(generatedMnemonic as string);
+  const derivedSeed = ed25519.derivePath(derivePath, seed.toString('hex')).key;
+  const keypair = Keypair.fromSeed(derivedSeed);
+  return {
+    publicKey: keypair.publicKey.toBase58(),
+    privateKey: keypair.secretKey,
+    generatedMnemonic,
+  };
+};

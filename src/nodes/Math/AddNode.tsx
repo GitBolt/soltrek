@@ -3,7 +3,7 @@ import { Position, NodeProps, useNodeId, useReactFlow } from 'reactflow';
 import BaseNode from '@/layouts/BaseNode';
 import { Text } from '@chakra-ui/react';
 import { CustomHandle } from '@/layouts/CustomHandle';
-import { handleValue } from '@/util/helper';
+import { handleValue } from '@/util/handleNodeValue';
 
 const AddNode: FC<NodeProps> = (props) => {
   const [sum, setSum] = useState<number>(0);
@@ -36,7 +36,7 @@ const AddNode: FC<NodeProps> = (props) => {
     <BaseNode {...props} title="Add two numbers">
       {sum ?
         <Text fontSize="2rem" color="blue.500">{sum.toLocaleString()}</Text> :
-        <Text color="gray.100" fontSize="1.8rem">Empty...</Text>}
+        <Text color="blue.300" opacity="50%" fontSize="1.8rem">Empty...</Text>}
       <CustomHandle pos={Position.Left} type="target" label="Number 1" id="number1" style={{ marginTop: "-0.7rem" }} />
       <CustomHandle pos={Position.Left} type="target" label="Number 2" id="number2" style={{ marginTop: "2.5rem" }} />
     </BaseNode >

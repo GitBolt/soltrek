@@ -45,6 +45,10 @@ export const sidebarContent: SidebarContentType[] = [
         title: "PDA",
         type: "PDA",
       },
+      {
+        title: "Mnemonic/Seed",
+        type: "mnemonic",
+      },
     ],
   },
   {

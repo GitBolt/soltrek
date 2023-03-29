@@ -5,7 +5,7 @@ import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { CreateMintCode, createNewMint } from "@/util/createToken";
 import { Keypair, PublicKey, TransactionInstruction } from "@solana/web3.js";
-import { handleValue } from "@/util/helper";
+import { handleValue } from "@/util/handleNodeValue";
 
 const CreateToken: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();

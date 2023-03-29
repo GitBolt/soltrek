@@ -20,6 +20,7 @@ import HXROPariGet from "./SDKs/HXRO/PariGet";
 import HXROPariPlace from "./SDKs/HXRO/PariPlace";
 import HXROPariDestroy from "./SDKs/HXRO/PariDestroy";
 import HXROPariGetStore from "./SDKs/HXRO/PariGetStore";
+import Mnemonic from "./Crypto/Mnemonic";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -30,6 +31,7 @@ export const nodeTypes = {
   colorOutput: ColorOutputNode,
   getTokenDetails: GetTokenDetailsNode,
   sendSOL: SendSOL,
+  mnemonic: Mnemonic,
   keypair: KeypairNode,
   requestAirdrop: RequestAirdrop,
   add: AddNode,

@@ -1,6 +1,6 @@
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
-import { handleValue } from "@/util/helper";
+import { handleValue } from "@/util/handleNodeValue";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { createQR, encodeURL, TransferRequestURLFields } from "@solana/pay";
 import { Keypair, PublicKey } from "@solana/web3.js";

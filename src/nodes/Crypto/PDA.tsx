@@ -1,7 +1,7 @@
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { createPDA } from "@/util/generatePDA";
-import { handleValue } from "@/util/helper";
+import { handleValue } from "@/util/handleNodeValue";
 import React, { FC, useEffect, useState } from "react";
 import {
   Connection,
