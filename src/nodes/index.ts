@@ -15,6 +15,7 @@ import CreateTokenNode from "./Web3/CreateToken";
 import SendToken from "./Web3/SendToken";
 import SolanaPay from "./Web3/SolanaPay";
 import GetTransactionNode from "./Explorer/GetTransaction";
+import GetSNS from "./Explorer/GetSNS";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -32,6 +33,7 @@ export const nodeTypes = {
   PDA: PDANode,
   createToken: CreateTokenNode,
   sendToken: SendToken,
+  getSns: GetSNS,
   getTransaction: GetTransactionNode,
   solanaPay: SolanaPay,
 };

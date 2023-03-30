@@ -77,6 +77,10 @@ export const sidebarItems = [
         title: "Get Token Details",
         type: "getTokenDetails",
       },
+      {
+        title: "Get SNS Domain",
+        type: "getSns",
+      },
     ],
   },
   {

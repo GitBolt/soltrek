@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
 import {
-  Handle,
   Position,
   NodeProps,
   useNodeId,
@@ -8,7 +7,6 @@ import {
   Connection,
 } from "reactflow";
 import BaseNode from "@/layout/BaseNode";
-import { Text } from "@chakra-ui/react";
 import { Keypair } from "@solana/web3.js";
 import b58 from "bs58";
 import { CustomHandle } from "@/layout/CustomHandle";

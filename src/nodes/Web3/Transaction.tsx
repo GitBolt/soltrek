@@ -67,7 +67,6 @@ const TransactionNode: FC<NodeProps> = (props) => {
       "signer",
       "instructions",
     ]);
-    console.log("SUIIIIIIIIIII", currentNode)
 
     const run = dataKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
