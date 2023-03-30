@@ -56,7 +56,7 @@ const GetSNS: FC<NodeProps> = (props) => {
         :
         <Text color="gray.100" fontSize="1.5rem">{error || 'Empty...'}</Text>}
 
-      <CustomHandle pos="left" type="target" label="Mint" />
+      <CustomHandle pos="left" type="target" label="Address" />
     </BaseNode >
   );
 
