@@ -12,12 +12,13 @@ import b58 from "bs58";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
 import { mnemonicToKp } from "@/util/helper";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, useClipboard } from "@chakra-ui/react";
+import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
 
 const Mnemonic: FC<NodeProps> = (props) => {
   const [pk, setPk] = useState<string>('');
   const [phrase, setPhrase] = useState<string>('');
-
+  const { onCopy, hasCopied } = useClipboard(phrase)
   const [outputNodes, setOutputNodes] = useState<string[]>(
     []
   );
@@ -87,16 +88,21 @@ const Mnemonic: FC<NodeProps> = (props) => {
 
 
   const cleanedCode = mnemonicToKp.toString().replace(/_.*?(\.|import)/g, '');
-  const CODE = `export const destroyPosition = ${cleanedCode}`;
+  const CODE = `export const mnemonicToPk = ${cleanedCode}`;
 
 
   return (
     <BaseNode code={CODE} {...props} title="Mnemonic">
       <Flex padding="1rem 12rem" fontSize="1rem" color="white" flexWrap="wrap" justify="space-around" gap="1rem">
-        {phrase.split(" ").map((word) => (
-          <Box key={word} flex="1 0 25%" w="1rem" bg="blue.400" p="0.5rem 0.5rem" borderRadius="1rem"><Text>{word}</Text></Box>
+        {phrase && phrase.split(" ").map((word) => (
+          <Flex justify="center" align="center" key={word} flex="1 0 25%" w="1rem" bg="blue.400" p="0.3rem 0rem" borderRadius="0.5rem"><Text>{word}</Text></Flex>
         ))}
       </Flex>
+      {phrase && <Box pos="absolute" top="3rem" right="1rem">
+        {hasCopied ? <CheckIcon color="blue.200" w="1.5rem" h="1.5rem" /> :
+          <CopyIcon onClick={onCopy} color="blue.200" w="1.5rem" h="1.5rem" />}
+      </Box>}
+
       <CustomHandle
         pos="left"
         type="target"
