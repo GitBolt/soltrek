@@ -1699,6 +1699,13 @@
     bn.js "^5.2.0"
     debug "^4.3.4"
 
+"@monaco-protocol/client@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@monaco-protocol/client/-/client-4.0.0.tgz#d66729981fed154aee5fb831c214e42b9c33b167"
+  integrity sha512-Ur2yNcOariN/FUJUp+Le0YWc9wixOxSP4YYaLNmLZs05hN/CxgPy5ggA+MijeKpwpEVMS3VLzfN5RdzM1ShYqw==
+  dependencies:
+    big.js "^6.2.1"
+
 "@motionone/animation@^10.15.1":
   version "10.15.1"
   resolved "https://registry.yarnpkg.com/@motionone/animation/-/animation-10.15.1.tgz#4a85596c31cbc5100ae8eb8b34c459fb0ccf6807"
@@ -2988,6 +2995,11 @@ bech32@1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/bech32/-/bech32-1.1.4.tgz#e38c9f37bf179b8eb16ae3a772b40c356d4832e9"
   integrity sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==
+
+big.js@^6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/big.js/-/big.js-6.2.1.tgz#7205ce763efb17c2e41f26f121c420c6a7c2744f"
+  integrity sha512-bCtHMwL9LeDIozFn+oNhhFoq+yQ3BNdnsLSASUxLciOb1vgvpHsIO1dsENiGMgbb4SkP5TrzWzRiLddn8ahVOQ==
 
 bigint-buffer@^1.1.5:
   version "1.1.5"

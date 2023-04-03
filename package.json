@@ -16,6 +16,7 @@
     "@fontsource/inter": "^4.5.15",
     "@metaplex-foundation/js": "^0.18.1",
     "@metaplex-foundation/mpl-token-metadata": "^2.8.4",
+    "@monaco-protocol/client": "^4.0.0",
     "@next/font": "13.1.6",
     "@noble/hashes": "^1.2.0",
     "@project-serum/anchor": "^0.26.0",
