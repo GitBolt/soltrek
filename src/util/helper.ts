@@ -1,4 +1,6 @@
 import { Edge, Node } from "reactflow";
+import { Connection, PublicKey } from "@solana/web3.js";
+import * as anchor from "@project-serum/anchor"
 
 export const handleValue = (
   node: Node<any, string | undefined> | undefined,
@@ -44,3 +46,32 @@ export const stringify = (value: any, indent = 2): string => {
     return String(value);
   }
 };
+
+
+export const getProvider = (wallet: anchor.Wallet, rpc_url?: string) => {
+  const opts = {
+    preflightCommitment: 'processed' as anchor.web3.ConfirmOptions,
+  };
+
+  const connectionURI =
+    rpc_url||
+    'https://solana-devnet.g.alchemy.com/v2/uUAHkqkfrVERwRHXnj8PEixT8792zETN';
+  const connection = new anchor.web3.Connection(
+    connectionURI,
+    opts.preflightCommitment
+  );
+  const provider = new anchor.AnchorProvider(
+    connection,
+    wallet,
+    opts.preflightCommitment
+  );
+  return provider;
+};
+
+export const parseProtocolNumber = (protocolNumber: anchor.BN) =>
+    new anchor.BN(protocolNumber).toNumber() / 10 ** 9;
+
+
+export const getKeyByValue = (object: any, value: any) => {
+    return Object.keys(object).find(key => object[key] === value);
+}
