@@ -52,9 +52,8 @@ export const getProvider = (wallet: anchor.Wallet, rpc_url?: string) => {
   const opts = {
     preflightCommitment: 'processed' as anchor.web3.ConfirmOptions,
   };
-
   const connectionURI =
-    rpc_url||
+    rpc_url ||
     'https://solana-devnet.g.alchemy.com/v2/uUAHkqkfrVERwRHXnj8PEixT8792zETN';
   const connection = new anchor.web3.Connection(
     connectionURI,
@@ -68,10 +67,16 @@ export const getProvider = (wallet: anchor.Wallet, rpc_url?: string) => {
   return provider;
 };
 
+export const getProgram = async (protocolAddress: PublicKey, wallet: anchor.Wallet, rpc_url?: string) => {
+  const provider = getProvider(wallet, rpc_url)
+  const program = await anchor.Program.at(protocolAddress, provider);
+  return program
+}
+
 export const parseProtocolNumber = (protocolNumber: anchor.BN) =>
-    new anchor.BN(protocolNumber).toNumber() / 10 ** 9;
+  new anchor.BN(protocolNumber).toNumber() / 10 ** 9;
 
 
 export const getKeyByValue = (object: any, value: any) => {
-    return Object.keys(object).find(key => object[key] === value);
+  return Object.keys(object).find(key => object[key] === value);
 }

@@ -1,10 +1,52 @@
+import { getProgram } from "@/util/helper";
 import {
     getMarketPrices,
     ClientResponse,
     MarketPricesAndPendingOrders,
+    MarketAccounts,
+    getMarketAccountsByStatusAndMintAccount,
+    MarketStatusFilter,
 } from "@monaco-protocol/client";
-import { Program } from "@project-serum/anchor";
+import { Program, Wallet } from "@project-serum/anchor";
 import { PublicKey } from "@solana/web3.js";
+
+
+export const getMarkets = async (token: string, wallet: Wallet) => {
+    const program = await getProgram(new PublicKey('monacoUXKtUi6vKsQwaLyxmXKSievfNWEcYXTgkbCih'), wallet);
+    
+    const marketsResponse: ClientResponse<MarketAccounts> =
+        await getMarketAccountsByStatusAndMintAccount(
+            program,
+            MarketStatusFilter.Open,
+            new PublicKey(token)
+        );
+    if (marketsResponse.success && marketsResponse.data?.markets?.length) {
+
+        const currentTime = +new Date() / 1000
+
+        const marketsWithOutcomes = marketsResponse.data.markets.filter(
+            (market) => market.account.marketOutcomesCount > 0
+        ).filter((market) => market.account.marketLockTimestamp.toNumber() > currentTime)
+
+        for (let i = 0; i < marketsWithOutcomes.length; i++) {
+            let marketPk = marketsWithOutcomes[i].publicKey;
+            let marketPricesData = await getMarketOutcomePriceData(program, marketPk);
+            if (!marketPricesData) {
+                console.log("No data: ", marketPk.toBase58())
+                continue;
+            }
+            const marketData = {
+                pk: marketPk.toString(),
+                market: marketsWithOutcomes[i],
+                prices: marketPricesData,
+            };
+            const formattedString = `For Outcome Price: \`${marketData.prices.forOutcomePrice}\`\nTo Outcome Price: \`${marketData.prices.againstOutcomePrice}\`\nAddress: \`${marketData.pk}\`\n[View on Solscan](https://solscan.io/account/${marketData.pk})`;
+            return formattedString
+        }
+    } else {
+        return "None"
+    }
+};
 
 
 export const getMarketOutcomePriceData = async (
