@@ -123,7 +123,7 @@ const HXROPariGet: FC<NodeProps> = (props) => {
             />
           </Flex>
         )) :
-          <Text color="gray.100" fontSize="1.5rem">{'Empty...'}</Text>}
+          <Text color="blue.300" opacity="50%" fontSize="1.5rem">{'Empty...'}</Text>}
       </Flex>
 
 
