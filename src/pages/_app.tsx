@@ -9,14 +9,18 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import { ReactFlowProvider } from 'reactflow'
 import { theme } from '@/util/theme'
+import { Wallet } from "context/connectWalletContext";
+
 
 export default function SolBuild({ Component, pageProps }: AppProps) {
 
   return (
-    <ChakraProvider theme={theme}>
-      <ReactFlowProvider>
-        <Component {...pageProps} />
-      </ReactFlowProvider>
-    </ChakraProvider>
+    <Wallet>
+      <ChakraProvider theme={theme}>
+        <ReactFlowProvider>
+          <Component {...pageProps} />
+        </ReactFlowProvider>
+      </ChakraProvider>
+    </Wallet>
   )
 }

@@ -4,11 +4,13 @@ import { Flex } from "@chakra-ui/react";
 import Sidebar from "@/components/Sidebar";
 import { sidebarItems } from "@/util/sidebarItems";
 import { FuzzySearch } from "@/components/FuzzySearch";
+import { Navbar } from "layouts/Navbar";
 
 const Home: NextPage = () => {
   return (
     <>
       <Flex flexFlow="column" h="100%">
+        <Navbar />
         <Sidebar sidebarItems={sidebarItems} />
         <FuzzySearch />
         <Playground />

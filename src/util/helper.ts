@@ -80,3 +80,11 @@ export const parseProtocolNumber = (protocolNumber: anchor.BN) =>
 export const getKeyByValue = (object: any, value: any) => {
   return Object.keys(object).find(key => object[key] === value);
 }
+
+export const truncatedPublicKey = (publicKey: string, length?: number) => {
+  if (!publicKey) return;
+  if (!length) {
+    length = 5;
+  }
+  return publicKey.replace(publicKey.slice(length, 44 - length), '...');
+};
