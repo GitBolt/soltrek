@@ -95,7 +95,7 @@ export const theme = extendTheme({
         fontWeight: "600",
         boxShadow: "4px 4px 0px -1px rgba(0, 0, 0, 0.15)",
         _active: {
-          transform: "scale(0.95)",
+          transform: "scale(0.98)",
         }
       },
       variants: {

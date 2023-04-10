@@ -52,35 +52,41 @@ export const ConnectWalletButton = () => {
     <Menu>
       <MenuButton
         as={Button}
-        rightIcon={<ChevronDownIcon color="gray.300" w="1.7rem" h="1.7rem" />}
-        w={connected ? '26.5rem' : '18rem'}
-        h={connected ? '100%' : '3.2rem'}
-        bg={connected ? 'white' : 'bg.100'}
-        variant={!connected ? 'primary' : 'solid'}
-        leftIcon={
-          wallet ? (
+        w="18rem"
+        h={connected ? '3.8rem' : '3.2rem'}
+        variant="filled"
+        color="white"
+        rightIcon={
+          connected && wallet ? (
             <Box h="2.5rem" w="2.5rem">
               <img
                 src={wallet.adapter.icon}
                 alt={`${wallet.adapter.name} Icon`}
               />
             </Box>
-          ) : null
+          ) : <ChevronDownIcon color="white" w="2rem" h="2rem" />
         }
       >
-        {!connected && <Text fontSize="1.4rem">Connect Wallet</Text>}
+        {!connected && <Text fontSize="1.5rem">Connect Wallet</Text>}
         {connected && wallet !== null && (
-          <Text fontSize="1.4rem" color="gray.600">
+          <Text fontSize="1.4rem">
             {truncatedPublicKey(publicKey!.toString(), 7)}
           </Text>
         )}
       </MenuButton>
       {connected && (
-        <MenuList w="26.5rem">
-          <MenuItem onClick={copyPublicKey} fontSize="1.4rem">
-            <Text color="gray.600">Copy address</Text>
+        <MenuList
+          w="20rem"
+          p="0.5rem"
+          bg="bg.300"
+          borderRadius="1rem"
+          border='none'
+        >
+          <MenuItem bg="transparent" onClick={copyPublicKey} fontSize="1.4rem">
+            <Text color="blue.200">Copy address</Text>
           </MenuItem>
           <MenuItem
+            bg="transparent"
             onClick={async () => {
               if (wallet == null) {
                 return;
@@ -88,7 +94,7 @@ export const ConnectWalletButton = () => {
               await wallet.adapter.disconnect();
             }}
           >
-            <Text fontSize="1.4rem" color="gray.600">
+            <Text fontSize="1.4rem" color="blue.200">
               Disconnect
             </Text>
           </MenuItem>
@@ -96,29 +102,21 @@ export const ConnectWalletButton = () => {
       )}
       {!connected && (
         <MenuList
-          boxShadow="0px 4px 14px rgba(192, 204, 206, 0.25)"
           w="20rem"
+          p="0.5rem"
+          bg="bg.300"
+          borderRadius="1rem"
+          border='none'
         >
-          <Text
-            transform="translate(0, -0.5rem)"
-            display="flex"
-            alignItems="center"
-            justifyContent="start"
-            color="gray.300"
-            fontWeight={600}
-            fontSize="1rem"
-            bg="gray.50"
-            h="2.5rem"
-            padding="0 1rem"
-          >
-            CONNECT WALLET
-          </Text>
           {wallets.map((wallet: SolanaWallet, index) => {
             return (
               <MenuItem
                 key={index}
+
                 h="4rem"
-                borderBottom="1px solid #F7FAFC"
+                bg="bg.300"
+                borderBottom="1px solid"
+                borderColor="gray.200"
                 onClick={async () => {
                   try {
                     onConnectWallet(wallet)
