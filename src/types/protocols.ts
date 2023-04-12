@@ -1,4 +1,4 @@
-export namespace Monaco {
+export namespace MonacoTypes {
   export type MonacoBet = {
     forOutcome: boolean;
     marketOutcome: string;
@@ -6,10 +6,4 @@ export namespace Monaco {
     odds: number;
     stake: number;
   };
-}
-
-export namespace HXRO {
-  export type Test = {
-    
-  }
 }

@@ -66,6 +66,16 @@ export const sidebarItems = [
     ],
   },
   {
+    title: "SDKs",
+    type: "sdks",
+    sub: [
+      {
+        title: "HXRO Parimutuel",
+        type: "hxroParimutuel",
+      },
+    ],
+  },
+  {
     title: "Explorer",
     type: "Explorer",
     sub: [
