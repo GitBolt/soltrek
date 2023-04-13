@@ -12,7 +12,7 @@ import {
 
 const RequestAirdrop: FC<NodeProps> = (props) => {
   const [txid, setTxid] = useState<string>("");
-  const [currentPDA, setCurrentPDA] = useState<string[]>([]);
+  const [sigOutputs, setSigOutputs] = useState<string[]>([]);
 
   const { getNode, setNodes, setEdges, getEdges } = useReactFlow();
   const id = useNodeId();
@@ -33,14 +33,14 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
     );
   };
 
-  const updatePDA = (e: RCon) => {
+  const updateSigOutput = (e: RCon) => {
     if (!e.target) return;
     updateNodeData(e.target, txid as string);
-    setCurrentPDA([...currentPDA, e.target]);
+    setSigOutputs([...sigOutputs, e.target]);
   };
 
   useEffect(() => {
-    currentPDA.forEach((target) => updateNodeData(target, txid as string));
+    sigOutputs.forEach((target) => updateNodeData(target, txid as string));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [txid]);
 
@@ -123,7 +123,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
           id="source"
           label="Signature"
           onConnect={(e: any) => {
-            updatePDA(e);
+            updateSigOutput(e);
           }}
         />
       </BaseNode>

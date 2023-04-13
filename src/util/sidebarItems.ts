@@ -70,8 +70,12 @@ export const sidebarItems = [
     type: "sdks",
     sub: [
       {
-        title: "HXRO Parimutuel",
-        type: "hxroParimutuel",
+        title: "HXRO Pari Get",
+        type: "hxroPariGet",
+      },
+      {
+        title: "HXRO Pari Place",
+        type: "hxroPariPlace",
       },
     ],
   },

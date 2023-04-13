@@ -30,8 +30,8 @@ export const CustomHandle = ({
       position={PosKp[pos]}
       type={type}
       style={{
-        backgroundColor: optional ? '#BF0073CC' : '#DD11B1',
-        borderColor: optional ? "#BF0073CC" : "#DD11B1",
+        backgroundColor: id == "run" ? "#7058FF" : optional ? '#BF0073CC' : '#DD11B1',
+        borderColor: id == "run" ? "#7058FF" : optional ? "#BF0073CC" : "#DD11B1",
         ...style
       }}
       onConnect={onConnect}
@@ -43,7 +43,7 @@ export const CustomHandle = ({
           fontWeight: "800",
           fontSize: "1rem",
           direction: pos === "right" ? "rtl" : "ltr",
-          color: optional ? "#BF0073CC" : "#DD11B1",
+          color: id == "run" ? "#7058FF" : optional ? "#BF0073CC" : "#DD11B1",
           transform: `translate(${pos == "left" ? '15px' : '-108px'}, 2px)`
         }}>{optional ? '_' : ''}{label}
         </div>}

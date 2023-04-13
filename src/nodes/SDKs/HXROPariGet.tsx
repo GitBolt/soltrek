@@ -1,13 +1,11 @@
 import React, { useState, useEffect, FC } from "react";
-import { NodeProps, useNodeId, useReactFlow, Connection } from "reactflow";
+import { NodeProps, useNodeId, useReactFlow } from "reactflow";
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
 import { HXRO } from "@/sdks/hxro";
-import { stringify } from "querystring";
-import { Box, filter, Text, useClipboard } from "@chakra-ui/react";
+import { Box, Text, useClipboard } from "@chakra-ui/react";
 import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
-import { BN } from "@project-serum/anchor";
 
 const CODE = `
 const getMarkets = async (marketPair: sdk.MarketPairEnum, amount: number, duration: number) => {
@@ -24,7 +22,7 @@ const getMarkets = async (marketPair: sdk.MarketPairEnum, amount: number, durati
 
 const USDC_DECIMALS = 1_000_000
 
-const HXROParimutuel: FC<NodeProps> = (props) => {
+const HXROPariGet: FC<NodeProps> = (props) => {
   const { getNode, getEdges } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
@@ -45,7 +43,7 @@ const HXROParimutuel: FC<NodeProps> = (props) => {
 
     if (Object.values(values).length < 3) return;
 
-    HXRO.getMarkets(values["marketPair"], values["amount"] - 1, values["duration"])
+    HXRO.getMarkets(values["marketPair"], values["amount"], values["duration"])
       .then((res) => {
 
         const filtered = res.map(({ pubkey, info }) => ({
@@ -117,4 +115,4 @@ const HXROParimutuel: FC<NodeProps> = (props) => {
   );
 };
 
-export default HXROParimutuel;
+export default HXROPariGet;
