@@ -7,3 +7,14 @@ export namespace MonacoTypes {
     stake: number;
   };
 }
+
+export namespace HXROTypes {
+  export type FilteredContest = {
+    pubkey: string,
+    longs: number,
+    shorts: number,
+    expired: boolean,
+    slot: number,
+    strike: number
+  }
+}

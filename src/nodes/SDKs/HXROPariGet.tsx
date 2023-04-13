@@ -4,8 +4,9 @@ import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
 import { HXRO } from "@/sdks/hxro";
-import { Box, Text, useClipboard } from "@chakra-ui/react";
+import { Box, Flex, Text, useClipboard } from "@chakra-ui/react";
 import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
+import { HXROTypes } from "@/types/protocols";
 
 const CODE = `
 const getMarkets = async (marketPair: sdk.MarketPairEnum, amount: number, duration: number) => {
@@ -27,11 +28,16 @@ const HXROPariGet: FC<NodeProps> = (props) => {
   const id = useNodeId();
   const currentNode = getNode(id as string);
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<HXROTypes.FilteredContest[] | null>(null);
 
-  const { hasCopied, setValue, onCopy } = useClipboard(data || '')
+  const { hasCopied, setValue, onCopy } = useClipboard('')
 
 
+
+  const onCopyBoard = (val: any) => {
+    setValue(val)
+    onCopy()
+  }
 
   useEffect(() => {
     const edges = getEdges();
@@ -48,28 +54,21 @@ const HXROPariGet: FC<NodeProps> = (props) => {
 
         const filtered = res.map(({ pubkey, info }) => ({
           pubkey: pubkey.toBase58(),
-          info: {
-            longs: info.parimutuel.activeLongPositions.toNumber() / USDC_DECIMALS,
-            shorts: info.parimutuel.activeShortPositions.toNumber() / USDC_DECIMALS,
-            expired: info.parimutuel.expired,
-            slot: info.parimutuel.slot.toNumber(),
-            strike: info.parimutuel.strike.toNumber()
-          }
+          longs: info.parimutuel.activeLongPositions.toNumber() / USDC_DECIMALS,
+          shorts: info.parimutuel.activeShortPositions.toNumber() / USDC_DECIMALS,
+          expired: info.parimutuel.expired,
+          slot: info.parimutuel.slot.toNumber(),
+          strike: info.parimutuel.strike.toNumber()
+
         }))
 
-        let stringData = ""
-
-        filtered.forEach((item) => {
-          stringData += `Public Key: ${item.pubkey} \nStrike: $${item.info.strike} \nSlot: ${item.info.slot} \nLongs: $${item.info.longs} \nShorts: $${item.info.shorts} \nExpired?: ${item.info.expired ? 'true' : 'false'}\n\n`
-        })
-        console.log(stringData)
-        setData(stringData)
+        setData(filtered)
       }
       )
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
-
+  // Public Key: ${item.pubkey} \nStrike: $${item.info.strike} \nSlot: ${item.info.slot} \nLongs: $${item.info.longs} \nShorts: $${item.info.shorts} \nExpired?: ${item.info.expired ? 'true' : 'false'}
   return (
     <BaseNode
       code={CODE}
@@ -78,14 +77,17 @@ const HXROPariGet: FC<NodeProps> = (props) => {
       title="HXRO Parimutuel - Get Contests"
     >
 
-      {data ?
-        <>
-          <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="8rem" my="2rem">{data}</Text>
-          <Box pos="absolute" top="3rem" right="1rem">
-            {hasCopied ? <CheckIcon color="blue.200" w="1.5rem" h="1.5rem" /> :
-              <CopyIcon onClick={onCopy} color="blue.200" w="1.5rem" h="1.5rem" />}
+      {data ? data.map((item: HXROTypes.FilteredContest) => (
+        <Flex flexFlow="column" key={item.pubkey} gap="2rem" justify="start">
+          <Box>
+            <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="8rem" my="2rem">{item.pubkey}</Text>
+            <Box pos="absolute" top="3rem" right="1rem">
+              {hasCopied ? <CheckIcon color="blue.200" w="1.5rem" h="1.5rem" /> :
+                <CopyIcon onClick={() => onCopyBoard(item.toLocaleString())} color="blue.200" w="1.5rem" h="1.5rem" />}
+            </Box>
           </Box>
-        </>
+        </Flex>
+      ))
         :
         <Text color="gray.100" fontSize="1.5rem">{'Empty...'}</Text>}
 

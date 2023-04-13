@@ -1,6 +1,6 @@
 import React, { memo, FC, useState } from "react";
 import { NodeProps } from "reactflow";
-import { Text, Flex, Button, useDisclosure } from "@chakra-ui/react";
+import { Text, Flex, Button, useDisclosure, Box } from "@chakra-ui/react";
 import { CodeModel } from "@/components/CodeBlock";
 
 
@@ -64,17 +64,13 @@ const BaseNode: FC<
             </Button>
           )}
         </Flex>
-        <Flex
-          h="auto"
+        <Box
           minH="80px"
-          alignItems="center"
-          overflowY="auto"
-          width="100%"
-          justifyContent="center"
-          flexWrap="wrap"
+          display="grid"
+          placeItems="center"
         >
           {children}
-        </Flex>
+        </Box>
       </Flex>
     </>
   );
