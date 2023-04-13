@@ -29,9 +29,9 @@ export namespace HXRO {
 
     const side = sideArg.toUpperCase()
     if (side != "LONG" && side != "SHORT") {
-      return { error: true, message: "Enter with 'Long' or 'Short'" }
+      return { error: true, message: "Enter 'Long' or 'Short'" }
     }
-    
+
     const parimutuelWeb3 = new ParimutuelWeb3(
       DEVNET_CONFIG,
       connection
@@ -47,9 +47,9 @@ export namespace HXRO {
       )
       return { txId }
     }
-    catch (err) {
+    catch (err: any) {
       console.log(err)
-      return { error: true, message: JSON.stringify(err) || '' }
+      return { error: true, message: err.message || JSON.stringify(err) || '' }
     }
   }
 }
