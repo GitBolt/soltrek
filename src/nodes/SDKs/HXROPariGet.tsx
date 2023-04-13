@@ -2,7 +2,7 @@ import React, { useState, useEffect, FC } from "react";
 import { NodeProps, useNodeId, useReactFlow } from "reactflow";
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
-import { handleValue } from "@/util/helper";
+import { handleValue, truncatedPublicKey } from "@/util/helper";
 import { HXRO } from "@/sdks/hxro";
 import { Box, Flex, Text, useClipboard } from "@chakra-ui/react";
 import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
@@ -30,14 +30,6 @@ const HXROPariGet: FC<NodeProps> = (props) => {
 
   const [data, setData] = useState<HXROTypes.FilteredContest[] | null>(null);
 
-  const { hasCopied, setValue, onCopy } = useClipboard('')
-
-
-
-  const onCopyBoard = (val: any) => {
-    setValue(val)
-    onCopy()
-  }
 
   useEffect(() => {
     const edges = getEdges();
@@ -77,17 +69,27 @@ const HXROPariGet: FC<NodeProps> = (props) => {
       title="HXRO Parimutuel - Get Contests"
     >
 
-      {data ? data.map((item: HXROTypes.FilteredContest) => (
-        <Flex flexFlow="column" key={item.pubkey} gap="2rem" justify="start">
-          <Box>
-            <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="8rem" my="2rem">{item.pubkey}</Text>
-            <Box pos="absolute" top="3rem" right="1rem">
-              {hasCopied ? <CheckIcon color="blue.200" w="1.5rem" h="1.5rem" /> :
-                <CopyIcon onClick={() => onCopyBoard(item.toLocaleString())} color="blue.200" w="1.5rem" h="1.5rem" />}
-            </Box>
-          </Box>
+      {data ?
+        <Flex flexFlow="column" ml="8rem" mr="6rem" my="1rem" gap="0.5rem">
+          {data.map((item: HXROTypes.FilteredContest, index: number) => (
+            <Flex bg="bg.200" w="100%" key={item.pubkey} p="0 1rem" borderRadius="1rem" justify="space-between" gap="1rem" align="center">
+              <Flex flexFlow="column" gap="1rem" padding="1rem 0"> 
+                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" >Public Key: {truncatedPublicKey(item.pubkey)}</Text>
+                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Shorts: ${item.shorts.toLocaleString()}</Text>
+                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Longs: ${item.longs.toLocaleString()}</Text>
+                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Slot: {item.slot}</Text>
+                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Strike: {item.strike}</Text>
+              </Flex>
+              <CustomHandle
+                pos="right"
+                type="source"
+                id="marketPair"
+                style={{ top: `${10 + 15 * index}` + "rem" }}
+                label="Address"
+              />
+            </Flex>
+          ))}
         </Flex>
-      ))
         :
         <Text color="gray.100" fontSize="1.5rem">{'Empty...'}</Text>}
 
