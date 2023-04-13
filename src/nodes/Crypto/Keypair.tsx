@@ -10,6 +10,8 @@ import BaseNode from "@/layout/BaseNode";
 import { Keypair } from "@solana/web3.js";
 import b58 from "bs58";
 import { CustomHandle } from "@/layout/CustomHandle";
+import { handleValue } from "@/util/helper";
+import { bs58 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 
 const KeypairNode: FC<NodeProps> = (props) => {
   const [kp, setKp] = useState<Keypair>(new Keypair());
@@ -18,7 +20,7 @@ const KeypairNode: FC<NodeProps> = (props) => {
     []
   );
   const [currentTargetPubKey, setCurrentTargetPubKey] = useState<string[]>([]);
-  const { setNodes, getNode } = useReactFlow();
+  const { setNodes, getNode, getEdges } = useReactFlow();
   const id = useNodeId();
 
   const currentNode = getNode(id as string);
@@ -39,6 +41,24 @@ const KeypairNode: FC<NodeProps> = (props) => {
 
   useEffect(() => {
     const nodeKeys: string[] = Object.keys(currentNode?.data || {});
+    const edges = getEdges()
+    const values = handleValue(currentNode, edges, ["fromKey"])
+
+    const privKey = values["fromKey"]
+    if (privKey) {
+      let parsed = new Uint8Array()
+      try {
+        parsed = new Uint8Array(privKey)
+      } catch {
+        try {
+          parsed = new Uint8Array(bs58.decode(privKey))
+        } catch {
+          return
+        }
+      }
+      setKp(Keypair.fromSecretKey(parsed))
+    }
+
     nodeKeys.forEach((key) => {
       if (key.startsWith("btn") && currentNode?.data[key] == true) {
         setKp(new Keypair());
@@ -78,7 +98,9 @@ const KeypairNode: FC<NodeProps> = (props) => {
 
   return (
     <BaseNode code={KeypairCode} {...props} title="Keypair Object">
-      <CustomHandle pos="left" type="target" id="generate" label="Generate" />
+      <CustomHandle pos="left" type="target" id="generate" label="Generate" style={{ marginTop: "-0.5rem" }} />
+
+      <CustomHandle pos="left" type="target" id="fromKey" label="Private Key (Import)" style={{ marginTop: "2.5rem" }} />
 
       <CustomHandle
         pos="right"
