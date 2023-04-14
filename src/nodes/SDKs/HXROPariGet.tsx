@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
-import { NodeProps, useNodeId, useReactFlow } from "reactflow";
+import { NodeProps, useNodeId, useReactFlow, Connection } from "reactflow";
 import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue, truncatedPublicKey } from "@/util/helper";
@@ -24,12 +24,45 @@ const getMarkets = async (marketPair: sdk.MarketPairEnum, amount: number, durati
 const USDC_DECIMALS = 1_000_000
 
 const HXROPariGet: FC<NodeProps> = (props) => {
-  const { getNode, getEdges } = useReactFlow();
+  const { getNode, getEdges, setNodes } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
 
   const [data, setData] = useState<HXROTypes.FilteredContest[] | null>(null);
 
+  const [addresses, setAddresses] = useState<any>({});
+  const [outputs, setOutputs] = useState<any>({});
+
+
+  const updateNodeData = (nodeId: string, data: string) => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === nodeId) {
+          node.data = {
+            ...node.data,
+            [id as string]: data,
+          };
+        }
+        return node;
+      })
+    );
+  };
+
+  const updateData = (contestAddress: string, e: Connection) => {
+    if (!e.target) return;
+    console.log(addresses, contestAddress)
+    updateNodeData(e.target, contestAddress);
+    setOutputs({ ...outputs, [contestAddress]: [...outputs[contestAddress], e.target] });
+  };
+
+  useEffect(() => {
+    Object.keys(outputs).forEach((item) => {
+      outputs[item].forEach((displayNodeIds: any) => {
+        updateNodeData(displayNodeIds, item)
+      })
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresses]);
 
   useEffect(() => {
     const edges = getEdges();
@@ -53,7 +86,7 @@ const HXROPariGet: FC<NodeProps> = (props) => {
           strike: info.parimutuel.strike.toNumber()
 
         }))
-
+        setAddresses(filtered.map((item) => item.pubkey))
         setData(filtered)
       }
       )
@@ -73,19 +106,22 @@ const HXROPariGet: FC<NodeProps> = (props) => {
         <Flex flexFlow="column" ml="8rem" mr="6rem" my="1rem" gap="0.5rem">
           {data.map((item: HXROTypes.FilteredContest, index: number) => (
             <Flex bg="bg.200" w="100%" key={item.pubkey} p="0 1rem" borderRadius="1rem" justify="space-between" gap="1rem" align="center">
-              <Flex flexFlow="column" gap="1rem" padding="1rem 0"> 
+              <Flex flexFlow="column" gap="1rem" padding="1rem 0">
                 <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" >Public Key: {truncatedPublicKey(item.pubkey)}</Text>
                 <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Shorts: ${item.shorts.toLocaleString()}</Text>
                 <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Longs: ${item.longs.toLocaleString()}</Text>
                 <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Slot: {item.slot}</Text>
-                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Strike: {item.strike}</Text>
+                {/* <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Strike: {item.strike}</Text> */}
               </Flex>
               <CustomHandle
                 pos="right"
                 type="source"
-                id="marketPair"
-                style={{ top: `${10 + 15 * index}` + "rem" }}
+                id={"address" + item.pubkey}
+                style={{ top: `${9 + 11.5 * index}` + "rem" }}
                 label="Address"
+                onConnect={(e: any) => {
+                  updateData(item.pubkey, e);
+                }}
               />
             </Flex>
           ))}

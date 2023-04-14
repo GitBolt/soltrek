@@ -25,7 +25,7 @@ const getMarkets = async (marketPair: sdk.MarketPairEnum, amount: number, durati
 const USDC_DECIMALS = 1_000_000
 
 const HXROPariPlace: FC<NodeProps> = (props) => {
-  const { getNode, getEdges, setNodes } = useReactFlow();
+  const { getNode, getEdges, setNodes, setEdges } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
 
@@ -74,10 +74,17 @@ const HXROPariPlace: FC<NodeProps> = (props) => {
     const run = dataKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
-    console.log(values, run)
     if (Object.values(values).filter((i) => i).length < 4 || !run) return;
 
-    console.log("ys")
+    setEdges((edgs) =>
+      edgs.map((ed) => {
+        if (ed.source == id) {
+          ed.animated = true;
+          return ed;
+        }
+        return ed;
+      })
+    );
 
     HXRO.placePosition(
       new Uint8Array(base58.decode(values["privateKey"])), // Need to validate this, should just reject invalid input try (React Flow has something for it)
@@ -90,6 +97,16 @@ const HXROPariPlace: FC<NodeProps> = (props) => {
       } else {
         setTxId(res.txId)
       }
+    }).then(() => {
+      setEdges((edgs) =>
+        edgs.map((ed) => {
+          if (ed.source == id) {
+            ed.animated = false;
+            return ed;
+          }
+          return ed;
+        })
+      );
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,9 +118,9 @@ const HXROPariPlace: FC<NodeProps> = (props) => {
       height="20rem"
       {...props}
       title="HXRO Parimutuel - Place Position"
-  
+
     >
-       {error ?
+      {error ?
         <Text fontSize="1.5rem" transform="translate(0, 3rem)" zIndex="3" color="blue.400" fontWeight={600}>{error.toLocaleString()}</Text> : null}
       <CustomHandle
         pos="left"
