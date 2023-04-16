@@ -8,8 +8,6 @@
   </a>
 </p>
 
-> *This project is being developed for the [Solana Grizzlython Hackathon](https://solana.com/grizzlython).*
-
 # SOL Trek
 
 SOL Trek is a Solana learning playground that allows new developers to learn, develop and play with Solana without needing to write code.
