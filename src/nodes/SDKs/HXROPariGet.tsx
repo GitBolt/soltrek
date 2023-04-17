@@ -50,9 +50,13 @@ const HXROPariGet: FC<NodeProps> = (props) => {
 
   const updateData = (contestAddress: string, e: Connection) => {
     if (!e.target) return;
-    console.log(addresses, contestAddress)
     updateNodeData(e.target, contestAddress);
-    setOutputs({ ...outputs, [contestAddress]: [...outputs[contestAddress], e.target] });
+    setOutputs({
+      ...outputs,
+      [contestAddress]: [...(outputs[contestAddress] || []),
+      e.target
+      ]
+    });
   };
 
   useEffect(() => {
@@ -102,32 +106,31 @@ const HXROPariGet: FC<NodeProps> = (props) => {
       title="HXRO Parimutuel - Get Contests"
     >
 
-      {data ?
-        <Flex flexFlow="column" ml="8rem" mr="6rem" my="1rem" gap="0.5rem">
-          {data.map((item: HXROTypes.FilteredContest, index: number) => (
-            <Flex bg="bg.200" w="100%" key={item.pubkey} p="0 1rem" borderRadius="1rem" justify="space-between" gap="1rem" align="center">
-              <Flex flexFlow="column" gap="1rem" padding="1rem 0">
-                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" >Public Key: {truncatedPublicKey(item.pubkey)}</Text>
-                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Shorts: ${item.shorts.toLocaleString()}</Text>
-                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Longs: ${item.longs.toLocaleString()}</Text>
-                <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Slot: {item.slot}</Text>
-                {/* <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Strike: {item.strike}</Text> */}
-              </Flex>
-              <CustomHandle
-                pos="right"
-                type="source"
-                id={"address" + item.pubkey}
-                style={{ top: `${9 + 11.5 * index}` + "rem" }}
-                label="Address"
-                onConnect={(e: any) => {
-                  updateData(item.pubkey, e);
-                }}
-              />
+      <Flex flexFlow="column" ml="8rem" mr="6rem" my="1rem" gap="0.5rem">
+        {data ? data.map((item, index: number) => (
+          <Flex bg="bg.200" w="100%" key={item.pubkey} p="0 1rem" borderRadius="1rem" justify="space-between" gap="1rem" align="center">
+            <Flex flexFlow="column" gap="1rem" padding="1rem 0">
+              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" >Public Key: {truncatedPublicKey(item.pubkey)}</Text>
+              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Shorts: ${item.shorts.toLocaleString()}</Text>
+              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Longs: ${item.longs.toLocaleString()}</Text>
+              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Slot: {item.slot}</Text>
+              {/* <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Strike: {item.strike}</Text> */}
             </Flex>
-          ))}
-        </Flex>
-        :
-        <Text color="gray.100" fontSize="1.5rem">{'Empty...'}</Text>}
+            <CustomHandle
+              pos="right"
+              type="source"
+              id={"address" + item.pubkey}
+              style={{ top: `${9 + 11.5 * index}` + "rem" }}
+              label="Address"
+              onConnect={(e: any) => {
+                updateData(item.pubkey, e);
+              }}
+            />
+          </Flex>
+        )) :
+          <Text color="gray.100" fontSize="1.5rem">{'Empty...'}</Text>}
+      </Flex>
+
 
       <CustomHandle
         pos="left"
