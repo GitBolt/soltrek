@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Playground from "@/layout/Playground";
 import { Flex } from "@chakra-ui/react";
 import Sidebar from "@/components/Sidebar";
-import { sidebarItems } from "@/util/sidebarItems";
+import { sidebarContent } from "@/util/sidebarContent";
 import { FuzzySearch } from "@/components/FuzzySearch";
 import { Navbar } from "layouts/Navbar";
 
@@ -11,7 +11,7 @@ const Home: NextPage = () => {
     <>
       <Flex flexFlow="column" h="100%">
         <Navbar />
-        <Sidebar sidebarItems={sidebarItems} />
+        <Sidebar sidebarContent={sidebarContent} />
         <FuzzySearch />
         <Playground />
       </Flex>

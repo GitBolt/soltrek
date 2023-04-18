@@ -1,11 +1,19 @@
-export const sidebarItems = [
+import InputIcon from '@/imgs/icons/input.svg'
+import { SidebarContentType } from '@/types/sidebar';
+
+export const sidebarContent: SidebarContentType[] = [
   {
     title: "Input",
-    type: "input",
-    sub: [
+    icon: InputIcon,
+    items: [
       {
         title: "String Input",
-        type: "stringInput",
+        sub:[
+          {
+            title: "Test",
+            type: "hi"
+          }
+        ]
       },
       {
         title: "Integer Input",
@@ -19,8 +27,8 @@ export const sidebarItems = [
   },
   {
     title: "Output",
-    type: "output",
-    sub: [
+    icon: "",
+    items: [
       {
         title: "Text Output",
         type: "textOutput",
@@ -33,8 +41,8 @@ export const sidebarItems = [
   },
   {
     title: "Crypto",
-    type: "crypto",
-    sub: [
+    icon: "",
+    items:[
       {
         title: "Keypair",
         type: "keypair",
@@ -47,8 +55,8 @@ export const sidebarItems = [
   },
   {
     title: "Math",
-    type: "math",
-    sub: [
+    icon: "math",
+    items:[
       {
         title: "Add",
         type: "add",
@@ -57,8 +65,8 @@ export const sidebarItems = [
   },
   {
     title: "Function",
-    type: "function",
-    sub: [
+    icon: "function",
+    items:[
       {
         title: "Get Price",
         type: "getPrice",
@@ -67,8 +75,8 @@ export const sidebarItems = [
   },
   {
     title: "SDKs",
-    type: "sdks",
-    sub: [
+    icon: "sdks",
+    items:[
       {
         title: "HXRO Pari Get",
         type: "hxroPariGet",
@@ -81,8 +89,8 @@ export const sidebarItems = [
   },
   {
     title: "Explorer",
-    type: "Explorer",
-    sub: [
+    icon: "Explorer",
+    items:[
       {
         title: "Get Transaction",
         type: "getTransaction",
@@ -99,8 +107,8 @@ export const sidebarItems = [
   },
   {
     title: "Web3",
-    type: "Web3",
-    sub: [
+    icon: "Web3",
+    items:[
       {
         title: "Transaction",
         type: "transaction",
