@@ -56,7 +56,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
       <Flex sx={{
         w: "30%",
-        bg: "bg.300",
+        bg: "bg.400",
         h: "100%",
         flexFlow: "column",
         gap: "2rem",
@@ -65,21 +65,22 @@ const Sidebar = ({ sidebarContent }: Props) => {
         {sidebarContent.map((item) => (
           <Flex
             cursor="pointer"
-            _hover={{ bg: "bg.100" }}
+            _hover={{ bg: "bg.300" }}
             w="7rem"
-            h="8rem"
+            h="7rem"
             alignSelf="center"
             borderRadius="1rem"
             onClick={() => setSelectedItemTitle(item.title)}
             key={item.title}
             flexFlow="column"
             align="center"
+            gap="1rem"
             justify="center"
           >
-            <Box h="2rem" w="2rem">
-              <Icon as={item.icon.src} color="blue.200" alt="Icon" height="100%" width="100%" />
+            <Box h="1.8rem" w="1.8rem">
+              <img src={item.icon} alt="Icon" height="100%" width="100%" />
             </Box>
-            <Text color="blue.200" fontSize="1.6rem">{item.title}</Text>
+            <Text color="blue.200" fontWeight={500} fontSize="1.5rem">{item.title}</Text>
           </Flex>
         ))}
       </Flex>
@@ -97,30 +98,31 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
         <Divider />
 
-        {/* <Flex w="100%" p="0 2rem" justify="space-between" my="2rem">
-        <Button variant="outline" onClick={onLoad}>Load</Button>
-        <Button variant="filled" onClick={() => localStorage.setItem("state", JSON.stringify(toObject()))}>Save</Button>
-      </Flex> */}
+        <Flex w="100%" p="0 2rem" gap="1rem" justify="space-between" my="2rem">
+          <Button variant="outline" onClick={onLoad}>Load</Button>
+          <Button variant="filled" onClick={() => localStorage.setItem("state", JSON.stringify(toObject()))}>Save</Button>
+        </Flex>
 
         <List mb="2rem">
           {selectedItemTitle && sidebarContent.find((item) => item.title == selectedItemTitle)!.items.map((item, index) => (
             <ListItem key={item.title}>
               <Button
                 variant="sidebar"
-                onClick={() => toggleSublist(index)}
+                onClick={() => item.sub ? toggleSublist(index) : addNode(item.type!)}
                 rightIcon={item.sub ? (showSublist[index] ? <ChevronDownIcon /> : <ChevronRightIcon />) : undefined}>
                 {item.title}
               </Button>
 
               {item.sub && showSublist[index] && (
-                <List ml="4rem">
-                  {item.sub.map((subItem, index) => (
+                <List ml="1.5rem">
+                  {item.sub.map((subItem) => (
                     <Flex key={subItem.title} align="center">
                       <ListItem w="100%" p="0 2rem 0 0">
                         <Button
                           variant="sidebar"
                           fontWeight="500"
                           color="blue.300"
+                          fontSize="1.6rem"
                           onClick={() => addNode(subItem.type)}
                         >
                           {subItem.title}

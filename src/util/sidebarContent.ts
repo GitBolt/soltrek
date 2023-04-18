@@ -1,19 +1,13 @@
-import InputIcon from '@/imgs/icons/input.svg'
 import { SidebarContentType } from '@/types/sidebar';
 
 export const sidebarContent: SidebarContentType[] = [
   {
     title: "Input",
-    icon: InputIcon,
+    icon: "/Input.svg",
     items: [
       {
         title: "String Input",
-        sub:[
-          {
-            title: "Test",
-            type: "hi"
-          }
-        ]
+        type: "stringInput",
       },
       {
         title: "Integer Input",
@@ -27,7 +21,7 @@ export const sidebarContent: SidebarContentType[] = [
   },
   {
     title: "Output",
-    icon: "",
+    icon: "/Output.svg",
     items: [
       {
         title: "Text Output",
@@ -41,8 +35,8 @@ export const sidebarContent: SidebarContentType[] = [
   },
   {
     title: "Crypto",
-    icon: "",
-    items:[
+    icon: "/Crypto.svg",
+    items: [
       {
         title: "Keypair",
         type: "keypair",
@@ -55,42 +49,48 @@ export const sidebarContent: SidebarContentType[] = [
   },
   {
     title: "Math",
-    icon: "math",
-    items:[
+    icon: "/Math.svg",
+    items: [
       {
         title: "Add",
         type: "add",
       },
     ],
   },
-  {
-    title: "Function",
-    icon: "function",
-    items:[
-      {
-        title: "Get Price",
-        type: "getPrice",
-      },
-    ],
-  },
+  // {
+  //   title: "Function",
+  //   icon: "function",
+  //   items: [
+  //     {
+  //       title: "Get Price",
+  //       type: "getPrice",
+  //     },
+  //   ],
+  // },
   {
     title: "SDKs",
-    icon: "sdks",
-    items:[
+    icon: "/SDK.svg",
+    items: [
       {
-        title: "HXRO Pari Get",
-        type: "hxroPariGet",
+        title: "HXRO Network",
+        sub: [
+          {
+            title: "Pari - Get Contests",
+            type: "hxroPariGet"
+          },
+          {
+            title: "Pari - Place Position",
+            type: "hxroPariPlace",
+          },
+        ]
       },
-      {
-        title: "HXRO Pari Place",
-        type: "hxroPariPlace",
-      },
+
     ],
   },
   {
     title: "Explorer",
-    icon: "Explorer",
-    items:[
+    icon: "/Explorer.svg",
+    items: [
       {
         title: "Get Transaction",
         type: "getTransaction",
@@ -107,8 +107,8 @@ export const sidebarContent: SidebarContentType[] = [
   },
   {
     title: "Web3",
-    icon: "Web3",
-    items:[
+    icon: "/Web3.svg",
+    items: [
       {
         title: "Transaction",
         type: "transaction",

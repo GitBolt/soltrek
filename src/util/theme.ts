@@ -143,6 +143,7 @@ export const theme = extendTheme({
           transition: "100ms",
           bg: 'transparent',
           color: 'blue.200',
+          fontWeight:"500",
           _hover: {
             bg: "bg.300",
           },
