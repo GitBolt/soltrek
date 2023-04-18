@@ -65,29 +65,23 @@ export const theme = extendTheme({
     Input: {
       baseStyle: {
         field: {
-          _focus: {
-            outline: "none"
-          },
-          _focusVisible: {
-            border: 'none'
-          },
-          color: 'blue.500',
+          color: "blue.100",
+          borderBottomColor:"bg.200",
           _placeholder: {
-            color: 'blue.500',
-            opacity: '45%',
+            color: "blue.100",
+            opacity: "30%",
           },
           _disabled: {
-            color: 'gray.200',
-            opacity: '80%',
+            color: "gray.200",
+            opacity: "80%",
           },
-          _hover: {
-            borderColor: 'blue.100',
-          }
+
         },
       },
       defaultProps: {
-        errorBorderColor: 'error',
-        focusBorderColor: "blue.200",
+        errorBorderColor: "error",
+        focusBorderColor: "bg.300",
+        variant: "flushed"
       },
     },
     Button: {
@@ -143,7 +137,7 @@ export const theme = extendTheme({
           transition: "100ms",
           bg: 'transparent',
           color: 'blue.200',
-          fontWeight:"500",
+          fontWeight: "500",
           _hover: {
             bg: "bg.300",
           },
