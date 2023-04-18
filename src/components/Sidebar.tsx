@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react';
 import { useReactFlow } from 'reactflow';
-import { Flex, Button, List, ListItem, Divider, Text } from '@chakra-ui/react'
+import { Flex, Button, List, ListItem, Divider, Text, Box, Icon } from '@chakra-ui/react'
 import Branding from '@/components/Branding';
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { SidebarContentType } from '@/types/sidebar';
@@ -56,17 +56,30 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
       <Flex sx={{
         w: "30%",
-        bg: "bg.200",
+        bg: "bg.300",
         h: "100%",
-        flexFlow: "column"
+        flexFlow: "column",
+        gap: "2rem",
+        justifyContent: 'center',
       }}>
-
         {sidebarContent.map((item) => (
           <Flex
+            cursor="pointer"
+            _hover={{ bg: "bg.100" }}
+            w="7rem"
+            h="8rem"
+            alignSelf="center"
+            borderRadius="1rem"
             onClick={() => setSelectedItemTitle(item.title)}
-            key={item.title} flexFlow="column" align="center" justify="center">
-            <img src={item.icon} alt="Icon" />
-            <Text>{item.title}</Text>
+            key={item.title}
+            flexFlow="column"
+            align="center"
+            justify="center"
+          >
+            <Box h="2rem" w="2rem">
+              <Icon as={item.icon.src} color="blue.200" alt="Icon" height="100%" width="100%" />
+            </Box>
+            <Text color="blue.200" fontSize="1.6rem">{item.title}</Text>
           </Flex>
         ))}
       </Flex>
