@@ -6,11 +6,12 @@ export type SubItemType = {
 export type ItemType = {
   title: string;
   type: string;
+  icon?: string;
   sub?: SubItemType[]
 }
 
 export interface SidebarContentType {
   title: string;
-  icon: any;
+  icon: string;
   items: ItemType[];
 }

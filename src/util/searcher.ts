@@ -9,9 +9,7 @@ export type SearchResult = {
   type?: string;
 };
 
-export const searcher = (
-  searchInput: string,
-): SearchResult[] => {
+export const searcher = (searchInput: string): SearchResult[] => {
   const results: SearchResult[] = [];
 
   const fuzzyMatch = (str: string, searchInput: string): boolean => {
@@ -34,13 +32,24 @@ export const searcher = (
   ): void => {
     for (const item of items) {
       if (fuzzyMatch(item.title, searchInput)) {
-        results.push({
-          title: item.title,
-          level: 'Item',
-          icon: icon,
-          type: item.type,
-
-        });
+        if (item.sub?.length) {
+          item.sub.forEach((subItem) => {
+            results.push({
+              title: subItem.title,
+              level: 'Item',
+              icon: icon,
+              parentTitle: item.title,
+              type: item.type,
+            });
+          });
+        } else {
+          results.push({
+            title: item.title,
+            level: 'Item',
+            icon: icon,
+            type: item.type,
+          });
+        }
       }
 
       if (item.sub) {
@@ -51,7 +60,7 @@ export const searcher = (
               level: 'Sub Item',
               icon: icon,
               parentTitle: item.title,
-              type: item.type
+              type: item.type,
             });
           }
         }
@@ -62,6 +71,15 @@ export const searcher = (
   for (const category of sidebarContent) {
     searchInItems(category.items, searchInput, category.icon);
   }
+
+  results.sort((a, b) => {
+    const titleA = a.title.toLowerCase();
+    const titleB = b.title.toLowerCase();
+    const searchInputLower = searchInput.toLowerCase();
+    const accuracyA = Math.abs(titleA.indexOf(searchInputLower) - titleA.indexOf(a.title)) + titleA.length - searchInputLower.length;
+    const accuracyB = Math.abs(titleB.indexOf(searchInputLower) - titleB.indexOf(b.title)) + titleB.length - searchInputLower.length;
+    return accuracyB - accuracyA;
+  });
 
   return results;
 };

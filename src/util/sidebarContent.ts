@@ -3,7 +3,7 @@ import { SidebarContentType } from '@/types/sidebar';
 export const sidebarContent: SidebarContentType[] = [
   {
     title: "Input",
-    icon: "/Input.svg",
+    icon: "/icons/Input.svg",
     items: [
       {
         title: "String Input",
@@ -21,7 +21,7 @@ export const sidebarContent: SidebarContentType[] = [
   },
   {
     title: "Output",
-    icon: "/Output.svg",
+    icon: "/icons/Output.svg",
     items: [
       {
         title: "Text Output",
@@ -35,7 +35,7 @@ export const sidebarContent: SidebarContentType[] = [
   },
   {
     title: "Crypto",
-    icon: "/Crypto.svg",
+    icon: "/icons/Crypto.svg",
     items: [
       {
         title: "Keypair",
@@ -49,7 +49,7 @@ export const sidebarContent: SidebarContentType[] = [
   },
   {
     title: "Math",
-    icon: "/Math.svg",
+    icon: "/icons/Math.svg",
     items: [
       {
         title: "Add",
@@ -57,30 +57,21 @@ export const sidebarContent: SidebarContentType[] = [
       },
     ],
   },
-  // {
-  //   title: "Function",
-  //   icon: "function",
-  //   items: [
-  //     {
-  //       title: "Get Price",
-  //       type: "getPrice",
-  //     },
-  //   ],
-  // },
   {
     title: "SDKs",
-    icon: "/SDK.svg",
+    icon: "/icons/SDK.svg",
     items: [
       {
         title: "HXRO Network",
-        type:"hxroNetwork",
+        type: "hxroNetwork",
+        icon: "/logos/HXRO.svg",
         sub: [
           {
-            title: "Pari - Get Contests",
+            title: "Parimutuel - Get Contests",
             type: "hxroPariGet"
           },
           {
-            title: "Pari - Place Position",
+            title: "Parimutuel - Place Position",
             type: "hxroPariPlace",
           },
         ]
@@ -90,7 +81,7 @@ export const sidebarContent: SidebarContentType[] = [
   },
   {
     title: "Explorer",
-    icon: "/Explorer.svg",
+    icon: "/icons/Explorer.svg",
     items: [
       {
         title: "Get Transaction",
@@ -108,7 +99,7 @@ export const sidebarContent: SidebarContentType[] = [
   },
   {
     title: "Web3",
-    icon: "/Web3.svg",
+    icon: "/icons/Web3.svg",
     items: [
       {
         title: "Transaction",

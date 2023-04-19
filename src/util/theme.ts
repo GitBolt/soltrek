@@ -6,15 +6,20 @@ export const theme = extendTheme({
     heading: `'Inter', sans-serif`,
   },
   colors: {
+
+    white: {
+      100: "#DEDEE2"
+    },
     bg: {
-      100: '#14131F',
-      200: '#14131F99',
-      300: '#232139',
-      400: '#1B192F',
+      100: '#14141B',
+      200: '#121218',
+      300: "#1C1F2B",
+      400: "#101018",
     },
     blue: {
-      100: "#847DD4",
-      200: "#7166EA",
+      100: "#6052FF",
+      200: "#7266FF",
+
       300: "#7166EACC",
       400: "#3E369B",
       500: "#7058FF",
@@ -26,11 +31,12 @@ export const theme = extendTheme({
       400: "#BF007333"
     },
     gray: {
-      100: "#322F58",
+      100: "#22212E",
       200: "#2E2C48",
       300: "#2E2C48", // Only to override default chakra's gray 300
     },
     error: "#B02A2A"
+    
   },
   components: {
 
@@ -128,15 +134,14 @@ export const theme = extendTheme({
           }
         },
         sidebar: {
-          fontSize: "1.8rem",
+          fontSize: "1.6rem",
           justifyContent: "space-between",
-          padding: "0 2rem",
+          padding: "0rem 2rem",
           w: "100%",
           boxShadow: "none",
-          h: "3.8rem",
+          h: "4rem",
           transition: "100ms",
           bg: 'transparent',
-          color: 'blue.200',
           fontWeight: "500",
           _hover: {
             bg: "bg.300",

@@ -47,25 +47,28 @@ const Sidebar = ({ sidebarContent }: Props) => {
     <Flex sx={{
       pos: "fixed",
       h: "100vh",
-      w: "30rem",
+      w: "36rem",
       overflowY: "auto",
       overflowX: "hidden",
       zIndex: 2,
     }}>
 
-
       <Flex sx={{
-        w: "30%",
-        bg: "bg.400",
+        w: "25%",
+        bg: "bg.200",
         h: "100%",
         flexFlow: "column",
+        boxShadow: "3px 0px 15px rgba(0, 0, 0, 0.2)",
+        zIndex: 3,
+        borderRadius:"5rem",
         gap: "2rem",
         justifyContent: 'center',
+
       }}>
         {sidebarContent.map((item) => (
           <Flex
             cursor="pointer"
-            _hover={{ bg: "bg.300" }}
+            _hover={{ bg: "bg.400" }}
             w="7rem"
             h="7rem"
             alignSelf="center"
@@ -76,22 +79,25 @@ const Sidebar = ({ sidebarContent }: Props) => {
             align="center"
             gap="1rem"
             justify="center"
+            bg={item.title == selectedItemTitle ? 'bg.400' : 'transparent'}
+            boxShadow={item.title == selectedItemTitle ? 'inset -4px -4px 5px rgba(52, 53, 87, 0.25), inset 4px 4px 5px rgba(0, 0, 0, 0.25)' : 'none'}
           >
             <Box h="1.8rem" w="1.8rem">
-              <img src={item.icon} alt="Icon" height="100%" width="100%" />
+              <img src={item.icon} style={{ filter: "hue-rotate(350deg)" }} alt="Icon" height="100%" width="100%" />
             </Box>
-            <Text color="blue.200" fontWeight={500} fontSize="1.5rem">{item.title}</Text>
+            <Text color="blue.100" fontWeight={500} fontSize="1.5rem">{item.title}</Text>
           </Flex>
         ))}
       </Flex>
 
       <Flex sx={{
         h: "100vh",
-        w: "70%",
+        w: "75%",
         bg: "bg.100",
         overflowY: "auto",
         overflowX: "hidden",
-        border: "1px solid #2C294A",
+        borderRight: "1px solid",
+        borderColor: "gray.100",
         flexFlow: "column"
       }}>
         <Branding />
@@ -107,7 +113,14 @@ const Sidebar = ({ sidebarContent }: Props) => {
           {selectedItemTitle && sidebarContent.find((item) => item.title == selectedItemTitle)!.items.map((item, index) => (
             <ListItem key={item.title}>
               <Button
+                leftIcon={item.icon ?
+                  <Box as="span" w="3rem" h="3rem" mr="-5rem">
+                    <img src={item.icon} alt="Logo" height="100%" width="100%" />
+                  </Box>
+                  : undefined}
+              
                 variant="sidebar"
+                color={item.sub?.length ? "white.100" : "blue.200"}
                 onClick={() => item.sub ? toggleSublist(index) : addNode(item.type!)}
                 rightIcon={item.sub ? (showSublist[index] ? <ChevronDownIcon /> : <ChevronRightIcon />) : undefined}>
                 {item.title}
@@ -122,7 +135,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
                           variant="sidebar"
                           fontWeight="500"
                           color="blue.300"
-                          fontSize="1.6rem"
+                          fontSize="1.5rem"
                           onClick={() => addNode(subItem.type)}
                         >
                           {subItem.title}

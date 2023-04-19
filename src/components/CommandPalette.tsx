@@ -3,17 +3,12 @@ import {
   Input,
   List,
   Modal,
-  ModalBody,
-  Grid,
   Flex,
-  Button,
   ListItem,
-  Divider,
   Text,
   useDisclosure,
   ModalContent,
   ModalOverlay,
-  ModalHeader,
   Box
 } from "@chakra-ui/react";
 import { useReactFlow } from "reactflow";
@@ -29,12 +24,14 @@ export const CommandPalette = () => {
   const [searchValue, setSearchValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [filteredItems, setFilteredItems] = useState<SearchResult[]>([]);
-  const [activeItemType, setActiveItemType] = useState<string>("")
   const { setNodes } = useReactFlow()
   const listRef = useRef(null)
 
+  const [selectedResult, setSelectedResult] = useState<number>(0);
+
 
   const addNode = (type: string) => {
+    console.log(type, +new Date())
     setNodes((nodes) => nodes.concat({
       id: createNodeId(),
       position: createNodePos(),
@@ -50,29 +47,6 @@ export const CommandPalette = () => {
       inputRef.current?.focus();
     }
 
-    if (event.key === "ArrowUp") {
-      event.preventDefault();
-      if (filteredItems.length > 0) {
-        setActiveItemType((prevType) => {
-          const currentIndex = filteredItems.findIndex((item) => item.type === prevType);
-          const newIndex = Math.max(currentIndex - 1, 0);
-          return filteredItems[newIndex]?.type || "";
-        });
-      }
-    }
-  
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      if (filteredItems.length > 0) {
-        setActiveItemType((prevType) => {
-          const currentIndex = filteredItems.findIndex((item) => item.type === prevType);
-          const newIndex = Math.min(currentIndex + 1, filteredItems.length - 1);
-          return filteredItems[newIndex]?.type || "";
-        });
-      }
-    }
-    
-
     if (event.key === "Escape" && isOpen) {
       event.preventDefault()
       onClose()
@@ -80,8 +54,18 @@ export const CommandPalette = () => {
 
     if (event.key === "Enter") {
       event.preventDefault();
-      addNode(activeItemType || filteredItems[0]?.type || "stringInput");
+      addNode(filteredItems[selectedResult]?.type || "stringInput");
     }
+
+    // if (event.key === "ArrowUp") {
+    //   event.preventDefault();
+    //   setSelectedResult((prev) => (prev > 0 ? prev - 1 : 0));
+    // }
+
+    // if (event.key === "ArrowDown") {
+    //   event.preventDefault();
+    //   setSelectedResult((prev) => (prev < filteredItems.length - 1 ? prev + 1 : prev));
+    // }
   };
 
   const handleClickOutside = (e: any) => {
@@ -121,12 +105,12 @@ export const CommandPalette = () => {
       setFilteredItems([]);
       return;
     }
-  
+
     const searched = searcher(searchValue)
     setFilteredItems(searched)
-  
+
   }, [searchValue]);
-  
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={inputRef}>
@@ -158,11 +142,12 @@ export const CommandPalette = () => {
             mb="1rem"
             h="4rem"
             fontSize="1.8rem"
+            // onKeyDown={handleKeyDown} // Add this line
             onChange={(event) => setSearchValue(event.target.value)}
           />
           <List w="90%">
 
-            {!filteredItems.length && <Text fontSize="1.4rem" color="blue.300" mb="1rem" fontWeight={600}>Start searching to get items from these categories</Text>
+            {!filteredItems.length && <Text fontSize="1.4rem" color="blue.300" mb="1rem" fontWeight={600}>{searchValue ? 'No results found...' : 'Start searching to get items from these categories'}</Text>
             }
             {filteredItems.length
               ? filteredItems.map((item, index) => (
@@ -170,9 +155,9 @@ export const CommandPalette = () => {
                   key={item.title}
                   p="1rem 1rem"
                   borderRadius="0.75rem"
-                  _hover={{ bg: "bg.300" }}
-                  bg={activeItemType === item.type ? "bg.300" : "transparent"}
+                  _hover={{ bg: "#23213987" }}
                   onClick={() => addNode(item.type || "stringInput")}
+                // bg={selectedResult === index ? "bg.300" : "transparent"} // Add this line
                 >
                   <Flex justify="start" align="center" gap="2rem">
                     <Box w="1.8rem" h="1.8rem">
@@ -191,8 +176,7 @@ export const CommandPalette = () => {
                   </Flex>
                 </ListItem>
               ))
-
-              : sidebarContent.map((item) => (
+              : !searchValue && sidebarContent.map((item) => (
                 <ListItem
                   key={item.title}
                   p="1rem 1rem"
