@@ -31,7 +31,7 @@ const BaseNode: FC<
         border="1px solid"
         borderColor={selected ? "magenta.300" : "gray.200"}
         borderRadius="10px"
-        boxShadow={selected ? "0px 0px 15px #732562" : ""}
+        boxShadow={selected ? "0px 0px 15px #732562" : "0px 0px 30px rgba(0, 0, 0, 0.28)"}
       >
         <Flex
           background="rgba(46, 43, 80, 0.4)"

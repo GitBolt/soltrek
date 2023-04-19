@@ -152,9 +152,9 @@ export const CommandPalette = () => {
             {!filteredItems.length && <Text fontSize="1.4rem" color="blue.300" mb="1rem" fontWeight={600}>{searchValue ? 'No results found...' : 'Start searching to get items from these categories'}</Text>
             }
             {filteredItems.length
-              ? filteredItems.map((item, index) => (
+              ? filteredItems.map((item) => (
                 <ListItem
-                  key={item.title}
+                  key={item.type}
                   p="1rem 1rem"
                   borderRadius="0.75rem"
                   _hover={{ bg: "#23213987" }}

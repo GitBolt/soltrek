@@ -58,9 +58,9 @@ const Sidebar = ({ sidebarContent }: Props) => {
         bg: "bg.200",
         h: "100%",
         flexFlow: "column",
-        boxShadow: "3px 0px 15px rgba(0, 0, 0, 0.2)",
+        boxShadow: "3px 0px 15px rgba(0, 0, 0, 0.36)",
         zIndex: 3,
-        borderRadius: "5rem",
+        borderRadius: "0 5rem 5rem 0",
         gap: "2rem",
         justifyContent: 'center',
 
@@ -95,7 +95,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
       <Flex sx={{
         w: "75%",
-        backdropFilter:"blur(15px)",
+        backdropFilter: "blur(15px)",
         overflowY: "auto",
         overflowX: "hidden",
         borderRight: "1px solid",
@@ -115,12 +115,15 @@ const Sidebar = ({ sidebarContent }: Props) => {
           {selectedItemTitle && sidebarContent.find((item) => item.title == selectedItemTitle)!.items.map((item, index) => (
             <ListItem key={item.title}>
               <Button
+                borderTop={index == 0 ? "1px solid" : "none"}
+                borderBottom="1px solid"
+                borderColor="gray.100"
                 leftIcon={item.icon ?
                   <Box as="span" w="3rem" h="3rem" mr="-5rem">
                     <img src={item.icon} alt="Logo" height="100%" width="100%" />
                   </Box>
                   : undefined}
-
+                borderRadius="0"
                 variant="sidebar"
                 color={item.sub?.length ? "white.100" : "blue.200"}
                 onClick={() => item.sub ? toggleSublist(index) : addNode(item.type!)}

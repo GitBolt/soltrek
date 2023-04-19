@@ -39,7 +39,7 @@ export const searcher = (searchInput: string): SearchResult[] => {
               level: 'Item',
               icon: icon,
               parentTitle: item.title,
-              type: item.type,
+              type: subItem.type,
             });
           });
         } else {
