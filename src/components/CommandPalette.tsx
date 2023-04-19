@@ -96,6 +96,7 @@ export const CommandPalette = () => {
     }
 
     const searched = searcher(searchValue)
+    console.log(searched[0])
     setFilteredItems(searched)
 
   }, [searchValue]);

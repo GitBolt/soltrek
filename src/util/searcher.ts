@@ -60,7 +60,7 @@ export const searcher = (searchInput: string): SearchResult[] => {
               level: 'Sub Item',
               icon: icon,
               parentTitle: item.title,
-              type: item.type,
+              type: subItem.type,
             });
           }
         }

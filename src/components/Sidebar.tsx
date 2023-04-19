@@ -60,7 +60,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
         flexFlow: "column",
         boxShadow: "3px 0px 15px rgba(0, 0, 0, 0.2)",
         zIndex: 3,
-        borderRadius:"5rem",
+        borderRadius: "5rem",
         gap: "2rem",
         justifyContent: 'center',
 
@@ -80,10 +80,13 @@ const Sidebar = ({ sidebarContent }: Props) => {
             gap="1rem"
             justify="center"
             bg={item.title == selectedItemTitle ? 'bg.400' : 'transparent'}
-            boxShadow={item.title == selectedItemTitle ? 'inset -4px -4px 5px rgba(52, 53, 87, 0.25), inset 4px 4px 5px rgba(0, 0, 0, 0.25)' : 'none'}
+            boxShadow={item.title == selectedItemTitle ?
+              'inset -4px -4px 5px rgba(52, 53, 87, 0.25), inset 4px 4px 5px rgba(0, 0, 0, 0.25)' :
+              '-4px -4px 5px rgba(52, 53, 87, 0.25), 4px 4px 5px rgba(0, 0, 0, 0.25)'
+            }
           >
             <Box h="1.8rem" w="1.8rem">
-              <img src={item.icon} style={{ filter: "hue-rotate(350deg)" }} alt="Icon" height="100%" width="100%" />
+              <img src={item.icon} style={{ filter: `hue-rotate(350deg)` }} alt="Icon" height="100%" width="100%" />
             </Box>
             <Text color="blue.100" fontWeight={500} fontSize="1.5rem">{item.title}</Text>
           </Flex>
@@ -118,7 +121,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
                     <img src={item.icon} alt="Logo" height="100%" width="100%" />
                   </Box>
                   : undefined}
-              
+
                 variant="sidebar"
                 color={item.sub?.length ? "white.100" : "blue.200"}
                 onClick={() => item.sub ? toggleSublist(index) : addNode(item.type!)}
