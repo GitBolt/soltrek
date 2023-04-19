@@ -3,7 +3,7 @@ import Playground from "@/layout/Playground";
 import { Flex } from "@chakra-ui/react";
 import Sidebar from "@/components/Sidebar";
 import { sidebarContent } from "@/util/sidebarContent";
-import { FuzzySearch } from "@/components/FuzzySearch";
+import { CommandPalette } from "@/components/CommandPalette";
 import { Navbar } from "layouts/Navbar";
 
 const Home: NextPage = () => {
@@ -12,7 +12,7 @@ const Home: NextPage = () => {
       <Flex flexFlow="column" h="100%">
         <Navbar />
         <Sidebar sidebarContent={sidebarContent} />
-        <FuzzySearch />
+        <CommandPalette />
         <Playground />
       </Flex>
     </>

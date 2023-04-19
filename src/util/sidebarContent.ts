@@ -73,6 +73,7 @@ export const sidebarContent: SidebarContentType[] = [
     items: [
       {
         title: "HXRO Network",
+        type:"hxroNetwork",
         sub: [
           {
             title: "Pari - Get Contests",

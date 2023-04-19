@@ -3,12 +3,13 @@ import { sidebarContent } from './sidebarContent';
 
 export type SearchResult = {
   level: 'Item' | 'Sub Item';
-  category: string;
-  item: string;
-  subItem?: string;
+  icon: string;
+  title: string;
+  parentTitle?: string;
+  type?: string;
 };
 
-export const searchSidebarContent = (
+export const searcher = (
   searchInput: string,
 ): SearchResult[] => {
   const results: SearchResult[] = [];
@@ -29,14 +30,16 @@ export const searchSidebarContent = (
   const searchInItems = (
     items: ItemType[],
     searchInput: string,
-    categoryTitle: string
+    icon: string
   ): void => {
     for (const item of items) {
       if (fuzzyMatch(item.title, searchInput)) {
         results.push({
+          title: item.title,
           level: 'Item',
-          category: categoryTitle,
-          item: item.title
+          icon: icon,
+          type: item.type,
+
         });
       }
 
@@ -44,10 +47,11 @@ export const searchSidebarContent = (
         for (const subItem of item.sub) {
           if (fuzzyMatch(subItem.title, searchInput)) {
             results.push({
+              title: subItem.title,
               level: 'Sub Item',
-              category: categoryTitle,
-              item: item.title,
-              subItem: subItem.title
+              icon: icon,
+              parentTitle: item.title,
+              type: item.type
             });
           }
         }
@@ -56,15 +60,7 @@ export const searchSidebarContent = (
   };
 
   for (const category of sidebarContent) {
-    if (fuzzyMatch(category.title, searchInput)) {
-      results.push({
-        level: 'Item',
-        category: category.title,
-        item: ''
-      });
-    }
-
-    searchInItems(category.items, searchInput, category.title);
+    searchInItems(category.items, searchInput, category.icon);
   }
 
   return results;

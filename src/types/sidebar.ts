@@ -5,7 +5,7 @@ export type SubItemType = {
 
 export type ItemType = {
   title: string;
-  type?: string;
+  type: string;
   sub?: SubItemType[]
 }
 
