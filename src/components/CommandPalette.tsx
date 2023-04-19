@@ -141,6 +141,7 @@ export const CommandPalette = () => {
             value={searchValue}
             w="90%"
             mb="1rem"
+            variant="flushed"
             h="4rem"
             fontSize="1.8rem"
             // onKeyDown={handleKeyDown} // Add this line

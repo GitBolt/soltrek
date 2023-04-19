@@ -56,12 +56,11 @@ const StringInputNode: FC<NodeProps<InputNodeType>> = (props) => {
     <div>
       <BaseNode {...props} title="String Input">
         <Input
-          fontSize="1.2rem"
-          h="3rem"
-          w="90%"
+          variant="node"
           placeholder={props.data.placeholder || "Enter some text here..."}
           id={props.id}
-          onChange={(e) => updateText(e.target.value)} />
+          onChange={(e) => updateText(e.target.value)}
+           />
 
         <CustomHandle pos={Position.Right} type="source" onConnect={(e: any) => CustomHandleConnect(e)} />
       </BaseNode>

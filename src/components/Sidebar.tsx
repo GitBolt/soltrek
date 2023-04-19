@@ -94,9 +94,8 @@ const Sidebar = ({ sidebarContent }: Props) => {
       </Flex>
 
       <Flex sx={{
-        h: "100vh",
         w: "75%",
-        bg: "bg.100",
+        backdropFilter:"blur(15px)",
         overflowY: "auto",
         overflowX: "hidden",
         borderRight: "1px solid",

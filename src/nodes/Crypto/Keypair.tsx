@@ -11,7 +11,6 @@ import { Keypair } from "@solana/web3.js";
 import b58 from "bs58";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue } from "@/util/helper";
-import { bs58 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 
 const KeypairNode: FC<NodeProps> = (props) => {
   const [kp, setKp] = useState<Keypair>(new Keypair());
@@ -51,7 +50,7 @@ const KeypairNode: FC<NodeProps> = (props) => {
         parsed = new Uint8Array(privKey)
       } catch {
         try {
-          parsed = new Uint8Array(bs58.decode(privKey))
+          parsed = new Uint8Array(b58.decode(privKey))
         } catch {
           return
         }
@@ -90,9 +89,15 @@ const KeypairNode: FC<NodeProps> = (props) => {
   }, [kp]);
 
   const KeypairCode = `
-  const generateKeypair = ()=>{
+  import b58 from "bs58"
+  import { Keypair } from "@solana/web3.js"
+
+  const generateKeypair = () => {
     const kp = new Keypair()
-    const { publicKey, secretKey } = kp;
+    const { publicKey, secretKey } = kp
+    const pubKey = b58.encode(publicKey)
+    const privKey = b58.encode(secretKey)
+    return {pubKey, privKey}
   }
   `;
 

@@ -54,7 +54,7 @@ const GetTokenDetailsNode: FC<NodeProps> = (props) => {
           </Box>
         </>
         :
-        <Text color="gray.100" fontSize="1.5rem">{error || 'Empty...'}</Text>}
+        <Text color="blue.300" opacity="50%" fontSize="1.5rem">{error || 'Empty...'}</Text>}
 
       <CustomHandle pos="left" type="target" label="Mint" />
     </BaseNode >

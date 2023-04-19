@@ -32,34 +32,36 @@ export const theme = extendTheme({
     },
     gray: {
       100: "#22212E",
-      200: "#2E2C48",
-      300: "#2E2C48", // Only to override default chakra's gray 300
+      200: "#2A2842",
+      300: "#514D6D",
     },
     error: "#B02A2A"
-    
+
   },
   components: {
 
     NumberInput: {
       baseStyle: {
         field: {
+          h: "2.8rem",
+          bg: "transparent",
+          border: "1px solid",
+          borderColor: "gray.200",
+          color: "blue.100",
+          _placeholder: {
+            color: "blue.300",
+            opacity: "30%",
+          },
           _focus: {
-            outline: "none"
+            borderColor: "blue.400",
+            outline: "none",
+            border: "1px solid",
           },
           _focusVisible: {
-            border: 'none'
-          },
-          color: 'blue.500',
-          _placeholder: {
-            color: 'blue.500',
-            opacity: '45%',
-          },
-          _disabled: {
-            color: 'gray.200',
-            opacity: '80%',
+            border: "none"
           },
           _hover: {
-            borderColor: 'blue.100',
+            borderColor: "gray.300",
           }
         },
       },
@@ -69,10 +71,11 @@ export const theme = extendTheme({
       },
     },
     Input: {
+
       baseStyle: {
         field: {
           color: "blue.100",
-          borderBottomColor:"bg.200",
+          borderBottomColor: "bg.200",
           _placeholder: {
             color: "blue.100",
             opacity: "30%",
@@ -84,10 +87,27 @@ export const theme = extendTheme({
 
         },
       },
+      variants: {
+        node: {
+          field: {
+            h: "2.8rem",
+            bg: "transparent",
+            border: "1px solid",
+            borderColor: "gray.200",
+            color: "blue.100",
+            _placeholder: {
+              color: "blue.300",
+              opacity: "30%",
+            },
+            _focus: {
+              borderColor: "blue.400"
+            }
+          },
+        }
+      },
       defaultProps: {
         errorBorderColor: "error",
         focusBorderColor: "bg.300",
-        variant: "flushed"
       },
     },
     Button: {

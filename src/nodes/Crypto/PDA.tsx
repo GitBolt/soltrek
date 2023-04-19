@@ -74,9 +74,14 @@ const PDA: FC<NodeProps> = (props) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
+
+  const cleanedCode = createPDA.toString().replace(/_WEBPACK_IMPORTED_MODULE_\w+\./g, '');
+  const functionName = createPDA.name;
+  const CODE = `export const ${functionName} = ${cleanedCode}`;
+
   return (
     <>
-      <BaseNode {...props} title="PDA">
+      <BaseNode {...props} title="PDA" code={CODE}>
         <CustomHandle
           pos="left"
           type="target"

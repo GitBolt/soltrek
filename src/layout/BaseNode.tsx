@@ -21,7 +21,7 @@ const BaseNode: FC<
         <CodeModel isOpen={isOpen} onClose={onClose} code={CodeState} />
       )}
       <Flex
-        backgroundColor="bg.400"
+        background="linear-gradient(96.6deg, #222037 2.37%, #191728 101.12%)"
         minW={width ? width : "220px"}
         h="auto"
         minH={height ? height : "100px"}
@@ -34,7 +34,7 @@ const BaseNode: FC<
         boxShadow={selected ? "0px 0px 15px #732562" : ""}
       >
         <Flex
-          backgroundColor="gray.100"
+          background="rgba(46, 43, 80, 0.4)"
           align="center"
           justify={!code ? "center" : "space-between"}
           px={4}
@@ -42,7 +42,7 @@ const BaseNode: FC<
           width="100%"
           borderRadius="10px 10px 0 0"
         >
-          <Text color="blue.100" fontWeight="600" fontSize="12px">
+          <Text color="#42426F" fontWeight="600" fontSize="1.2rem">
             {title}
           </Text>
           {code && (

@@ -4,22 +4,9 @@ import BaseNode from "@/layout/BaseNode";
 import { CustomHandle } from "@/layout/CustomHandle";
 import { handleValue, truncatedPublicKey } from "@/util/helper";
 import { HXRO } from "@/sdks/hxro";
-import { Box, Flex, Text, useClipboard } from "@chakra-ui/react";
-import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
+import { Flex, Text } from "@chakra-ui/react";
 import { HXROTypes } from "@/types/protocols";
 
-const CODE = `
-const getMarkets = async (marketPair: sdk.MarketPairEnum, amount: number, duration: number) => {
-  const config = sdk.DEVNET_CONFIG
-  const connection = new Connection("devnet_uri")
-  const parimutuelWeb3 = new sdk.ParimutuelWeb3(config, connection)
-  const markets = sdk.getMarketPubkeys(config, marketPair);
-  const parimutuels = await parimutuelWeb3.getParimutuels(
-    markets.filter((market) => market.duration == duration)
-    , amount);
-  return parimutuels
-}
-`
 
 const USDC_DECIMALS = 1_000_000
 
@@ -97,7 +84,11 @@ const HXROPariGet: FC<NodeProps> = (props) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
-  // Public Key: ${item.pubkey} \nStrike: $${item.info.strike} \nSlot: ${item.info.slot} \nLongs: $${item.info.longs} \nShorts: $${item.info.shorts} \nExpired?: ${item.info.expired ? 'true' : 'false'}
+
+  const cleanedCode = HXRO.getMarkets.toString().replace(/_WEBPACK_IMPORTED_MODULE_\w+\./g, '');
+  const functionName = HXRO.getMarkets.name;
+  const CODE = `export const ${functionName} = ${cleanedCode}`;
+
   return (
     <BaseNode
       code={CODE}
