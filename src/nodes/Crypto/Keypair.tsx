@@ -45,14 +45,14 @@ const KeypairNode: FC<NodeProps> = (props) => {
 
     const privKey = values["fromKey"]
     if (privKey) {
-      let parsed = new Uint8Array()
+      let parsed: any = b58.decode(privKey)
       try {
-        parsed = new Uint8Array(privKey)
+        parsed = new Uint8Array(parsed)
       } catch {
         try {
-          parsed = new Uint8Array(b58.decode(privKey))
-        } catch {
-          return
+          parsed = new Uint8Array(privKey)
+        } catch (e) {
+          console.log(e)
         }
       }
       setKp(Keypair.fromSecretKey(parsed))

@@ -20,8 +20,8 @@ const TextOutputNode: FC<NodeProps> = (props) => {
     if (data) {
       data = stringify(data)
     }
-    setText(data || '')
-    setValue(data || '')
+    setText(data ? data.replace(/^"|"$/g, '') : '')
+    setValue(data? data.replace(/^"|"$/g, '') : '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data])
 
@@ -36,7 +36,7 @@ const TextOutputNode: FC<NodeProps> = (props) => {
           </Box>
         </>
         :
-        <Text color="gray.100" fontSize="1.8rem">Empty...</Text>}
+        <Text color="blue.300" opacity="50%" fontSize="1.8rem">Empty...</Text>}
       <CustomHandle pos={Position.Left} type="target" />
     </BaseNode >
   );

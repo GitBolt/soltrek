@@ -98,19 +98,8 @@ export const CommandPalette = () => {
     const searched = searcher(searchValue)
     console.log(searched[0])
     setFilteredItems(searched)
-
   }, [searchValue]);
 
-  useEffect(() => {
-    if (searchValue.trim() === '') {
-      setFilteredItems([]);
-      return;
-    }
-
-    const searched = searcher(searchValue)
-    setFilteredItems(searched)
-
-  }, [searchValue]);
 
 
   return (
@@ -154,7 +143,7 @@ export const CommandPalette = () => {
             {filteredItems.length
               ? filteredItems.map((item) => (
                 <ListItem
-                  key={item.type}
+                  key={item.type + item.title + item.level}
                   p="1rem 1rem"
                   borderRadius="0.75rem"
                   _hover={{ bg: "#23213987" }}
