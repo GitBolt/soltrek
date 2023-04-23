@@ -52,10 +52,13 @@ export const ConnectWalletButton = () => {
     <Menu>
       <MenuButton
         as={Button}
-        w="18rem"
-        h={connected ? '3.8rem' : '3.2rem'}
+        w="22rem"
+        borderRadius="0.5rem"
+        mr="2rem"
+        h={connected ? '3.8rem' : '3.6rem'}
         variant="filled"
         color="white"
+        bg="gray.200"
         rightIcon={
           connected && wallet ? (
             <Box h="2.5rem" w="2.5rem">
@@ -67,7 +70,7 @@ export const ConnectWalletButton = () => {
           ) : <ChevronDownIcon color="white" w="2rem" h="2rem" />
         }
       >
-        {!connected && <Text fontSize="1.5rem">Connect Wallet</Text>}
+        {!connected && <Text fontSize="1.6rem">Connect Wallet</Text>}
         {connected && wallet !== null && (
           <Text fontSize="1.4rem">
             {truncatedPublicKey(publicKey!.toString(), 7)}
@@ -76,17 +79,26 @@ export const ConnectWalletButton = () => {
       </MenuButton>
       {connected && (
         <MenuList
-          w="20rem"
+          w="22rem"
           p="0.5rem"
-          bg="bg.300"
+          bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
           borderRadius="1rem"
-          border='none'
+          borderColor="gray.200"
+          border="1px solid"
         >
-          <MenuItem bg="transparent" onClick={copyPublicKey} fontSize="1.4rem">
-            <Text color="blue.200">Copy address</Text>
+          <MenuItem
+            style={{ backdropFilter: "blur(10px)" }}
+            h="4rem"
+            _hover={{ background: "linear-gradient(243.86deg, rgba(38, 42, 55, 0.8) 10%,rgba(38, 42, 55, 0.4) 100%)" }}
+            bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
+            onClick={copyPublicKey}>
+            <Text color="blue.200" fontSize="1.5rem">Copy Address</Text>
           </MenuItem>
           <MenuItem
-            bg="transparent"
+            style={{ backdropFilter: "blur(10px)" }}
+            h="4rem"
+            _hover={{ background: "linear-gradient(243.86deg, rgba(38, 42, 55, 0.8) 10%,rgba(38, 42, 55, 0.4) 100%)" }}
+            bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
             onClick={async () => {
               if (wallet == null) {
                 return;
@@ -94,7 +106,7 @@ export const ConnectWalletButton = () => {
               await wallet.adapter.disconnect();
             }}
           >
-            <Text fontSize="1.4rem" color="blue.200">
+            <Text fontSize="1.5rem" color="blue.200">
               Disconnect
             </Text>
           </MenuItem>
@@ -102,21 +114,21 @@ export const ConnectWalletButton = () => {
       )}
       {!connected && (
         <MenuList
-          w="20rem"
+          w="22rem"
           p="0.5rem"
-          bg="bg.300"
+          bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
           borderRadius="1rem"
-          border='none'
+          borderColor="gray.200"
+          border="1px solid"
         >
           {wallets.map((wallet: SolanaWallet, index) => {
             return (
               <MenuItem
                 key={index}
-
-                h="4rem"
-                bg="bg.300"
-                borderBottom="1px solid"
-                borderColor="gray.200"
+                style={{ backdropFilter: "blur(10px)" }}
+                h="5rem"
+                _hover={{ background: "linear-gradient(243.86deg, rgba(38, 42, 55, 0.8) 10%,rgba(38, 42, 55, 0.4) 100%)" }}
+                bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
                 onClick={async () => {
                   try {
                     onConnectWallet(wallet)

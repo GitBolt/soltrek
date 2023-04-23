@@ -6,7 +6,6 @@ export const theme = extendTheme({
     heading: `'Inter', sans-serif`,
   },
   colors: {
-
     white: {
       100: "#DEDEE2"
     },
