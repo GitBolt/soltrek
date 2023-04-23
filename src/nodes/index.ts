@@ -16,8 +16,8 @@ import SendToken from "./Web3/SendToken";
 import SolanaPay from "./Web3/SolanaPay";
 import GetTransactionNode from "./Explorer/GetTransaction";
 import GetSNS from "./Explorer/GetSNS";
-import HXROPariGet from "./SDKs/HXROPariGet";
-import HXROPariPlace from "./SDKs/HXROPariPlace";
+import HXROPariGet from "./SDKs/HXRO/PariGet";
+import HXROPariPlace from "./SDKs/HXRO/PariPlace";
 
 export const nodeTypes = {
   stringInput: StringInputNode,

@@ -4,7 +4,7 @@ import { Flex } from "@chakra-ui/react";
 import Sidebar from "@/components/Sidebar";
 import { sidebarContent } from "@/util/sidebarContent";
 import { CommandPalette } from "@/components/CommandPalette";
-import { Navbar } from "layouts/Navbar";
+import { Navbar } from "@/components/Navbar";
 
 const Home: NextPage = () => {
   return (
