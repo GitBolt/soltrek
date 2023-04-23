@@ -88,3 +88,17 @@ export const truncatedPublicKey = (publicKey: string, length?: number) => {
   }
   return publicKey.replace(publicKey.slice(length, 44 - length), '...');
 };
+
+export const getNetworkName = (rpc_url: string) => {
+  if (!rpc_url) return
+
+  const lowerCaseInput = rpc_url.toLowerCase();
+  if (lowerCaseInput.includes("devnet")) {
+    return "Devnet";
+  } else if (lowerCaseInput.includes("mainnet")) {
+    return "Mainnet-Beta";
+  } else if (lowerCaseInput.includes("testnet")) {
+    return "Testnet";
+  }
+
+}

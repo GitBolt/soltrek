@@ -22,6 +22,7 @@ export const theme = extendTheme({
       300: "#7166EACC",
       400: "#3E369B",
       500: "#7058FF",
+      "gradient": 'linear-gradient(268.02deg, #33335E 0.24%, #2D2D56 97.53%);'
     },
     magenta: {
       100: "#DD117F",
@@ -113,9 +114,6 @@ export const theme = extendTheme({
       baseStyle: {
         fontWeight: "600",
         boxShadow: "4px 4px 0px -1px rgba(0, 0, 0, 0.15)",
-        _active: {
-          transform: "scale(0.98)",
-        }
       },
       variants: {
         filled: {

@@ -10,7 +10,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { ReactFlowProvider } from 'reactflow'
 import { theme } from '@/util/theme'
 import { Wallet } from "@/context/walletContext";
-
+import { NetworkProvider } from '@/context/configContext';
 
 export default function SolBuild({ Component, pageProps }: AppProps) {
 
@@ -18,7 +18,9 @@ export default function SolBuild({ Component, pageProps }: AppProps) {
     <Wallet>
       <ChakraProvider theme={theme}>
         <ReactFlowProvider>
-          <Component {...pageProps} />
+          <NetworkProvider>
+            <Component {...pageProps} />
+          </NetworkProvider>
         </ReactFlowProvider>
       </ChakraProvider>
     </Wallet>

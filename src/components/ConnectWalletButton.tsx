@@ -58,7 +58,7 @@ export const ConnectWalletButton = () => {
         h={connected ? '3.8rem' : '3.6rem'}
         variant="filled"
         color="white"
-        bg="gray.200"
+        bg="blue.gradient"
         rightIcon={
           connected && wallet ? (
             <Box h="2.5rem" w="2.5rem">

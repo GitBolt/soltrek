@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import Playground from "@/layouts/Playground";
 import { Flex } from "@chakra-ui/react";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/layouts/Sidebar";
 import { sidebarContent } from "@/util/sidebarContent";
 import { CommandPalette } from "@/components/CommandPalette";
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/layouts/Navbar";
 
 const Home: NextPage = () => {
   return (
