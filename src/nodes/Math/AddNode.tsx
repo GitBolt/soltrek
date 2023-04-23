@@ -1,8 +1,8 @@
 import React, { useState, useEffect, FC } from 'react';
 import { Position, NodeProps, useNodeId, useReactFlow } from 'reactflow';
-import BaseNode from '@/layout/BaseNode';
+import BaseNode from '@/layouts/BaseNode';
 import { Text } from '@chakra-ui/react';
-import { CustomHandle } from '@/layout/CustomHandle';
+import { CustomHandle } from '@/layouts/CustomHandle';
 import { handleValue } from '@/util/helper';
 
 const AddNode: FC<NodeProps> = (props) => {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, FC } from 'react';
 import { Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
-import BaseNode from '@/layout/BaseNode';
+import BaseNode from '@/layouts/BaseNode';
 import { Box } from '@chakra-ui/react';
-import { CustomHandle } from '@/layout/CustomHandle';
+import { CustomHandle } from '@/layouts/CustomHandle';
 
 const ColorOutputNode: FC<NodeProps> = (props) => {
   const [color, setColor] = useState<string | undefined>(undefined);

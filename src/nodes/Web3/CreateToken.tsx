@@ -1,8 +1,8 @@
 import React, { useState, useEffect, FC } from "react";
 import { NodeProps, useNodeId, useReactFlow, Connection } from "reactflow";
 import base58 from "bs58";
-import BaseNode from "@/layout/BaseNode";
-import { CustomHandle } from "@/layout/CustomHandle";
+import BaseNode from "@/layouts/BaseNode";
+import { CustomHandle } from "@/layouts/CustomHandle";
 import { CreateMintCode, createNewMint } from "@/util/createToken";
 import { Keypair, PublicKey, TransactionInstruction } from "@solana/web3.js";
 import { handleValue } from "@/util/helper";

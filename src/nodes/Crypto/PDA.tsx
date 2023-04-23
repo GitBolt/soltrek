@@ -1,5 +1,5 @@
-import BaseNode from "@/layout/BaseNode";
-import { CustomHandle } from "@/layout/CustomHandle";
+import BaseNode from "@/layouts/BaseNode";
+import { CustomHandle } from "@/layouts/CustomHandle";
 import { createPDA } from "@/util/generatePDA";
 import { handleValue } from "@/util/helper";
 import React, { FC, useEffect, useState } from "react";

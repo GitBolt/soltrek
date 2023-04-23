@@ -4,8 +4,6 @@ import { CloseButton } from '@chakra-ui/react';
 
 const foreignObjectSize = 40;
 
-
-
 const Edge = ({
   id,
   sourceX,

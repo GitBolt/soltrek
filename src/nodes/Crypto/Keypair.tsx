@@ -6,10 +6,10 @@ import {
   useReactFlow,
   Connection,
 } from "reactflow";
-import BaseNode from "@/layout/BaseNode";
+import BaseNode from "@/layouts/BaseNode";
 import { Keypair } from "@solana/web3.js";
 import b58 from "bs58";
-import { CustomHandle } from "@/layout/CustomHandle";
+import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/helper";
 
 const KeypairNode: FC<NodeProps> = (props) => {

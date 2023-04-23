@@ -1,8 +1,8 @@
 import React, { useState, useEffect, FC } from 'react';
 import { Position, NodeProps, useNodes, useNodeId, useReactFlow, Connection } from 'reactflow';
-import BaseNode from '@/layout/BaseNode';
+import BaseNode from '@/layouts/BaseNode';
 import { Text } from '@chakra-ui/react';
-import { CustomHandle } from '@/layout/CustomHandle';
+import { CustomHandle } from '@/layouts/CustomHandle';
 
 const GetPriceNode: FC<NodeProps> = (props) => {
   const [price, setPrice] = useState<number | undefined>(undefined);

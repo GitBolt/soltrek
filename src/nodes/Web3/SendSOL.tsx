@@ -6,8 +6,8 @@ import {
   useReactFlow,
   Connection,
 } from "reactflow";
-import BaseNode from "@/layout/BaseNode";
-import { CustomHandle } from "@/layout/CustomHandle";
+import BaseNode from "@/layouts/BaseNode";
+import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/helper";
 import { sendSOL, CodeSOL } from "@/util/sendToken";
 import { TransactionInstruction } from "@solana/web3.js";

@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import Playground from "@/layout/Playground";
+import Playground from "@/layouts/Playground";
 import { Flex } from "@chakra-ui/react";
 import Sidebar from "@/components/Sidebar";
 import { sidebarContent } from "@/util/sidebarContent";

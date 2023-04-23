@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FC } from "react";
 import { NodeProps, useNodeId, useReactFlow, Connection as RCon } from "reactflow";
-import BaseNode from "@/layout/BaseNode";
-import { CustomHandle } from "@/layout/CustomHandle";
+import BaseNode from "@/layouts/BaseNode";
+import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/helper";
 import { HXRO } from "@/sdks/hxro";
 import { Text } from "@chakra-ui/react";

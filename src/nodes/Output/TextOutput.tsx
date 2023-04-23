@@ -1,8 +1,8 @@
 import React, { useState, useEffect, FC } from 'react';
 import { Position, NodeProps, useNodeId, useReactFlow } from 'reactflow';
-import BaseNode from '@/layout/BaseNode';
+import BaseNode from '@/layouts/BaseNode';
 import { Text, useClipboard, Box } from '@chakra-ui/react';
-import { CustomHandle } from '@/layout/CustomHandle';
+import { CustomHandle } from '@/layouts/CustomHandle';
 import { CheckIcon, CopyIcon } from '@chakra-ui/icons';
 import { stringify } from '@/util/helper';
 

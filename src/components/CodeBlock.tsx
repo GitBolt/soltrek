@@ -37,7 +37,7 @@ export const CodeModel = ({ code, isOpen, onClose }: Props) => {
         bg={"#282A36"}
         fontSize={"1.5rem"}
         h={"max"}
-        borderRadius={"0.5rem"} // Add border radius for glassy effect
+        borderRadius={"0.5rem"}
       >
         <ModalHeader color={"white"}>TypeScript Code</ModalHeader>
         <ModalCloseButton size={"xl"} mt={2} mr={2} color={"white"} />

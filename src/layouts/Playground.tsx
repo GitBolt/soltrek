@@ -12,7 +12,7 @@ import ReactFlow, {
 } from 'reactflow';
 import styles from '@/styles/Playground.module.css'
 import { nodeTypes } from '@/nodes';
-import NodeEdge from '@/components/NodeEdge';
+import NodeEdge from '@/layouts/NodeEdge';
 import useCtrlA from '@/util/useCtrlA';
 
 type Props = {

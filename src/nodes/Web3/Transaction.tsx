@@ -5,8 +5,8 @@ import {
   useReactFlow,
   Connection as RFCon,
 } from "reactflow";
-import BaseNode from "@/layout/BaseNode";
-import { CustomHandle } from "@/layout/CustomHandle";
+import BaseNode from "@/layouts/BaseNode";
+import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/helper";
 import {
   TransactionInstruction,

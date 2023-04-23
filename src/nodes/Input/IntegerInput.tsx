@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import BaseNode from '@/layout/BaseNode';
+import BaseNode from '@/layouts/BaseNode';
 import { Position, NodeProps, Connection, useReactFlow, useNodeId } from 'reactflow';
 import {
   NumberInput,
@@ -8,7 +8,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from '@chakra-ui/react'
-import { CustomHandle } from '@/layout/CustomHandle';
+import { CustomHandle } from '@/layouts/CustomHandle';
 
 type InputNodeType = {
   placeholder: string;

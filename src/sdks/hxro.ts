@@ -62,4 +62,30 @@ export namespace HXRO {
       return { error: true, message: err.message || JSON.stringify(err) || '' }
     }
   }
+
+
+  export const destroyPosition = async (
+    private_key: Uint8Array,
+    traderWalletPubKey: string,
+    parimutuelPubKey: string,
+  ) => {
+
+    const parimutuelWeb3 = new ParimutuelWeb3(
+      DEVNET_CONFIG,
+      connection
+    );
+    let txId = ''
+    try {
+      txId = await parimutuelWeb3.destroyPosition(
+        CustomWallet.with_private_key(private_key) as WalletSigner,
+        new PublicKey(traderWalletPubKey),
+        new PublicKey(parimutuelPubKey)
+      )
+      return { txId }
+    }
+    catch (err: any) {
+      console.log(err)
+      return { error: true, message: err.message || JSON.stringify(err) || '' }
+    }
+  }
 }
