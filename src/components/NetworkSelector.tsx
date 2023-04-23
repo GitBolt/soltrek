@@ -41,7 +41,7 @@ export const NetworkSelector = () => {
           <ChevronDownIcon color="white" w="2rem" h="2rem" />
         }
       >
-        {getNetworkName(selectedNetwork)}
+        {getNetworkName(selectedNetwork || "")}
       </MenuButton>
 
       <MenuList
@@ -74,7 +74,7 @@ export const NetworkSelector = () => {
           _hover={{ background: "linear-gradient(243.86deg, rgba(38, 42, 55, 0.8) 10%,rgba(38, 42, 55, 0.4) 100%)" }}
           bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
           onClick={async () => {
-            updateNetwork(process.env.NEXT_PUBLIC_DEFAULT_RPC)
+            updateNetwork(process.env.NEXT_PUBLIC_DEFAULT_RPC || "")
           }}
         >
           Devnet
