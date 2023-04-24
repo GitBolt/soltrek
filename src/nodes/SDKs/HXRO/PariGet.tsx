@@ -6,6 +6,7 @@ import { handleValue, truncatedPublicKey } from "@/util/helper";
 import { HXRO } from "@/sdks/hxro";
 import { Flex, Text } from "@chakra-ui/react";
 import { HXROTypes } from "@/types/protocols";
+import { useNetworkContext } from "@/context/configContext";
 
 
 const USDC_DECIMALS = 1_000_000
@@ -14,7 +15,7 @@ const HXROPariGet: FC<NodeProps> = (props) => {
   const { getNode, getEdges, setNodes } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
-
+  const { selectedNetwork } = useNetworkContext()
   const [data, setData] = useState<HXROTypes.FilteredContest[] | null>(null);
 
   const [addresses, setAddresses] = useState<any>({});
@@ -65,7 +66,11 @@ const HXROPariGet: FC<NodeProps> = (props) => {
 
     if (Object.values(values).length < 3) return;
 
-    HXRO.getMarkets(values["marketPair"], values["amount"], values["duration"])
+    HXRO.getMarkets(
+      selectedNetwork,
+      values["marketPair"],
+      values["amount"],
+      values["duration"])
       .then((res) => {
 
         const filtered = res.map(({ pubkey, info }) => ({

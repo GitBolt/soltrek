@@ -1,16 +1,21 @@
 import { SDKResponse } from "@/types/response";
 import CustomWallet from "@/util/wallet";
 import * as sdk from "@hxronetwork/parimutuelsdk";
-import { DEVNET_CONFIG, ParimutuelWeb3, PositionSideEnum, WalletSigner } from "@hxronetwork/parimutuelsdk";
+import { ParimutuelWeb3, PositionSideEnum, WalletSigner } from "@hxronetwork/parimutuelsdk";
 import { Connection, PublicKey } from "@solana/web3.js";
 
 
 export namespace HXRO {
 
-  const connection = new Connection("https://solana-devnet.g.alchemy.com/v2/uUAHkqkfrVERwRHXnj8PEixT8792zETN")
-
-  export const getMarkets = async (marketPair: sdk.MarketPairEnum, amount: number = 5, duration: number = 60) => {
-    const config = sdk.DEVNET_CONFIG
+  export const getMarkets = async (
+    selectedNetwork: string,
+    marketPair: sdk.MarketPairEnum,
+    amount: number = 5,
+    duration: number = 60
+  ) => {
+    
+    const connection = new Connection(selectedNetwork)
+    const config = selectedNetwork.includes("devnet") ? sdk.DEVNET_CONFIG : sdk.MAINNET_CONFIG
     const parimutuelWeb3 = new sdk.ParimutuelWeb3(config, connection)
 
     const markets = sdk.getMarketPubkeys(config, marketPair);
@@ -31,6 +36,7 @@ export namespace HXRO {
 
 
   export const placePosition = async (
+    selectedNetwork: string,
     priv_key: Uint8Array,
     pubKey: string,
     amount: number,
@@ -42,10 +48,10 @@ export namespace HXRO {
       return { error: true, message: "Enter 'Long' or 'Short'" }
     }
 
-    const parimutuelWeb3 = new ParimutuelWeb3(
-      DEVNET_CONFIG,
-      connection
-    );
+    const connection = new Connection(selectedNetwork)
+    const config = selectedNetwork.includes("devnet") ? sdk.DEVNET_CONFIG : sdk.MAINNET_CONFIG
+    const parimutuelWeb3 = new sdk.ParimutuelWeb3(config, connection)
+
     let txId = ''
     try {
       txId = await parimutuelWeb3.placePosition(
@@ -65,15 +71,16 @@ export namespace HXRO {
 
 
   export const destroyPosition = async (
+    selectedNetwork: string,
     private_key: Uint8Array,
     traderWalletPubKey: string,
     parimutuelPubKey: string,
   ) => {
 
-    const parimutuelWeb3 = new ParimutuelWeb3(
-      DEVNET_CONFIG,
-      connection
-    );
+    const connection = new Connection(selectedNetwork)
+    const config = selectedNetwork.includes("devnet") ? sdk.DEVNET_CONFIG : sdk.MAINNET_CONFIG
+    const parimutuelWeb3 = new sdk.ParimutuelWeb3(config, connection)
+
     let txId = ''
     try {
       txId = await parimutuelWeb3.destroyPosition(

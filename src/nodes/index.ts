@@ -18,6 +18,7 @@ import GetTransactionNode from "./Explorer/GetTransaction";
 import GetSNS from "./Explorer/GetSNS";
 import HXROPariGet from "./SDKs/HXRO/PariGet";
 import HXROPariPlace from "./SDKs/HXRO/PariPlace";
+import HXROPariDestroy from "./SDKs/HXRO/PariDestroy";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -38,6 +39,7 @@ export const nodeTypes = {
   getSns: GetSNS,
   hxroPariGet: HXROPariGet,
   hxroPariPlace: HXROPariPlace,
+  hxroPariDestroy: HXROPariDestroy,
   getTransaction: GetTransactionNode,
   solanaPay: SolanaPay,
 };

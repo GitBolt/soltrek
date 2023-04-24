@@ -9,11 +9,12 @@ import { SDKResponse } from "@/types/response";
 import base58 from "bs58";
 import { useNetworkContext } from "@/context/configContext";
 
-const HXROPariPlace: FC<NodeProps> = (props) => {
+const HXROPariDestroy: FC<NodeProps> = (props) => {
   const { getNode, getEdges, setNodes, setEdges } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
-  const {selectedNetwork} = useNetworkContext()
+  const { selectedNetwork } = useNetworkContext()
+
   const [txId, setTxId] = useState<any>();
   const [error, setError] = useState<any>('');
   const [sigOutputs, setSigOutputs] = useState<string[]>([])
@@ -49,9 +50,8 @@ const HXROPariPlace: FC<NodeProps> = (props) => {
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "privateKey",
-      "pubKey",
-      "amount",
-      "side",
+      "traderWalletPubKey",
+      "pariPubKey",
     ]);
 
     const dataKeys: string[] = Object.keys(currentNode?.data || {});
@@ -71,12 +71,11 @@ const HXROPariPlace: FC<NodeProps> = (props) => {
       })
     );
 
-    HXRO.placePosition(
+    HXRO.destroyPosition(
       selectedNetwork,
       new Uint8Array(base58.decode(values["privateKey"])), // Need to validate this, should just reject invalid input try (React Flow has something for it)
-      values["pubKey"],
-      values["amount"],
-      values["side"],
+      values["traderWalletPubKey"],
+      values["pariPubKey"],
     ).then((res: SDKResponse) => {
       if (res.error) {
         setError(res.message)
@@ -99,16 +98,15 @@ const HXROPariPlace: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
 
-  const cleanedCode = HXRO.placePosition.toString().replace(/_WEBPACK_IMPORTED_MODULE_\w+\./g, '');
-  const functionName = HXRO.placePosition.name;
-  const CODE = `export const ${functionName} = ${cleanedCode}`;
+  const cleanedCode = HXRO.destroyPosition.toString()
+  const CODE = `export const destroyPosition = ${cleanedCode}`;
 
   return (
     <BaseNode
       code={CODE}
       height="20rem"
       {...props}
-      title="HXRO Parimutuel - Place Position"
+      title="HXRO Parimutuel - Destroy Position"
 
     >
       {error ?
@@ -131,36 +129,19 @@ const HXROPariPlace: FC<NodeProps> = (props) => {
       <CustomHandle
         pos="left"
         type="target"
-        id="pubKey"
+        id="pariPubKey"
         label="Contract Address"
         style={{ marginTop: "1rem" }}
       />
       <CustomHandle
         pos="left"
         type="target"
-        id="amount"
-        label="Amount"
+        id="traderWalletPubKey"
+        label="Trader Address"
         style={{ marginTop: "4.2rem" }}
-      />
-      <CustomHandle
-        pos="left"
-        type="target"
-        id="side"
-        label="Side (Long or Short)"
-        style={{ marginTop: "7.5rem" }}
-      />
-
-      <CustomHandle
-        pos="right"
-        type="source"
-        id="source"
-        label="Signature"
-        onConnect={(e: any) => {
-          updateSigOutput(e);
-        }}
       />
     </BaseNode>
   );
 };
 
-export default HXROPariPlace;
+export default HXROPariDestroy;

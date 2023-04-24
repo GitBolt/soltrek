@@ -1,5 +1,4 @@
 import React from "react";
-import { CopyBlock, dracula} from "react-code-blocks";
 import {
   Modal,
   ModalOverlay,
@@ -7,21 +6,14 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  Flex,
+  Text,
+  useClipboard,
 } from "@chakra-ui/react";
-
-export const CodeBlock = ({ code }: { code: any }) => {
-  return (
-    <CopyBlock
-      text={code}
-      language={"typescript"}
-      showLineNumbers={true}
-      theme={{
-        ...dracula,
-      }}
-      codeBlock
-    />
-  );
-};
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
+import { toast } from "react-hot-toast";
 
 interface Props {
   isOpen: boolean;
@@ -30,6 +22,10 @@ interface Props {
 }
 
 export const CodeModel = ({ code, isOpen, onClose }: Props) => {
+
+  const { onCopy, hasCopied } = useClipboard(code)
+
+
   return (
     <Modal size={"6xl"} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -39,11 +35,20 @@ export const CodeModel = ({ code, isOpen, onClose }: Props) => {
         h={"max"}
         borderRadius={"0.5rem"}
       >
-        <ModalHeader color={"white"}>TypeScript Code</ModalHeader>
+        <ModalHeader color={"white"}>
+          <Flex justify="center" align="center" gap="2rem">
+            <Text>TypeScript Code</Text>
+            {hasCopied ? <CheckIcon color="lime" style={{ width: "1.5rem", height: "1.5rem" }} /> : <CopyIcon style={{ width: "1.5rem", height: "1.5rem", cursor: "pointer" }} onClick={onCopy} />}
+          </Flex>
+        </ModalHeader>
         <ModalCloseButton size={"xl"} mt={2} mr={2} color={"white"} />
-        <ModalBody>
-          <CodeBlock code={code} />
-        </ModalBody>
+        <SyntaxHighlighter
+          showLineNumbers
+          wrapLines
+          language="typescript"
+          style={dracula}>
+          {code}
+        </SyntaxHighlighter>
       </ModalContent>
     </Modal>
   );

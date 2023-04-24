@@ -1,3 +1,4 @@
+import { useNetworkContext } from "@/context/configContext";
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/helper";
@@ -12,6 +13,7 @@ import {
 
 const RequestAirdrop: FC<NodeProps> = (props) => {
   const [txid, setTxid] = useState<string>("");
+  const { selectedNetwork } = useNetworkContext()
   const [sigOutputs, setSigOutputs] = useState<string[]>([]);
 
   const { getNode, setNodes, setEdges, getEdges } = useReactFlow();
@@ -46,7 +48,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
 
   useEffect(() => {
     const dataKeys: string[] = Object.keys(currentNode?.data || {});
-    
+
     const edges = getEdges();
     const values = handleValue(currentNode, edges, ["rpc_url", "destination"]);
     const run = dataKeys.find(
@@ -65,7 +67,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
     );
 
     const connection = new Connection(
-      values["rpc_url"] || "https://api.devnet.solana.com"
+      values["rpc_url"] || selectedNetwork
     );
     connection
       .requestAirdrop(new PublicKey(values["destination"]), 2)

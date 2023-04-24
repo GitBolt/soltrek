@@ -74,6 +74,10 @@ export const sidebarContent: SidebarContentType[] = [
             title: "Parimutuel - Place Position",
             type: "hxroPariPlace",
           },
+          {
+            title: "Parimutuel - Destroy Position",
+            type: "hxroPariDestroy",
+          },
         ]
       },
 
