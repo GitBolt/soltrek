@@ -13,7 +13,7 @@ export namespace HXRO {
     amount: number = 5,
     duration: number = 60
   ) => {
-    
+
     const connection = new Connection(selectedNetwork)
     const config = selectedNetwork.includes("devnet") ? sdk.DEVNET_CONFIG : sdk.MAINNET_CONFIG
     const parimutuelWeb3 = new sdk.ParimutuelWeb3(config, connection)
@@ -89,6 +89,29 @@ export namespace HXRO {
         new PublicKey(parimutuelPubKey)
       )
       return { txId }
+    }
+    catch (err: any) {
+      console.log(err)
+      return { error: true, message: err.message || JSON.stringify(err) || '' }
+    }
+  }
+
+
+  export const getStore = async (
+    selectedNetwork: string,
+    storePubKey: string,
+  ) => {
+
+    const connection = new Connection(selectedNetwork)
+    const config = selectedNetwork.includes("devnet") ? sdk.DEVNET_CONFIG : sdk.MAINNET_CONFIG
+    const parimutuelWeb3 = new sdk.ParimutuelWeb3(config, connection)
+
+    let store
+    try {
+      store = await parimutuelWeb3.getStore(
+        new PublicKey(storePubKey),
+      )
+      return { txId: '', store }
     }
     catch (err: any) {
       console.log(err)

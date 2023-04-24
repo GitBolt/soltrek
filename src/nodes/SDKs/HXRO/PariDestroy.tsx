@@ -98,7 +98,7 @@ const HXROPariDestroy: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
 
-  const cleanedCode = HXRO.destroyPosition.toString()
+  const cleanedCode = HXRO.destroyPosition.toString().replace(/_.*?(\.|import)/g, '');
   const CODE = `export const destroyPosition = ${cleanedCode}`;
 
   return (
@@ -139,6 +139,16 @@ const HXROPariDestroy: FC<NodeProps> = (props) => {
         id="traderWalletPubKey"
         label="Trader Address"
         style={{ marginTop: "4.2rem" }}
+      />
+
+      <CustomHandle
+        pos="right"
+        type="source"
+        id="source"
+        label="Signature"
+        onConnect={(e: any) => {
+          updateSigOutput(e);
+        }}
       />
     </BaseNode>
   );

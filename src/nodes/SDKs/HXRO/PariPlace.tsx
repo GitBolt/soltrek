@@ -99,9 +99,8 @@ const HXROPariPlace: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
 
-  const cleanedCode = HXRO.placePosition.toString().replace(/_WEBPACK_IMPORTED_MODULE_\w+\./g, '');
-  const functionName = HXRO.placePosition.name;
-  const CODE = `export const ${functionName} = ${cleanedCode}`;
+  const cleanedCode = HXRO.placePosition.toString().replace(/_.*?(\.|import)/g, '');
+  const CODE = `export const placePosition = ${cleanedCode}`;
 
   return (
     <BaseNode
