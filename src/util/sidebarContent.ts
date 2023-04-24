@@ -49,6 +49,14 @@ export const sidebarContent: SidebarContentType[] = [
         title: "Mnemonic/Seed",
         type: "mnemonic",
       },
+      {
+        title: "Sign Message",
+        type: "signMessage",
+      },
+      {
+        title: "Verify Message",
+        type: "verifyMessage",
+      },      
     ],
   },
   {

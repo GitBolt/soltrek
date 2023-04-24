@@ -2,9 +2,10 @@ import React, { useState, useEffect, FC } from "react";
 import { NodeProps, useNodeId, useReactFlow, Connection } from "reactflow";
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
-import { handleValue, truncatedPublicKey } from "@/util/helper";
+import { truncatedPublicKey } from "@/util/helper";
 import { HXRO } from "@/sdks/hxro";
 import { Flex, Text } from "@chakra-ui/react";
+import { handleValue } from "@/util/handleNodeValue";
 import { HXROTypes } from "@/types/protocols";
 import { useNetworkContext } from "@/context/configContext";
 

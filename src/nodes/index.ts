@@ -21,6 +21,8 @@ import HXROPariPlace from "./SDKs/HXRO/PariPlace";
 import HXROPariDestroy from "./SDKs/HXRO/PariDestroy";
 import HXROPariGetStore from "./SDKs/HXRO/PariGetStore";
 import Mnemonic from "./Crypto/Mnemonic";
+import SignMessage from "./Crypto/SignMessage";
+import VerifyMessage from "./Crypto/VerifyMessage";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -36,10 +38,12 @@ export const nodeTypes = {
   requestAirdrop: RequestAirdrop,
   add: AddNode,
   getPrice: GetPriceNode,
+  signMessage: SignMessage,
   PDA: PDANode,
   createToken: CreateTokenNode,
   sendToken: SendToken,
   getSns: GetSNS,
+  verifyMessage: VerifyMessage,
   hxroPariGet: HXROPariGet,
   hxroPariPlace: HXROPariPlace,
   hxroPariDestroy: HXROPariDestroy,
