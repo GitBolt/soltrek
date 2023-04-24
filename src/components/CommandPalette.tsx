@@ -27,7 +27,7 @@ export const CommandPalette = () => {
   const { setNodes } = useReactFlow()
   const listRef = useRef(null)
 
-  const [selectedResult, setSelectedResult] = useState<number>(0);
+  const [selectedResult, setSelectedResult] = useState<string>('');
 
 
   const addNode = (type: string) => {
@@ -42,31 +42,40 @@ export const CommandPalette = () => {
 
   const handleKeyDown = (event: any) => {
     if (event.key === "k" && event.ctrlKey) {
-      event.preventDefault()
-      onOpen()
+      event.preventDefault();
+      onOpen();
       inputRef.current?.focus();
     }
 
     if (event.key === "Escape" && isOpen) {
-      event.preventDefault()
-      onClose()
-    }
-
-    if (event.key === "Enter") {
       event.preventDefault();
-      addNode(filteredItems[selectedResult]?.type || "stringInput");
+      onClose();
     }
 
-    // if (event.key === "ArrowUp") {
-    //   event.preventDefault();
-    //   setSelectedResult((prev) => (prev > 0 ? prev - 1 : 0));
-    // }
+    if (event.key === "Enter" && isOpen) {
+      event.preventDefault();
+      if (!filteredItems) return
 
-    // if (event.key === "ArrowDown") {
-    //   event.preventDefault();
-    //   setSelectedResult((prev) => (prev < filteredItems.length - 1 ? prev + 1 : prev));
-    // }
+      addNode(selectedResult || "stringInput");
+    }
+
+    if (event.key === "ArrowUp" && isOpen) {
+      event.preventDefault();
+      if (!filteredItems) return
+
+      const selectedIndex = filteredItems.indexOf(filteredItems.find((item) => item.type == selectedResult)!)
+      setSelectedResult(filteredItems[selectedIndex - 1].type)
+    }
+
+    if (event.key === "ArrowDown" && isOpen) {
+      event.preventDefault();
+      if (!filteredItems) return
+
+      const selectedIndex = filteredItems.indexOf(filteredItems.find((item) => item.type == selectedResult)!)
+      setSelectedResult(filteredItems[selectedIndex + 1].type)
+    }
   };
+
 
   const handleClickOutside = (e: any) => {
     if (!listRef.current || !e.target) return;
@@ -86,7 +95,7 @@ export const CommandPalette = () => {
       document.removeEventListener("click", handleClickOutside);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filteredItems]);
+  }, [filteredItems, selectedResult]);
 
 
   useEffect(() => {
@@ -96,8 +105,10 @@ export const CommandPalette = () => {
     }
 
     const searched = searcher(searchValue)
-    console.log(searched[0])
     setFilteredItems(searched)
+    if (searched.length) {
+      setSelectedResult(searched[0].type)
+    }
   }, [searchValue]);
 
 
@@ -148,8 +159,9 @@ export const CommandPalette = () => {
                   borderRadius="0.75rem"
                   _hover={{ bg: "#23213987" }}
                   onClick={() => addNode(item.type || "stringInput")}
-                // bg={selectedResult === index ? "bg.300" : "transparent"} // Add this line
+                  bg={selectedResult === item.type ? "#23213987" : "transparent"}
                 >
+
                   <Flex justify="start" align="center" gap="2rem">
                     <Box w="1.8rem" h="1.8rem">
                       <img src={item.icon} height="100%" width="100%" />

@@ -6,7 +6,7 @@ export type SearchResult = {
   icon: string;
   title: string;
   parentTitle?: string;
-  type?: string;
+  type: string;
 };
 
 export const searcher = (searchInput: string): SearchResult[] => {
