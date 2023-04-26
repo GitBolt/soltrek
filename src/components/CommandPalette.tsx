@@ -31,7 +31,6 @@ export const CommandPalette = () => {
 
 
   const addNode = (type: string) => {
-    console.log(type, +new Date())
     setNodes((nodes) => nodes.concat({
       id: createNodeId(),
       position: createNodePos(),

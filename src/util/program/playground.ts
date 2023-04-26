@@ -1,13 +1,13 @@
 import * as anchor from '@project-serum/anchor'
 import { anchorProgram } from '@/util/helper';
 import { uploadJson } from '../upload';
+import { PlaygroundSave } from '@/types/playground';
 
 export const createPlayground = async (
   wallet: anchor.Wallet,
-  data: any,
+  data: PlaygroundSave,
 ) => {
   const program = anchorProgram(wallet);
-
 
   let [user_account] = anchor.web3.PublicKey.findProgramAddressSync(
     [
@@ -23,6 +23,7 @@ export const createPlayground = async (
   } catch {
     console.log("Account not created yet")
   }
+  
   const nextNumber = String(details.playgroundCount.toNumber() + 1)
   let [playground_account] = anchor.web3.PublicKey.findProgramAddressSync(
     [
@@ -33,8 +34,7 @@ export const createPlayground = async (
 
   )
 
-  // const data_uri = await uploadJson(data)
-  const data_uri = "http"
+  const data_uri = await uploadJson(JSON.stringify(data))
   try {
     //@ts-ignore
     const ix = await program.methods.createPlayground(nextNumber, data_uri).accounts({

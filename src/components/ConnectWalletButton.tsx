@@ -40,10 +40,8 @@ export const ConnectWalletButton = () => {
 
       select(wallet.adapter.name);
       await connect();
-
-      console.log(connected);
     } catch (e) {
-      console.log(e);
+      console.log("Wallet Error: ", e);
       toast.error('Wallet not found');
     }
   };

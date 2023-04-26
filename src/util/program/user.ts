@@ -5,11 +5,20 @@ export const getUser = async (
   wallet: anchor.Wallet,
 ) => {
   const program = anchorProgram(wallet);
+
+  let [user_account] = anchor.web3.PublicKey.findProgramAddressSync(
+    [
+      wallet.publicKey.toBuffer()
+    ],
+    program.programId
+  )
+
   try {
     //@ts-ignore
-    const userData = await program.account.user.fetch(wallet.publicKey);
+    const userData = await program.account.user.fetch(user_account);
     return userData
-  } catch {
+  } catch (e) {
+    console.log(e)
     return undefined
   }
 };
@@ -19,13 +28,13 @@ export const createUser = async (
 ) => {
   const program = anchorProgram(wallet);
 
-
   let [user_account] = anchor.web3.PublicKey.findProgramAddressSync(
     [
       wallet.publicKey.toBuffer()
     ],
     program.programId
   )
+
   try {
     //@ts-ignore
     const ix = await program.methods.createUser().accounts({
@@ -33,7 +42,7 @@ export const createUser = async (
     }).instruction()
     return ix
 
-  } catch (e){
+  } catch (e) {
     console.log(e)
     return undefined
   }

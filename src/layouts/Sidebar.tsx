@@ -1,17 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { useReactFlow } from 'reactflow';
-import { Flex, Button, List, ListItem, Divider, Text, Box, Icon } from '@chakra-ui/react'
+import { Flex, Button, List, ListItem, Divider, Text, Box } from '@chakra-ui/react'
 import Branding from '@/components/Branding';
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { SidebarContentType } from '@/types/sidebar';
 import { createNodeId, createNodePos } from '@/util/randomData';
 import { createUser, getUser } from '@/util/program/user';
-import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet';
 import { Connection, Transaction } from '@solana/web3.js';
 import { createPlayground } from '@/util/program/playground';
-import { useNetworkContext } from '@/context/configContext';
 
 type Props = {
   sidebarContent: SidebarContentType[]
@@ -21,7 +20,6 @@ const Sidebar = ({ sidebarContent }: Props) => {
   const [showSublist, setShowSublist] = useState<{ [key: number]: boolean }>({});
   const [selectedItemTitle, setSelectedItemTitle] = useState<string>('')
   const [user, setUser] = useState(null)
-  const { selectedNetwork } = useNetworkContext()
   const wallet = useAnchorWallet()
 
   const addNode = (type: string) => {
@@ -57,14 +55,13 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
     const tx = new Transaction()
 
-  
     if (!user) {
       const userIx = await createUser(wallet as NodeWallet)
       if (!userIx) return
       tx.add(userIx)
     }
 
-    const playgroundIx = await createPlayground(wallet as NodeWallet, "hi")
+    const playgroundIx = await createPlayground(wallet as NodeWallet, toObject())
     if (!playgroundIx) return
 
     tx.add(playgroundIx)
@@ -74,7 +71,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
     const connection = new Connection("http://127.0.0.1:8899")
     const { blockhash } = await connection.getLatestBlockhash()
-  
+
     tx.recentBlockhash = blockhash
     tx.feePayer = wallet.publicKey
 
@@ -160,10 +157,10 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
         <Divider />
 
-        <Flex w="100%" p="0 2rem" gap="1rem" justify="space-between" my="2rem">
+        {wallet && <Flex w="100%" p="0 2rem" gap="1rem" justify="space-between" my="2rem">
           {/* <Button variant="outline" onClick={onLoad}>Load</Button> */}
           <Button variant="filled" onClick={onSave}>Save</Button>
-        </Flex>
+        </Flex>}
 
         <List mb="2rem">
           {selectedItemTitle && sidebarContent.find((item) => item.title == selectedItemTitle)!.items.map((item, index) => (

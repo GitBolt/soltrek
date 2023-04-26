@@ -65,7 +65,6 @@ const VerifyMessage: FC<NodeProps> = (props) => {
     const message = values["message"]
     const sig = values["sig"]
     const pubKey = values["pubKey"]
-    console.log(values)
     if (!message || !sig || !pubKey) return
 
     const result = nacl.sign.detached.verify(
