@@ -3,6 +3,7 @@ import * as anchor from "@project-serum/anchor"
 import * as bip39 from 'bip39';
 import * as ed25519 from 'ed25519-hd-key';
 import { Keypair } from '@solana/web3.js';
+import { IDLData, IDLType } from "@/types/idl";
 
 // ChatGPT wrote this horrible code, but it works so I'm not touching it
 export const stringify = (value: any, indent = 2): string => {
@@ -51,6 +52,19 @@ export const getProgram = async (protocolAddress: PublicKey, wallet: anchor.Wall
   const program = await anchor.Program.at(protocolAddress, provider);
   return program
 }
+
+export const anchorProgram = (wallet: anchor.Wallet) => {
+  const provider = getProvider(wallet);
+  const idl = IDLData as anchor.Idl;
+  const program = new anchor.Program(
+    idl,
+    IDLData.metadata.address,
+    provider
+  ) as unknown as anchor.Program<IDLType>;
+
+  return program;
+};
+
 
 export const parseProtocolNumber = (protocolNumber: anchor.BN) =>
   new anchor.BN(protocolNumber).toNumber() / 10 ** 9;
