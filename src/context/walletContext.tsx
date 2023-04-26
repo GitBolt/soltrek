@@ -16,8 +16,7 @@ import {
   BackpackWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { Cluster, clusterApiUrl } from '@solana/web3.js';
-import { useNetworkContext } from './configContext';
+import { clusterApiUrl } from '@solana/web3.js';
 
 
 type Props = {
@@ -25,20 +24,20 @@ type Props = {
 };
 
 export const Wallet: FC<Props> = ({ children }: Props) => {
-  const { selectedNetwork: network } = useNetworkContext()
+  const network = WalletAdapterNetwork.Devnet;
 
-  const endpoint = useMemo(() => clusterApiUrl(network as Cluster), [network]);
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
   const wallets = useMemo(
     () => [
       new BackpackWalletAdapter(),
       new PhantomWalletAdapter(),
-      new SolflareWalletAdapter({ network: network as WalletAdapterNetwork }),
+      new SolflareWalletAdapter({ network }),
       new GlowWalletAdapter(),
       new LedgerWalletAdapter(),
-      new SolletWalletAdapter({ network: network as WalletAdapterNetwork }),
+      new SolletWalletAdapter({ network }),
       new SlopeWalletAdapter(),
-      new SolletExtensionWalletAdapter({ network: network as WalletAdapterNetwork }),
+      new SolletExtensionWalletAdapter({ network }),
     ],
     [network]
   );

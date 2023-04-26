@@ -54,11 +54,11 @@ export const getProgram = async (protocolAddress: PublicKey, wallet: anchor.Wall
 }
 
 export const anchorProgram = (wallet: anchor.Wallet) => {
-  const provider = getProvider(wallet);
+  const provider = getProvider(wallet, "http://127.0.0.1:8899");
   const idl = IDLData as anchor.Idl;
   const program = new anchor.Program(
     idl,
-    IDLData.metadata.address,
+    new PublicKey(IDLData.metadata.address),
     provider
   ) as unknown as anchor.Program<IDLType>;
 

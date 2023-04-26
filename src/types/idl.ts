@@ -105,7 +105,6 @@ export type IDLType = {
     "address": "GESymwz7zdZ7uu7QYkpxNEtgEmDhZUQntgMYbZueD5te"
   }
 }
-
 export const IDLData: IDLType = {
   "version": "0.1.0",
   "name": "soltrek_program",

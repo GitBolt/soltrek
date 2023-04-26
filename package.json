@@ -14,6 +14,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/inter": "^4.5.15",
+    "@gumhq/react-sdk": "^2.0.5",
     "@hxronetwork/parimutuelsdk": "^1.0.25",
     "@metaplex-foundation/js": "^0.18.1",
     "@metaplex-foundation/mpl-token-metadata": "^2.8.4",
