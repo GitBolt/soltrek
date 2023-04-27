@@ -1,9 +1,91 @@
-import { SDKResponse } from "@/types/response";
+import { HXROTypes } from "@/types/protocols";
+import { USDC_DECIMALS } from "@/util/constants";
 import CustomWallet from "@/util/wallet";
 import * as sdk from "@hxronetwork/parimutuelsdk";
-import { ParimutuelWeb3, PositionSideEnum, WalletSigner } from "@hxronetwork/parimutuelsdk";
+import { PositionSideEnum, WalletSigner } from "@hxronetwork/parimutuelsdk";
 import { Connection, PublicKey } from "@solana/web3.js";
 
+// helpers
+export const getMarketByPubkey = (
+  marketPubkey: string,
+  markets: sdk.ParimutuelMarket[],
+): sdk.ParimutuelMarket | undefined => {
+  return markets.find((market) => market.pubkey.toBase58() === marketPubkey);
+};
+
+
+export const parseMyPositions = (
+  position: sdk.ParimutuelPosition,
+  marketPair: sdk.MarketPairEnum,
+  markets: sdk.ParimutuelMarket[],
+  settlementTokenDecimals: number,
+  settlementTokenContractSize: number,
+): HXROTypes.PositionItem => {
+  const { info } = position;
+  const market = getMarketByPubkey(info.parimutuel.marketKey, markets);
+  const duration = market?.info.market.duration.toNumber() ?? 0;
+
+  const poolSize =
+    (info.parimutuel.activeLongPositions.toNumber() +
+      info.parimutuel.activeShortPositions.toNumber()) /
+    settlementTokenDecimals /
+    settlementTokenContractSize;
+
+  const poolLong =
+    info.parimutuel.activeLongPositions.toNumber() /
+    (settlementTokenDecimals / settlementTokenContractSize);
+
+  const poolShort =
+    info.parimutuel.activeShortPositions.toNumber() /
+    (settlementTokenDecimals / settlementTokenContractSize);
+
+  const positionLong =
+    info.position.longPosition.toNumber() /
+    (settlementTokenDecimals / settlementTokenContractSize);
+
+  const positionShort =
+    info.position.shortPosition.toNumber() /
+    (settlementTokenDecimals / settlementTokenContractSize);
+
+  const lockedPrice = info.parimutuel.strike.toNumber() / 10 ** 8;
+  const settledPrice = info.parimutuel.index.toNumber() / 10 ** 8;
+
+  const marketStatus = sdk.getMarketStatus(
+    info.parimutuel.marketClose.toString(),
+    info.parimutuel.timeWindowStart.toString(),
+    duration,
+  );
+
+  return {
+    key: {
+      parimutuelPubkey: info.parimutuelPubkey.toBase58(),
+    },
+    market: {
+      marketPair,
+      duration,
+      status: marketStatus,
+      isExpired: !!info.parimutuel.expired,
+    },
+    time: {
+      startTime: info.parimutuel.marketClose.toNumber(),
+    },
+    pool: {
+      poolSize,
+      long: poolLong,
+      short: poolShort,
+    },
+    position: {
+      long: positionLong,
+      short: positionShort,
+    },
+    locked: {
+      price: lockedPrice,
+    },
+    settled: {
+      price: settledPrice,
+    },
+  };
+};
 
 export namespace HXRO {
 
@@ -118,4 +200,37 @@ export namespace HXRO {
       return { error: true, message: err.message || JSON.stringify(err) || '' }
     }
   }
+
+  export const getUserPositions = async (
+    selectedNetwork: string,
+    marketPair: sdk.MarketPairEnum,
+    userPublicKey: string,
+  ) => {
+
+    const connection = new Connection(selectedNetwork)
+    const config = selectedNetwork.includes("devnet") ? sdk.DEVNET_CONFIG : sdk.MAINNET_CONFIG
+    const parimutuelWeb3 = new sdk.ParimutuelWeb3(config, connection)
+
+    const markets = await parimutuelWeb3.getMarkets(marketPair)
+    const contractSize = markets[0]?.info.market.contractSize.toNumber()
+    let positions
+    try {
+      positions = await parimutuelWeb3.getUserPositions(
+        new PublicKey(userPublicKey),
+        markets
+      )
+      console.log(marketPair, userPublicKey, positions)
+      const parsedPositions = positions
+        .map((position) => parseMyPositions(position, marketPair, markets, USDC_DECIMALS, contractSize))
+        .sort((a, b) => b.time.startTime - a.time.startTime)
+
+      return { txId: '', positions: parsedPositions }
+    }
+    catch (err: any) {
+      console.log(err)
+      return { error: true, message: err.message || JSON.stringify(err) || '' }
+    }
+  }
+
+
 }

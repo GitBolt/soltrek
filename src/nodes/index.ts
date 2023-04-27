@@ -23,6 +23,7 @@ import HXROPariGetStore from "./SDKs/HXRO/PariGetStore";
 import Mnemonic from "./Crypto/Mnemonic";
 import SignMessage from "./Crypto/SignMessage";
 import VerifyMessage from "./Crypto/VerifyMessage";
+import HXROGetUserPositions from "./SDKs/HXRO/GetUserPositions";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -43,6 +44,7 @@ export const nodeTypes = {
   createToken: CreateTokenNode,
   sendToken: SendToken,
   getSns: GetSNS,
+  hxroPariGetUserPositions: HXROGetUserPositions,
   verifyMessage: VerifyMessage,
   hxroPariGet: HXROPariGet,
   hxroPariPlace: HXROPariPlace,

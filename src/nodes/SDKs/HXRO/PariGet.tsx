@@ -102,9 +102,9 @@ const HXROPariGet: FC<NodeProps> = (props) => {
       title="HXRO Parimutuel - Get Contests"
     >
 
-      <Flex flexFlow="column" ml="8rem" mr="6rem" my="1rem" gap="0.5rem">
+      <Flex w="100%" flexFlow="column" my="1rem" gap="0.5rem">
         {data ? data.map((item, index: number) => (
-          <Flex bg="bg.200" w="100%" key={item.pubkey} p="0 1rem" borderRadius="1rem" justify="space-between" gap="1rem" align="center">
+          <Flex bg="bg.100" opacity="70%" w="100%" key={item.pubkey} p="0 1rem" borderRadius="0.8rem" justify="space-between" gap="1rem" align="center">
             <Flex flexFlow="column" gap="1rem" padding="1rem 0">
               <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" >Public Key: {truncatedPublicKey(item.pubkey)}</Text>
               <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Shorts: ${item.shorts.toLocaleString()}</Text>

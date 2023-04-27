@@ -1,25 +1,23 @@
 import React, { useState, useEffect, FC } from "react";
-import { NodeProps, useNodeId, useReactFlow, Connection } from "reactflow";
+import { NodeProps, useNodeId, useReactFlow, Connection as RFConnection } from "reactflow";
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
-import {truncatedPublicKey } from "@/util/helper";
+import { truncatedPublicKey } from "@/util/helper";
 import { HXRO } from "@/sdks/hxro";
 import { handleValue } from "@/util/handleNodeValue";
-import { Flex, Text } from "@chakra-ui/react";
-import { HXROTypes } from "@/types/protocols";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useNetworkContext } from "@/context/configContext";
+import { HXROTypes } from "@/types/protocols";
 
-
-const USDC_DECIMALS = 1_000_000
 
 const HXROGetUserPositions: FC<NodeProps> = (props) => {
   const { getNode, getEdges, setNodes } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
   const { selectedNetwork } = useNetworkContext()
-  const [data, setData] = useState<HXROTypes.FilteredContest[] | null>(null);
+  const [userPositions, setUserPositions] = useState<HXROTypes.PositionItem[]>([]);
 
-  const [addresses, setAddresses] = useState<any>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [outputs, setOutputs] = useState<any>({});
 
 
@@ -37,7 +35,7 @@ const HXROGetUserPositions: FC<NodeProps> = (props) => {
     );
   };
 
-  const updateData = (contestAddress: string, e: Connection) => {
+  const updateData = (contestAddress: string, e: RFConnection) => {
     if (!e.target) return;
     updateNodeData(e.target, contestAddress);
     setOutputs({
@@ -48,45 +46,36 @@ const HXROGetUserPositions: FC<NodeProps> = (props) => {
     });
   };
 
-  useEffect(() => {
-    Object.keys(outputs).forEach((item) => {
-      outputs[item].forEach((displayNodeIds: any) => {
-        updateNodeData(displayNodeIds, item)
-      })
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [addresses]);
+  // useEffect(() => {
+  //   Object.keys(outputs).forEach((item) => {
+  //     outputs[item].forEach((displayNodeIds: any) => {
+  //       updateNodeData(displayNodeIds, item)
+  //     })
+  //   })
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [addresses]);
 
   useEffect(() => {
+    setIsLoading(false)
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "marketPair",
-      "amount",
-      "durtion",
+      "pubKey",
     ]);
 
-    if (Object.values(values).length < 3) return;
+    if (Object.values(values).filter((i) => i).length < 2) return;
+    setIsLoading(true)
 
-    HXRO.getMarkets(
+    HXRO.getUserPositions(
       selectedNetwork,
       values["marketPair"],
-      values["amount"],
-      values["duration"])
-      .then((res) => {
-
-        const filtered = res.map(({ pubkey, info }) => ({
-          pubkey: pubkey.toBase58(),
-          longs: info.parimutuel.activeLongPositions.toNumber() / USDC_DECIMALS,
-          shorts: info.parimutuel.activeShortPositions.toNumber() / USDC_DECIMALS,
-          expired: info.parimutuel.expired,
-          slot: info.parimutuel.slot.toNumber(),
-          strike: info.parimutuel.strike.toNumber()
-
-        }))
-        setAddresses(filtered.map((item) => item.pubkey))
-        setData(filtered)
-      }
-      )
+      values['pubKey']
+    ).then((userPosRes) => {
+      if (userPosRes.error || !userPosRes.positions) return
+      console.log(userPosRes)
+      setUserPositions(userPosRes.positions)
+      setIsLoading(false)
+    })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
@@ -99,32 +88,34 @@ const HXROGetUserPositions: FC<NodeProps> = (props) => {
       code={CODE}
       height="15rem"
       {...props}
-      title="HXRO Parimutuel - Get Contests"
+      title="HXRO Parimutuel - Get User Positions"
     >
 
       <Flex flexFlow="column" ml="8rem" mr="6rem" my="1rem" gap="0.5rem">
-        {data ? data.map((item, index: number) => (
-          <Flex bg="bg.200" w="100%" key={item.pubkey} p="0 1rem" borderRadius="1rem" justify="space-between" gap="1rem" align="center">
+
+        {isLoading && <Spinner size="lg" style={{ width: "5rem", height: "5rem" }} color="blue.100" thickness="0.5rem" />}
+        {!isLoading && !userPositions.length && <Text color="blue.300" opacity="50%" fontSize="1.5rem">Empty...</Text>}
+        {userPositions.length && !isLoading && userPositions.map((item, index: number) => (
+          <Flex bg="bg.200" w="100%" key={item.key.parimutuelPubkey} p="0 1rem" borderRadius="1rem" justify="space-between" gap="1rem" align="center">
             <Flex flexFlow="column" gap="1rem" padding="1rem 0">
-              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" >Public Key: {truncatedPublicKey(item.pubkey)}</Text>
-              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Shorts: ${item.shorts.toLocaleString()}</Text>
-              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Longs: ${item.longs.toLocaleString()}</Text>
-              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Slot: {item.slot}</Text>
+              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Public Key: {truncatedPublicKey(item.key.parimutuelPubkey)}</Text>
+              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Position Type: {item.position.long > 0 ? "Long" : "Short"}</Text>
+              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Amount: {item.position.long > 0 ? item.position.long : item.position.short}</Text>
+              <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Status: {item.market.status.toUpperCase()}</Text>
               {/* <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Strike: {item.strike}</Text> */}
             </Flex>
             <CustomHandle
               pos="right"
               type="source"
-              id={"address" + item.pubkey}
+              id={"address" + item.key.parimutuelPubkey}
               style={{ top: `${9 + 11.5 * index}` + "rem" }}
               label="Address"
               onConnect={(e: any) => {
-                updateData(item.pubkey, e);
+                updateData(item.key.parimutuelPubkey, e);
               }}
             />
           </Flex>
-        )) :
-          <Text color="blue.300" opacity="50%" fontSize="1.5rem">{'Empty...'}</Text>}
+        ))}
       </Flex>
 
 
@@ -138,18 +129,10 @@ const HXROGetUserPositions: FC<NodeProps> = (props) => {
       <CustomHandle
         pos="left"
         type="target"
-        id="amount"
-        label="Amount"
+        id="pubKey"
+        label="User Address"
         style={{ marginTop: "0.5rem" }}
       />
-      <CustomHandle
-        pos="left"
-        type="target"
-        id="duration"
-        label="Duration"
-        style={{ marginTop: "4rem" }}
-      />
-
     </BaseNode>
   );
 };

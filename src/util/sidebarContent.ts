@@ -94,6 +94,10 @@ export const sidebarContent: SidebarContentType[] = [
             title: "Parimutuel - Get Store",
             type: "hxroPariGetStore",
           },
+          {
+            title: "Parimutuel - Get User Positions",
+            type: "hxroPariGetUserPositions",
+          },
         ]
       },
 
