@@ -39,7 +39,7 @@ const StringInputNode: FC<NodeProps<InputNodeType>> = (props) => {
       }))
   }
 
-  const CustomHandleConnect = (e: Connection) => {
+  const onConnect = (e: Connection) => {
     if (!e.target) return
     setCurrentTarget([...currentTarget, e.target])
     updateNodeData(e.target)
@@ -62,7 +62,7 @@ const StringInputNode: FC<NodeProps<InputNodeType>> = (props) => {
           onChange={(e) => updateText(e.target.value)}
            />
 
-        <CustomHandle pos={Position.Right} type="source" onConnect={(e: any) => CustomHandleConnect(e)} />
+        <CustomHandle pos={Position.Right} type="source" onConnect={(e: any) => onConnect(e)} />
       </BaseNode>
     </div>
   );

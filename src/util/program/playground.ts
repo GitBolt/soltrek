@@ -23,7 +23,7 @@ export const createPlayground = async (
   } catch {
     console.log("Account not created yet")
   }
-  
+
   const nextNumber = String(details.playgroundCount.toNumber() + 1)
   let [playground_account] = anchor.web3.PublicKey.findProgramAddressSync(
     [
@@ -48,3 +48,42 @@ export const createPlayground = async (
     return undefined
   }
 };
+
+// export const getPlaygrounds = async (
+//   wallet: anchor.Wallet
+// ) => {
+
+//   const program = anchorProgram(wallet);
+
+//   let [user_account] = anchor.web3.PublicKey.findProgramAddressSync(
+//     [
+//       wallet.publicKey.toBuffer()
+//     ],
+//     program.programId
+//   )
+
+
+//   const nextNumber = String(details.playgroundCount.toNumber() + 1)
+//   let [playground_account] = anchor.web3.PublicKey.findProgramAddressSync(
+//     [
+//       wallet.publicKey.toBuffer(),
+//       Buffer.from(nextNumber)
+//     ],
+//     program.programId
+
+//   )
+
+//   const data_uri = await uploadJson(JSON.stringify(data))
+//   try {
+//     //@ts-ignore
+//     const ix = await program.methods.createPlayground(nextNumber, data_uri).accounts({
+//       userAccount: user_account,
+//       playgroundAccount: playground_account
+//     }).instruction()
+//     return ix
+
+//   } catch (e) {
+//     console.log(e)
+//     return undefined
+//   }
+// }

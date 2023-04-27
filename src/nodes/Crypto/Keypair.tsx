@@ -39,30 +39,37 @@ const KeypairNode: FC<NodeProps> = (props) => {
   };
 
   useEffect(() => {
-    const nodeKeys: string[] = Object.keys(currentNode?.data || {});
-    const edges = getEdges()
-    const values = handleValue(currentNode, edges, ["fromKey"])
 
-    const privKey = values["fromKey"]
-    if (privKey) {
-      let parsed: any = b58.decode(privKey)
-      try {
-        parsed = new Uint8Array(parsed)
-      } catch {
+    if (!currentNode) return
+
+    const nodeKeys: string[] = Object.keys(currentNode.data || {});
+    // adding delay because it takes some time for edges to update
+    setTimeout(() => {
+      const edges = getEdges()
+      const values = handleValue(currentNode, edges, ["fromKey"])
+      const privKey: string = values["fromKey"]
+
+      if (privKey) {
+        let parsed: any
         try {
-          parsed = new Uint8Array(privKey)
-        } catch (e) {
-          console.log(e)
+          parsed = new Uint8Array(b58.decode(privKey))
+        } catch {
+          try {
+            parsed = new Uint8Array(JSON.parse(privKey))
+          } catch (e) {
+            console.log(e)
+          }
         }
+        setKp(Keypair.fromSecretKey(parsed))
       }
-      setKp(Keypair.fromSecretKey(parsed))
-    }
 
-    nodeKeys.forEach((key) => {
-      if (key.startsWith("btn") && currentNode?.data[key] == true) {
-        setKp(new Keypair());
-      }
-    });
+      nodeKeys.forEach((key) => {
+        if (key.startsWith("btn") && currentNode?.data[key] == true) {
+          setKp(new Keypair());
+        }
+      });
+    }, 1000)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
 
