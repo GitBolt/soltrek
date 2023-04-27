@@ -35,10 +35,13 @@ All required nodes that need to be added are mentioned in the [Wiki](https://git
 - **Edge**: The curvy magenta coloured line which connects nodes.
 - **Handle**: The points through which an edge emerges or leads to. It can be either of type source (input) or target (output).
 
-## Rough Feature lineup
-- Finishing Solana.fm explorer integration
-- Accounts & PDAs
-- Adding nodes for certain program interactions (Candymachine for example)
-- Adding tutorials and built-in modules for different concepts that can be loaded.
-- Integration with Seahorse Lang to enable basic Python code execution.
-- Adding a multiplayer option for real-time collaboration between developers.
+## Import Todo
+Sure, I'll try to explain it more clearly.
+
+In your current data sharing model, a node can output data through multiple "output handles". Each output handle is identified by a unique ID that is specific to the node. When a target node wants to receive data from an output handle, it connects its "input handle" to the output handle of the source node. This connection creates an "edge" between the two nodes, which represents the flow of data from the source node to the target node.
+
+When data is sent from the source node to the target node, it is stored in the data attribute of the target node. Specifically, the data is stored as an object with the source node's ID as the key and the output data as the value. For example, if the source node has an ID of "A" and it outputs data "x", the data object in the target node would look like this: { "A": "x" }.
+
+The problem arises when a single source node wants to output multiple values through different output handles, and these values need to be received by a single target node. Since the data object in the target node can only store one value per source node ID, it's not possible to receive multiple values from a single source node using this approach.
+
+To overcome this problem, you need to modify your data model to allow a single source node to output multiple key-value pairs, where each key represents a unique output handle ID and each value represents the output data for that handle. This way, a target node can receive multiple values from a single source node and store them as separate key-value pairs in its data object.

@@ -15,9 +15,10 @@ export const handleValue = (
     };
   });
   ids.map((e) => {
+    const sourceHandle = value_id_map[e]
     idValueMap = {
       ...idValueMap,
-      [e]: node?.data[String(value_id_map[e])],
+      [e]: node?.data[String(sourceHandle)], // node data has source ids as attributes, and the data they give as values
     };
   });
   return idValueMap;

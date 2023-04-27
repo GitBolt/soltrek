@@ -24,13 +24,14 @@ const KeypairNode: FC<NodeProps> = (props) => {
 
   const currentNode = getNode(id as string);
 
+  // NodeId is the node which is receiving data, data is the data itself
   const updateNodeData = (nodeId: string, data: string) => {
     setNodes((nds) =>
       nds.map((node) => {
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            [id as string]: data,
+            [id as string]: data, // Setting key as source node (this node itself) id with it's respective data value
           };
         }
         return node;
