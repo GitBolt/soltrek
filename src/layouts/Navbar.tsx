@@ -9,6 +9,7 @@ import { SavedPlaygrounds } from "@/components/SavedPlaygrounds"
 import { uploadFile } from "@/util/upload"
 import html2canvas from "html2canvas"
 import { dataURItoBlob } from "@/util/helper"
+import { compressImage } from "@/util/compressor"
 
 export const Navbar = () => {
 
@@ -41,6 +42,7 @@ export const Navbar = () => {
     run()
   }, [publicKey])
 
+  
   const handlePlaygroundSave = async () => {
     if (!user) return
 
@@ -50,7 +52,9 @@ export const Navbar = () => {
     }); const imageData = canvas.toDataURL()
     const blob = dataURItoBlob(imageData)
 
-    const file = new File([blob], "img.png", { type: "image/png" });
+    const compressed = await compressImage(blob)
+
+    const file = new File([compressed as Blob], "img.png", { type: "image/png" });
 
     const preview_uri = await uploadFile(file)
     const response = await fetch('/api/playground/new', {

@@ -3,3 +3,10 @@ export interface PlaygroundSave {
     nodes: any[],
     edges: any[]
 }
+
+export interface SavedPlaygroundType {
+    preview_url: string,
+    data: string,
+    name: string,
+    createdAt: string,
+}

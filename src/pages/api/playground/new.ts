@@ -6,12 +6,15 @@ export default async function createPlayground(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { userId, name, data } = req.body
+  const { userId, name, data, preview_uri } = req.body
+
+
   const playground = await prisma.playground.create({
     data: {
       name,
       data,
-      userId: parseInt(userId),
+      preview_url: preview_uri,
+      userId: userId,
     },
   })
   res.json(playground)
