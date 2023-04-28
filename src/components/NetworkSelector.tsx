@@ -11,10 +11,11 @@ import {
   Text,
   Button,
   Box,
+  Input,
 } from '@chakra-ui/react';
 
 // Icons
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 
 // Util
 import { getNetworkName } from '@/util/helper';
@@ -36,7 +37,7 @@ export const NetworkSelector = () => {
         fontSize="1.4rem"
         color="white"
         bg="blue.gradient"
-        leftIcon={<Box borderRadius="50%" h="1.2rem" w="1.2rem" mr="0.5rem" bg="lime"/>}
+        leftIcon={<Box borderRadius="50%" h="1.2rem" w="1.2rem" mr="0.5rem" bg="lime" />}
         rightIcon={
           <ChevronDownIcon color="white" w="2rem" h="2rem" />
         }
@@ -78,6 +79,20 @@ export const NetworkSelector = () => {
           }}
         >
           Devnet
+        </MenuItem>
+
+        <MenuItem
+          style={{ backdropFilter: "blur(10px)" }}
+          h="4rem"
+          fontSize="1.5rem"
+          color="gray.400"
+          _hover={{ background: "linear-gradient(243.86deg, rgba(38, 42, 55, 0.8) 10%,rgba(38, 42, 55, 0.4) 100%)" }}
+          bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
+          onClick={async () => {
+            updateNetwork("http://127.0.0.1:8899")
+          }}
+        >
+          Localnet
         </MenuItem>
 
       </MenuList>

@@ -53,8 +53,8 @@ export const getProgram = async (protocolAddress: PublicKey, wallet: anchor.Wall
   return program
 }
 
-export const anchorProgram = (wallet: anchor.Wallet) => {
-  const provider = getProvider(wallet, "http://127.0.0.1:8899");
+export const anchorProgram = (wallet: anchor.Wallet, network?: string) => {
+  const provider = getProvider(wallet, network || "http://127.0.0.1:8899");
   const idl = IDLData as anchor.Idl;
   const program = new anchor.Program(
     idl,
@@ -92,8 +92,9 @@ export const getNetworkName = (rpc_url: string) => {
     return "Mainnet-Beta";
   } else if (lowerCaseInput.includes("testnet")) {
     return "Testnet";
+  } else if (lowerCaseInput.includes("http://127")) {
+    return "Localnet";
   }
-
 }
 
 

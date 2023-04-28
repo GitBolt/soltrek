@@ -59,7 +59,7 @@ const HXROPariDestroy: FC<NodeProps> = (props) => {
     const run = dataKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
-    if (Object.values(values).filter((i) => i).length < 4 || !run) return;
+    if (Object.values(values).filter((i) => i).length < 3 || !run) return;
 
     setEdges((edgs) =>
       edgs.map((ed) => {

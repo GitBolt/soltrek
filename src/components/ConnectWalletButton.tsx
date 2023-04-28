@@ -37,7 +37,6 @@ export const ConnectWalletButton = () => {
   const onConnectWallet = async (wallet: SolanaWallet) => {
     try {
       console.log('Connection event', wallet.readyState);
-
       select(wallet.adapter.name);
       await connect();
     } catch (e) {

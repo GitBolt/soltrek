@@ -39,20 +39,20 @@ const Sidebar = ({ sidebarContent }: Props) => {
     });
   };
 
-  const { toObject } = useReactFlow()
+  // const { toObject } = useReactFlow()
 
-  const onLoad = () => {
-    const data = localStorage.getItem('state')
-    if (!data) return
-    const parsed = JSON.parse(data)
-    setNodes(parsed.nodes || [])
-    setEdges(parsed.edges || [])
-    setViewport(parsed.viewport || [])
-  }
+  // const onLoad = () => {
+  //   const data = localStorage.getItem('state')
+  //   if (!data) return
+  //   const parsed = JSON.parse(data)
+  //   setNodes(parsed.nodes || [])
+  //   setEdges(parsed.edges || [])
+  //   setViewport(parsed.viewport || [])
+  // }
 
 
-  const onSave = async () => {
-    if (!wallet) return
+  // const onSave = async () => {
+  //   if (!wallet) return
 
     // const tx = new Transaction()
 
@@ -70,9 +70,9 @@ const Sidebar = ({ sidebarContent }: Props) => {
     // localStorage.setItem("state", JSON.stringify(toObject()))
 
 
-    const connection = new Connection("http://127.0.0.1:8899")
-    const res = await connection.getProgramAccounts(new PublicKey(IDLData.metadata.address))
-    console.log(res)
+    // const connection = new Connection("http://127.0.0.1:8899")
+    // const res = await connection.getProgramAccounts(new PublicKey(IDLData.metadata.address))
+    // console.log(res)
     // const { blockhash } = await connection.getLatestBlockhash()
 
     // tx.recentBlockhash = blockhash
@@ -87,7 +87,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
     // }
 
   
-  }
+  // }
 
   useEffect(() => {
     if (!wallet) return
@@ -164,7 +164,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
         {wallet && <Flex w="100%" p="0 2rem" gap="1rem" justify="space-between" my="2rem">
           {/* <Button variant="outline" onClick={onLoad}>Load</Button> */}
-          <Button variant="filled" onClick={onSave}>Save</Button>
+          {/* <Button variant="filled" onClick={onSave}>Save</Button> */}
         </Flex>}
 
         <List mb="2rem">
