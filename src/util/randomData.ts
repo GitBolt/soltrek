@@ -4,7 +4,7 @@ export const createNodeId = () => {
 };
 
 export const createNodePos = () => {
-    return { x: ((Math.random() * 200) + 800), y: (Math.random() * 100) };
+    return { x: ((Math.random() * 80) + 5), y: (Math.random() * 10) - 400 };
 };
 
 

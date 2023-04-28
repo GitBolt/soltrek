@@ -12,6 +12,7 @@ import { dataURItoBlob } from "@/util/helper"
 import { compressImage } from "@/util/compressor"
 import { SavedPlaygroundType } from "@/types/playground"
 import { useCustomModal } from "@/context/modalContext"
+import { AddIcon } from "@chakra-ui/icons"
 
 export const Navbar = () => {
 
@@ -22,7 +23,8 @@ export const Navbar = () => {
   const toast = useToast()
   const [currentPlayground, setCurrentPlayground] = useState<SavedPlaygroundType>()
   const { savedPg } = useCustomModal()
-  const [name, setName] = useState<string>(currentPlayground?.name || '')
+  const [name, setName] = useState<string>(currentPlayground?.name || 'Untitled')
+  const { setNodes, setEdges, setViewport } = useReactFlow()
 
   useEffect(() => {
     if (!publicKey) return
@@ -87,7 +89,7 @@ export const Navbar = () => {
         },
         body: JSON.stringify({
           userId: user.id,
-          name: "hi",
+          name,
           data: JSON.stringify(toObject()),
           preview_uri
         }),
@@ -96,15 +98,17 @@ export const Navbar = () => {
 
     if (response.ok) {
       toast({
-        title: "Created Playground",
-        status: "success"
+        title: `${currentPlayground ? 'Updated' : 'Created'} Playground`,
+        status: "success",
+        position: "bottom-right"
       })
       const data = await response.json()
       setCurrentPlayground(data)
     } else {
       toast({
         title: "Error creating playground",
-        status: "error"
+        status: "error",
+        position: "bottom-right"
       })
     }
   }
@@ -117,20 +121,31 @@ export const Navbar = () => {
       <SavedPlaygrounds user={user} setCurrentPlayground={setCurrentPlayground} />
 
       {user && <Flex borderRight="2px solid" borderColor="gray.200" p="0 2rem" gap="2rem">
+        <Button variant="filled" onClick={handlePlaygroundSave}>Save</Button>
+        <Button variant="outline" onClick={savedPg.onOpen}>Load</Button>
         <Input
           w="25rem"
+
           h="3.5rem"
           onChange={(e) => {
             setName(e.target.value)
           }}
           fontSize="1.6rem"
           value={name}
+          defaultValue={name}
           placeholder="Enter Playground Name"
         />
-        <Button variant="filled" onClick={handlePlaygroundSave}>Save</Button>
-        <Button variant="outline" onClick={savedPg.onOpen}>Load</Button>
+
       </Flex>
+
       }
+      <Button justifySelf="start" variant="filled" bg="magenta.100" fontSize="1.5rem" h="3rem" onClick={() => {
+        setCurrentPlayground(undefined)
+        setNodes([])
+        setEdges([])
+        setViewport({ x: 800, y: 800, zoom: 1.5 })
+      }} leftIcon={<AddIcon />}>New</Button>
+      <Divider w="2px" h="4rem" bg="gray.200" />
       <NetworkSelector />
       <ConnectWalletButton />
     </Flex>

@@ -1,7 +1,7 @@
 export const compressImage = (blob: Blob, options = {}): Promise<Blob> => {
   const defaults = {
-    maxWidth: 800,
-    maxHeight: 800,
+    maxWidth: 700,
+    maxHeight: 700,
     quality: 0.5,
     format: 'image/png',
   };

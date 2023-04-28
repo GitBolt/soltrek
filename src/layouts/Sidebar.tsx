@@ -54,39 +54,39 @@ const Sidebar = ({ sidebarContent }: Props) => {
   // const onSave = async () => {
   //   if (!wallet) return
 
-    // const tx = new Transaction()
+  // const tx = new Transaction()
 
-    // if (!user) {
-    //   const userIx = await createUser(wallet as NodeWallet)
-    //   if (!userIx) return
-    //   tx.add(userIx)
-    // }
+  // if (!user) {
+  //   const userIx = await createUser(wallet as NodeWallet)
+  //   if (!userIx) return
+  //   tx.add(userIx)
+  // }
 
-    // const playgroundIx = await createPlayground(wallet as NodeWallet, toObject())
-    // if (!playgroundIx) return
+  // const playgroundIx = await createPlayground(wallet as NodeWallet, toObject())
+  // if (!playgroundIx) return
 
-    // tx.add(playgroundIx)
+  // tx.add(playgroundIx)
 
-    // localStorage.setItem("state", JSON.stringify(toObject()))
+  // localStorage.setItem("state", JSON.stringify(toObject()))
 
 
-    // const connection = new Connection("http://127.0.0.1:8899")
-    // const res = await connection.getProgramAccounts(new PublicKey(IDLData.metadata.address))
-    // console.log(res)
-    // const { blockhash } = await connection.getLatestBlockhash()
+  // const connection = new Connection("http://127.0.0.1:8899")
+  // const res = await connection.getProgramAccounts(new PublicKey(IDLData.metadata.address))
+  // console.log(res)
+  // const { blockhash } = await connection.getLatestBlockhash()
 
-    // tx.recentBlockhash = blockhash
-    // tx.feePayer = wallet.publicKey
+  // tx.recentBlockhash = blockhash
+  // tx.feePayer = wallet.publicKey
 
-    // await wallet.signTransaction(tx)
-    // try {
-    //   const txId = await connection.sendRawTransaction(tx.serialize())
-    //   console.log(txId)
-    // } catch (e) {
-    //   console.log(e)
-    // }
+  // await wallet.signTransaction(tx)
+  // try {
+  //   const txId = await connection.sendRawTransaction(tx.serialize())
+  //   console.log(txId)
+  // } catch (e) {
+  //   console.log(e)
+  // }
 
-  
+
   // }
 
   useEffect(() => {
@@ -158,6 +158,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
         borderColor: "gray.100",
         flexFlow: "column"
       }}>
+        <Box mt="6rem" />
         <Branding />
 
         <List mb="2rem">

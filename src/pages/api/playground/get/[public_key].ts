@@ -19,6 +19,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: {
         userId: Number(user.id),
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     })
 
     res.status(200).json({ playgrounds })

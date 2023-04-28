@@ -124,7 +124,7 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
               ))}
             </Flex>
           ) : (
-            <Text fontSize="xl" p={4}>No playgrounds found.</Text>
+            <Text fontSize="2rem" color="blue.300" p={4}>No playgrounds found.</Text>
           )}
         </ModalContent>}
       </Modal>
