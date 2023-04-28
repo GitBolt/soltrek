@@ -42,47 +42,46 @@ export const Navbar = () => {
   }, [publicKey])
 
   const handlePlaygroundSave = async () => {
-    if (!user) return;
-  
-    const container = document.getElementById("rf-main");
-    const canvas = await html2canvas(container!);
-    const imageData = canvas.toDataURL();
-    const blob = dataURItoBlob(imageData);
-  
+    if (!user) return
+
+    const container = document.getElementById('rf-main');
+    const canvas = await html2canvas(container!, {
+      ignoreElements: (element) => element.className === "solflare-wallet-adapter-iframe",
+    }); const imageData = canvas.toDataURL()
+    const blob = dataURItoBlob(imageData)
+
     const file = new File([blob], "img.png", { type: "image/png" });
-  
-    // Start uploading the image
-    const uploadPromise = uploadFile(file);
-  
-    // Start saving the data
-    const savePromise = fetch("/api/playground/new", {
-      method: "POST",
+
+    const preview_uri = await uploadFile(file)
+    const response = await fetch('/api/playground/new', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         userId: user.id,
         name: "hi",
         data: JSON.stringify(toObject()),
+        preview_uri
       }),
-    });
-  
-    // Wait for both promises to complete
-    const [preview_uri] = await Promise.all([uploadPromise, savePromise]);
-  
-    if (preview_uri && preview_uri !== "") {
+    })
+
+    if (response.ok) {
       toast({
         title: "Created Playground",
-        status: "success",
-      });
+        status: "success"
+      })
     } else {
       toast({
         title: "Error creating playground",
-        status: "error",
-      });
+        status: "error"
+      })
     }
-  };
-  
+  }
+
+
+
+
 
   return (
     <Flex w="100%" h="6rem" pos="static" top="0" bg="bg.100" align="center" justify="end" gap="2rem">
