@@ -55,7 +55,7 @@ const Mnemonic: FC<NodeProps> = (props) => {
         try {
           result = mnemonicToKp()
         } catch (e) {
-          console.log(e)
+          console.log("Mnemonic Error: ", e)
         }
       }
       setPhrase(result?.generatedMnemonic || '')

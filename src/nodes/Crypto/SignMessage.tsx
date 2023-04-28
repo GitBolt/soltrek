@@ -69,7 +69,7 @@ const SignMessage: FC<NodeProps> = (props) => {
       try {
         pkArray = new Uint8Array(pkArray)
       } catch (e) {
-        console.log(e)
+        console.log("Sign Message Error: ", e)
       }
     }
     const sig = nacl.sign.detached(new TextEncoder().encode(message), pkArray)

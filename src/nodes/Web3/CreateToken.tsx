@@ -67,7 +67,7 @@ const CreateToken: FC<NodeProps> = (props) => {
       values["image"] //image
     ).then((e) => {
       alert(e);
-      console.log(e);
+      console.log("Create Token Error: ", e);
       setIx(e);
     });
 

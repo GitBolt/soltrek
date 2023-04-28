@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Text, useDisclosure, useToast } from "@chakra-ui/react"
+import { Button, Divider, Flex, Input, Text, useDisclosure, useToast } from "@chakra-ui/react"
 import { ConnectWalletButton } from "../components/ConnectWalletButton"
 import { NetworkSelector } from "../components/NetworkSelector"
 import { useEffect, useState } from "react"
@@ -22,28 +22,29 @@ export const Navbar = () => {
   const toast = useToast()
   const [currentPlayground, setCurrentPlayground] = useState<SavedPlaygroundType>()
   const { savedPg } = useCustomModal()
+  const [name, setName] = useState<string>(currentPlayground?.name || '')
 
-    useEffect(() => {
-      if (!publicKey) return
-      const run = async () => {
-        const userReq = await fetch(`/api/user/${publicKey.toBase58()}`)
-        let user = await userReq.json()
+  useEffect(() => {
+    if (!publicKey) return
+    const run = async () => {
+      const userReq = await fetch(`/api/user/${publicKey.toBase58()}`)
+      let user = await userReq.json()
 
-        if (!userReq.ok) {
-          const newUserReq = await fetch(`/api/user/new`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ publicKey }),
-          })
-          user = await newUserReq.json()
+      if (!userReq.ok) {
+        const newUserReq = await fetch(`/api/user/new`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ publicKey }),
+        })
+        user = await newUserReq.json()
 
-        }
-        setUser(user)
       }
-      run()
-    }, [publicKey])
+      setUser(user)
+    }
+    run()
+  }, [publicKey])
 
 
   const handlePlaygroundSave = async () => {
@@ -52,6 +53,8 @@ export const Navbar = () => {
     const container = document.getElementById('rf-main');
     const canvas = await html2canvas(container!, {
       ignoreElements: (element) => element.className === "solflare-wallet-adapter-iframe",
+      width: window.screen.width,
+      height: window.screen.height,
     }); const imageData = canvas.toDataURL()
     const blob = dataURItoBlob(imageData)
 
@@ -70,7 +73,7 @@ export const Navbar = () => {
         },
         body: JSON.stringify({
           playgroundId: currentPlayground.id,
-          name: "hi",
+          name,
           data: JSON.stringify(toObject()),
           preview_uri
         }),
@@ -110,13 +113,24 @@ export const Navbar = () => {
 
   return (
     <Flex w="100%" h="6rem" pos="static" top="0" bg="bg.100" align="center" justify="end" gap="2rem">
+
       <SavedPlaygrounds user={user} setCurrentPlayground={setCurrentPlayground} />
 
-      <Flex borderRight="2px solid" borderColor="gray.200" p="0 2rem" gap="2rem">
-        {user && <Button variant="filled" onClick={handlePlaygroundSave}>Save</Button>}
-        {user && <Button variant="outline" onClick={savedPg.onOpen}>Load</Button>}
+      {user && <Flex borderRight="2px solid" borderColor="gray.200" p="0 2rem" gap="2rem">
+        <Input
+          w="25rem"
+          h="3.5rem"
+          onChange={(e) => {
+            setName(e.target.value)
+          }}
+          fontSize="1.6rem"
+          value={name}
+          placeholder="Enter Playground Name"
+        />
+        <Button variant="filled" onClick={handlePlaygroundSave}>Save</Button>
+        <Button variant="outline" onClick={savedPg.onOpen}>Load</Button>
       </Flex>
-
+      }
       <NetworkSelector />
       <ConnectWalletButton />
     </Flex>

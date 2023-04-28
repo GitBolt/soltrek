@@ -43,7 +43,6 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
     const run = async () => {
       const res = await fetch(`/api/playground/get/${user.publicKey}`)
       const data = await res.json()
-      console.log("Data", data)
       setPlaygrounds(data.playgrounds)
     }
     run()
@@ -52,7 +51,6 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
 
   const handleKeyDown = (event: any) => {
     if (event.key === "l" && event.ctrlKey) {
-      console.log(publicKey)
       if (!publicKey) {
         toast({
           status: "error",
@@ -87,18 +85,18 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
     <>
       <Modal size="10xl" isOpen={savedPg.isOpen} onClose={savedPg.onClose}>
         <ModalOverlay />
-        {user && <ModalContent p="1rem 2rem" minH="60vh" bg="#5458792E" style={{ backdropFilter: 'blur(10px)' }} color="white" w="70vw" borderRadius="2rem">
+        {user && <ModalContent p="1rem 2rem" minH="60vh" bg="#5458792E" style={{ backdropFilter: 'blur(10px)' }} color="white" w="98rem" borderRadius="2rem">
           <ModalHeader mb="1rem" fontSize="2rem" color="magenta.100" borderBottom="1px solid" borderColor="gray.200">My Playgrounds</ModalHeader>
           <ModalCloseButton />
           {playgrounds.length ? (
-            <Flex gap="2rem">
+            <Flex gap="2rem" flexWrap="wrap" overflow="auto" w="100%">
               {playgrounds.map((playground) => (
                 <Flex
                   transition="100ms"
                   _active={{ transform: 'scale(0.9)' }}
                   _hover={{ filter: "brightness(130%)" }}
                   onClick={() => handleLoad(playground)}
-                  w="30%"
+                  w="30rem"
                   h="20rem"
                   key={playground.createdAt}
                   borderWidth="1px"
@@ -108,14 +106,8 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
                   justify="start"
                   overflow="hidden">
                   <Box w="100%" h="15rem" overflow="hidden">
-                    <img
+                    <PreviewImage
                       src={playground.preview_url}
-                      alt="Playground preview"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover"
-                      }}
                     />
                   </Box>
 
@@ -140,3 +132,31 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
     </>
   )
 }
+
+const PlaceholderImage = () => (
+  <img
+    src="/assets/placeholder.png"
+    alt="Loading..."
+    width="100%"
+    height="100%"
+    style={{ objectFit: 'cover' }}
+  />
+);
+
+const PreviewImage = ({ src }: { src: string }) => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <>
+      {!loaded && <PlaceholderImage />}
+      <img
+        src={src}
+        alt="Preview image"
+        width="100%"
+        height="100%"
+        style={{ objectFit: 'cover', display: loaded ? 'block' : 'none' }}
+        onLoad={() => setLoaded(true)}
+      />
+    </>
+  );
+};

@@ -58,7 +58,7 @@ const KeypairNode: FC<NodeProps> = (props) => {
           try {
             parsed = new Uint8Array(JSON.parse(privKey))
           } catch (e) {
-            console.log(e)
+            console.log("Keypair Error: ", e)
           }
         }
         setKp(Keypair.fromSecretKey(parsed))

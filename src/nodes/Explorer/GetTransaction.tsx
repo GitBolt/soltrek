@@ -4,7 +4,7 @@ import BaseNode from '@/layouts/BaseNode';
 import { Box, Text, useClipboard } from '@chakra-ui/react';
 import { CustomHandle } from '@/layouts/CustomHandle';
 import { CheckIcon, CopyIcon } from '@chakra-ui/icons';
-import { handleValue } from '@/util/helper';
+import { handleValue } from '@/util/handleNodeValue';
 
 const GetTransactionNode: FC<NodeProps> = (props) => {
   const [txDetails, setTxDetails] = useState<string | undefined>(undefined);
@@ -25,7 +25,6 @@ const GetTransactionNode: FC<NodeProps> = (props) => {
       .then((data) => {
         if (!data) {
           setTxDetails(undefined)
-          console.log("error")
           setError("Token not supported")
         } else {
           setTxDetails(JSON.stringify(data, null, 2));

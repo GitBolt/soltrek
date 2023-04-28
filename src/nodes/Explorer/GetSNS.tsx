@@ -26,7 +26,6 @@ const GetSNS: FC<NodeProps> = (props) => {
         .then((data) => {
           if (!data) {
             setTokenDetails(undefined)
-            console.log("error")
             setError("Error with domain")
           } else {
             setTokenDetails(JSON.stringify(data, null, 2));

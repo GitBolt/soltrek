@@ -12,7 +12,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       publicKey: public_key as string,
     } as Prisma.UserWhereUniqueInput,
   })
-  console.log(user)
 
   if (!user) return
   try {

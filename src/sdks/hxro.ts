@@ -219,7 +219,6 @@ export namespace HXRO {
         new PublicKey(userPublicKey),
         markets
       )
-      console.log(marketPair, userPublicKey, positions)
       const parsedPositions = positions
         .map((position) => parseMyPositions(position, marketPair, markets, USDC_DECIMALS, contractSize))
         .sort((a, b) => b.time.startTime - a.time.startTime)

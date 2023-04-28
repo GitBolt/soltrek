@@ -72,7 +72,6 @@ const HXROGetUserPositions: FC<NodeProps> = (props) => {
       values['pubKey']
     ).then((userPosRes) => {
       if (userPosRes.error || !userPosRes.positions) return
-      console.log(userPosRes)
       setUserPositions(userPosRes.positions)
       setIsLoading(false)
     })
