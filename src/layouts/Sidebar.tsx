@@ -160,13 +160,6 @@ const Sidebar = ({ sidebarContent }: Props) => {
       }}>
         <Branding />
 
-        <Divider />
-
-        {wallet && <Flex w="100%" p="0 2rem" gap="1rem" justify="space-between" my="2rem">
-          {/* <Button variant="outline" onClick={onLoad}>Load</Button> */}
-          {/* <Button variant="filled" onClick={onSave}>Save</Button> */}
-        </Flex>}
-
         <List mb="2rem">
           {selectedItemTitle && sidebarContent.find((item) => item.title == selectedItemTitle)!.items.map((item, index) => (
             <ListItem key={item.title}>

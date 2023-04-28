@@ -5,6 +5,7 @@ export interface PlaygroundSave {
 }
 
 export interface SavedPlaygroundType {
+    id: number,
     preview_url: string,
     data: string,
     name: string,

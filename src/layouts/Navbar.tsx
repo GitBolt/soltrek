@@ -10,6 +10,7 @@ import { uploadFile } from "@/util/upload"
 import html2canvas from "html2canvas"
 import { dataURItoBlob } from "@/util/helper"
 import { compressImage } from "@/util/compressor"
+import { SavedPlaygroundType } from "@/types/playground"
 
 export const Navbar = () => {
 
@@ -19,6 +20,7 @@ export const Navbar = () => {
   const { publicKey } = useWallet()
   const [user, setUser] = useState<any>(null)
   const toast = useToast()
+  const [currentPlayground, setCurrentPlayground] = useState<SavedPlaygroundType>()
 
   useEffect(() => {
     if (!publicKey) return
@@ -42,7 +44,7 @@ export const Navbar = () => {
     run()
   }, [publicKey])
 
-  
+
   const handlePlaygroundSave = async () => {
     if (!user) return
 
@@ -57,24 +59,44 @@ export const Navbar = () => {
     const file = new File([compressed as Blob], "img.png", { type: "image/png" });
 
     const preview_uri = await uploadFile(file)
-    const response = await fetch('/api/playground/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: user.id,
-        name: "hi",
-        data: JSON.stringify(toObject()),
-        preview_uri
-      }),
-    })
+
+    let response: any
+    if (currentPlayground && currentPlayground.id) {
+      response = await fetch('/api/playground/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          playgroundId: currentPlayground.id,
+          name: "hi",
+          data: JSON.stringify(toObject()),
+          preview_uri
+        }),
+      })
+
+    } else {
+      response = await fetch('/api/playground/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          name: "hi",
+          data: JSON.stringify(toObject()),
+          preview_uri
+        }),
+      })
+    }
 
     if (response.ok) {
       toast({
         title: "Created Playground",
         status: "success"
       })
+      const data = await response.json()
+      setCurrentPlayground(data)
     } else {
       toast({
         title: "Error creating playground",
@@ -85,11 +107,9 @@ export const Navbar = () => {
 
 
 
-
-
   return (
     <Flex w="100%" h="6rem" pos="static" top="0" bg="bg.100" align="center" justify="end" gap="2rem">
-      <SavedPlaygrounds isOpen={isOpen} onClose={onClose} user={user} />
+      <SavedPlaygrounds isOpen={isOpen} onClose={onClose} user={user} setCurrentPlayground={setCurrentPlayground} />
 
       <Flex borderRight="2px solid" borderColor="gray.200" p="0 2rem" gap="2rem">
         {user && <Button variant="filled" onClick={handlePlaygroundSave}>Save</Button>}
