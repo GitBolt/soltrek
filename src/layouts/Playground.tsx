@@ -15,12 +15,12 @@ import { nodeTypes } from '@/nodes';
 import NodeEdge from '@/layouts/NodeEdge';
 import useCtrlA from '@/util/useCtrlA';
 
-type Props = {
-  // setRfInstance: React.Dispatch<React.SetStateAction<any>>
-}
-const Playground = function Playground({ }: Props) {
+
+const Playground = function Playground() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const ctrlAPress = useCtrlA()
+  const backspacePress = useKeyPress('Backspace')
 
 
   const onConnect = useCallback((params: Connection) =>
@@ -28,10 +28,6 @@ const Playground = function Playground({ }: Props) {
     , [setEdges]
   );
 
-  const isCtrlA = useCtrlA()
-
-
-  const press = useKeyPress('Backspace')
 
   useEffect(() => {
     setNodes((nds) =>
@@ -46,17 +42,17 @@ const Playground = function Playground({ }: Props) {
         return node;
       }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [press]);
+  }, [backspacePress]);
 
 
 
   useEffect(() => {
-
-    if (isCtrlA.split("-")[0] == "true") {
+    if (ctrlAPress.split("-")[0] == "true") {
       setNodes((nodes) => nodes.map((nd) => { return { ...nd, selected: true } }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCtrlA])
+  }, [ctrlAPress])
+
 
 
   return (
@@ -64,6 +60,7 @@ const Playground = function Playground({ }: Props) {
       nodes={nodes}
       nodeTypes={nodeTypes}
       edges={edges}
+      id="rf-main"
       proOptions={{ hideAttribution: true }}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}

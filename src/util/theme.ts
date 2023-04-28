@@ -170,5 +170,100 @@ export const theme = extendTheme({
         },
       },
     },
+
+    Alert: {
+      baseStyle: (props: any) => {
+        const { status } = props;
+    
+        const base = {
+          container: {
+            padding:"1rem 1rem",
+            borderRadius: "10rem",
+            width:"5rem",
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)",
+          },
+          icon: {
+            width:"1.8rem",
+            height:"1.8rem"
+          },
+          closeButton: {
+            color: "white",
+            _hover: {
+              background: "white",
+            },
+          },
+          title:{
+            fontSize:"1.8rem",
+            color:"white",
+            weight:"200"
+          }
+        };
+    
+        const successBase = status === "success" && {
+          container: {
+            ...base.container,
+            background: "#005539",
+          },
+          icon: {
+            ...base.icon,
+            color:"#00FF12"
+          },
+          title: {
+            ...base.title,
+          },
+        };
+    
+        const infoBase = status === "info" && {
+          container: {
+            ...base.container,
+            background: "gray.300",
+          },
+          icon: {
+            color:"blue.100"
+          },
+          title: {
+            color: "blue.100",
+            fontWeight: "bold",
+          },
+          closeButton: {
+            ...base.closeButton,
+            _hover: {
+              ...base.closeButton._hover,
+              color: "gray.300",
+            },
+          },
+        };
+    
+        const errorBase = status === "error" && {
+          container: {
+            ...base.container,
+            background: "red.400",
+          },
+          icon: {
+            color:"red"
+          },
+          title: {
+            color: "white",
+            fontWeight: "bold",
+          },
+          closeButton: {
+            ...base.closeButton,
+            _hover: {
+              ...base.closeButton._hover,
+              color: "red.400",
+            },
+          },
+        };
+    
+        return {
+          ...base,
+          ...successBase,
+          ...infoBase,
+          ...errorBase,
+        };
+      },
+    },
+    
+    
   },
 });

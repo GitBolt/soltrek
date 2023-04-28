@@ -1,4 +1,4 @@
-import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react"
+import { Button, Divider, Flex, Text, useDisclosure, useToast } from "@chakra-ui/react"
 import { ConnectWalletButton } from "../components/ConnectWalletButton"
 import { NetworkSelector } from "../components/NetworkSelector"
 import { useEffect, useState } from "react"
@@ -6,6 +6,9 @@ import { getUser } from "@/util/program/user"
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react"
 import { useReactFlow } from "reactflow"
 import { SavedPlaygrounds } from "@/components/SavedPlaygrounds"
+import { uploadFile } from "@/util/upload"
+import html2canvas from "html2canvas"
+import { dataURItoBlob } from "@/util/helper"
 
 export const Navbar = () => {
 
@@ -14,6 +17,7 @@ export const Navbar = () => {
 
   const { publicKey } = useWallet()
   const [user, setUser] = useState<any>(null)
+  const toast = useToast()
 
   useEffect(() => {
     if (!publicKey) return
@@ -38,23 +42,57 @@ export const Navbar = () => {
   }, [publicKey])
 
   const handlePlaygroundSave = async () => {
-    if (!user) return
-    const response = await fetch('/api/playground/new', {
-      method: 'POST',
+    if (!user) return;
+  
+    const container = document.getElementById("rf-main");
+    const canvas = await html2canvas(container!);
+    const imageData = canvas.toDataURL();
+    const blob = dataURItoBlob(imageData);
+  
+    const file = new File([blob], "img.png", { type: "image/png" });
+  
+    // Start uploading the image
+    const uploadPromise = uploadFile(file);
+  
+    // Start saving the data
+    const savePromise = fetch("/api/playground/new", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId: user.id, name: "hi", data: JSON.stringify(toObject()) }),
-    })
-    const playground = await response.json()
-    return playground
-  }
+      body: JSON.stringify({
+        userId: user.id,
+        name: "hi",
+        data: JSON.stringify(toObject()),
+      }),
+    });
+  
+    // Wait for both promises to complete
+    const [preview_uri] = await Promise.all([uploadPromise, savePromise]);
+  
+    if (preview_uri && preview_uri !== "") {
+      toast({
+        title: "Created Playground",
+        status: "success",
+      });
+    } else {
+      toast({
+        title: "Error creating playground",
+        status: "error",
+      });
+    }
+  };
+  
 
   return (
-    <Flex w="100%" h="6rem" pos="static" top="0" bg="bg.100" align="center" justify="end">
+    <Flex w="100%" h="6rem" pos="static" top="0" bg="bg.100" align="center" justify="end" gap="2rem">
       <SavedPlaygrounds isOpen={isOpen} onClose={onClose} user={user} />
-      {user && <Button variant="filled" onClick={handlePlaygroundSave}>Save</Button>}
-      {user && <Button variant="outline" onClick={onOpen}>Load</Button>}
+
+      <Flex borderRight="2px solid" borderColor="gray.200" p="0 2rem" gap="2rem">
+        {user && <Button variant="filled" onClick={handlePlaygroundSave}>Save</Button>}
+        {user && <Button variant="outline" onClick={onOpen}>Load</Button>}
+      </Flex>
+
       <NetworkSelector />
       <ConnectWalletButton />
     </Flex>

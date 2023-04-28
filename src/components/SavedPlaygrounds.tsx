@@ -11,6 +11,7 @@ import {
   VStack,
   useDisclosure,
   Box,
+  SimpleGrid,
 } from '@chakra-ui/react'
 import prisma from '@/lib/prisma'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -49,26 +50,26 @@ export const SavedPlaygrounds = ({ isOpen, onClose, user }: Props) => {
   }
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal size="6xl" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent bg="gray.800" color="white">
-          <ModalHeader>   My Playgrounds
-          </ModalHeader>
+        <ModalContent bg="gray.800" color="white" w="70vw">
+          <ModalHeader fontSize="2xl" textAlign="center">My Playgrounds</ModalHeader>
           <ModalCloseButton />
           {playgrounds.length ? (
-            <VStack spacing={4}>
+            <SimpleGrid columns={[10]} spacing={4} p={4}>
               {playgrounds.map((playground: any) => (
-                <Box key={playground.id}>
-                  <Text key={playground.id}>{playground.name}</Text>
-                  <Button onClick={() => handleLoad(playground.data)}>Load</Button>
+                <Box key={playground.id} borderWidth="1px" borderRadius="md" p={2}>
+                  <Text fontSize="xl" fontWeight="bold">{playground.name}</Text>
+                  <Button size="sm" onClick={() => handleLoad(playground.data)}>Load</Button>
                 </Box>
               ))}
-            </VStack>
+            </SimpleGrid>
           ) : (
-            <Text>No playgrounds found.</Text>
+            <Text fontSize="xl" p={4}>No playgrounds found.</Text>
           )}
         </ModalContent>
       </Modal>
+
     </>
   )
 }

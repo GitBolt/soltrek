@@ -8,17 +8,18 @@ generator client {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  publicKey String
-  createdAt DateTime  @default(now())
+  id          Int          @id @default(autoincrement())
+  publicKey   String
+  createdAt   DateTime     @default(now())
   playgrounds Playground[]
 }
 
 model Playground {
-  id        Int       @id @default(autoincrement())
-  data      String
-  name      String
-  createdAt DateTime  @default(now())
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id])
+  id          Int      @id @default(autoincrement())
+  data        String
+  name        String
+  createdAt   DateTime @default(now())
+  userId      Int
+  preview_url String
+  user        User     @relation(fields: [userId], references: [id])
 }

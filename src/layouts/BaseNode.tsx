@@ -11,8 +11,7 @@ const BaseNode: FC<
     height?: string | undefined;
     code?: string | undefined;
     width?: string | undefined;
-  }
-> = ({ children, title, selected, height, width, code }) => {
+  }> = ({ children, title, selected, height, width, code, type }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [CodeState, setCodeState] = useState<string>("");
   return (
