@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { NFTStorage } from "nft.storage";
 
 export const uploadJson = async (object: string) => {
@@ -42,4 +43,27 @@ export const uploadFile = async (image: any) => {
   const imageURL = `https://ipfs.io/ipfs/${masala}`;
   console.log(`🎉 Uploaded image ${imageURL}`);
   return imageURL;
+};
+
+
+export const cloudinaryUpload = async (imageBlob: Blob) => {
+
+
+  const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME
+  const CLOUDINARY_UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET
+
+  const formData = new FormData();
+  const uniqueFilename = v4()
+
+  formData.append('file', imageBlob, `${uniqueFilename}.jpg`);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET as string);
+
+
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  const responseData = await response.json();
+  return responseData.secure_url;
 };

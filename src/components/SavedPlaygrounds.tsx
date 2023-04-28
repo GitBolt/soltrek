@@ -43,7 +43,7 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
     const run = async () => {
       const res = await fetch(`/api/playground/get/${user.publicKey}`)
       const data = await res.json()
-      setPlaygrounds(data.playgrounds)
+      setPlaygrounds(data.playgrounds || [])
     }
     run()
   }, [savedPg.isOpen, user])
@@ -87,7 +87,7 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
         <ModalOverlay />
         {user && <ModalContent p="1rem 2rem" minH="60vh" bg="#5458792E" style={{ backdropFilter: 'blur(10px)' }} color="white" w="98rem" borderRadius="2rem">
           <ModalHeader mb="1rem" fontSize="2rem" color="magenta.100" borderBottom="1px solid" borderColor="gray.200">My Playgrounds</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton size="lg" />
           {playgrounds.length ? (
             <Flex gap="2rem" flexWrap="wrap" overflow="auto" w="100%">
               {playgrounds.map((playground) => (

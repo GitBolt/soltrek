@@ -6,7 +6,7 @@ import { getUser } from "@/util/program/user"
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react"
 import { useReactFlow } from "reactflow"
 import { SavedPlaygrounds } from "@/components/SavedPlaygrounds"
-import { uploadFile } from "@/util/upload"
+import { cloudinaryUpload, uploadFile } from "@/util/upload"
 import html2canvas from "html2canvas"
 import { dataURItoBlob } from "@/util/helper"
 import { compressImage } from "@/util/compressor"
@@ -62,7 +62,7 @@ export const Navbar = () => {
 
     const file = new File([compressed as Blob], "img.png", { type: "image/png" });
 
-    const preview_uri = await uploadFile(file)
+    const preview_uri = await cloudinaryUpload(file)
 
     let response: any
     if (currentPlayground && currentPlayground.id) {
