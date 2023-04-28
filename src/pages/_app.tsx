@@ -11,6 +11,7 @@ import { ReactFlowProvider } from 'reactflow'
 import { theme } from '@/util/theme'
 import { Wallet } from "@/context/walletContext";
 import { NetworkProvider } from '@/context/configContext';
+import { ModalProvider } from '@/context/modalContext';
 
 export default function SolBuild({ Component, pageProps }: AppProps) {
 
@@ -19,7 +20,9 @@ export default function SolBuild({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <ReactFlowProvider>
           <NetworkProvider>
-            <Component {...pageProps} />
+            <ModalProvider>
+              <Component {...pageProps} />
+            </ModalProvider>
           </NetworkProvider>
         </ReactFlowProvider>
       </ChakraProvider>

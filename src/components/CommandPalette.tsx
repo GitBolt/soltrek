@@ -9,17 +9,21 @@ import {
   useDisclosure,
   ModalContent,
   ModalOverlay,
-  Box
+  Box,
+  Divider,
+  useToast
 } from "@chakra-ui/react";
 import { useReactFlow } from "reactflow";
 import { sidebarContent } from "@/util/sidebarContent";
 import { createNodeId, createNodePos } from "@/util/randomData";
 import { SearchResult, searcher } from "@/util/searcher";
+import { useCustomModal } from "@/context/modalContext";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 
 export const CommandPalette = () => {
 
-  const { isOpen, onClose, onOpen } = useDisclosure()
+  const { cmdPalette, savedPg } = useCustomModal()
 
   const [searchValue, setSearchValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,8 +32,8 @@ export const CommandPalette = () => {
   const listRef = useRef(null)
 
   const [selectedResult, setSelectedResult] = useState<string>('');
-
-
+  const { publicKey } = useWallet()
+  const toast = useToast()
   const addNode = (type: string) => {
     setNodes((nodes) => nodes.concat({
       id: createNodeId(),
@@ -42,23 +46,23 @@ export const CommandPalette = () => {
   const handleKeyDown = (event: any) => {
     if (event.key === "k" && event.ctrlKey) {
       event.preventDefault();
-      onOpen();
+      cmdPalette.onOpen();
       inputRef.current?.focus();
     }
 
-    if (event.key === "Escape" && isOpen) {
+    if (event.key === "Escape" && cmdPalette.isOpen) {
       event.preventDefault();
-      onClose();
+      cmdPalette.onClose();
     }
 
-    if (event.key === "Enter" && isOpen) {
+    if (event.key === "Enter" && cmdPalette.isOpen) {
       event.preventDefault();
       if (!filteredItems) return
 
       addNode(selectedResult || "stringInput");
     }
 
-    if (event.key === "ArrowUp" && isOpen) {
+    if (event.key === "ArrowUp" && cmdPalette.isOpen) {
       event.preventDefault();
       if (!filteredItems) return
 
@@ -66,7 +70,7 @@ export const CommandPalette = () => {
       setSelectedResult(filteredItems[selectedIndex - 1].type)
     }
 
-    if (event.key === "ArrowDown" && isOpen) {
+    if (event.key === "ArrowDown" && cmdPalette.isOpen) {
       event.preventDefault();
       if (!filteredItems) return
 
@@ -81,7 +85,7 @@ export const CommandPalette = () => {
 
     // @ts-ignore
     if (!listRef.current.contains(e.target)) {
-      onOpen();
+      cmdPalette.onOpen();
     }
   };
 
@@ -113,7 +117,7 @@ export const CommandPalette = () => {
 
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={inputRef}>
+    <Modal isOpen={cmdPalette.isOpen} onClose={cmdPalette.onClose} initialFocusRef={inputRef}>
       <ModalOverlay bg="#00000040" />
       <ModalContent
         minH="50vh"
@@ -148,7 +152,7 @@ export const CommandPalette = () => {
           />
           <List w="90%">
 
-            {!filteredItems.length && <Text fontSize="1.4rem" color="blue.300" mb="1rem" fontWeight={600}>{searchValue ? 'No results found...' : 'Start searching to get items from these categories'}</Text>
+            {!filteredItems.length && <Text fontSize="1.4rem" color="blue.400" mb="1rem" fontWeight={600}>{searchValue ? 'No results found...' : 'Start searching to get items from these categories'}</Text>
             }
             {filteredItems.length
               ? filteredItems.map((item) => (
@@ -178,22 +182,57 @@ export const CommandPalette = () => {
                   </Flex>
                 </ListItem>
               ))
-              : !searchValue && sidebarContent.map((item) => (
-                <ListItem
-                  key={item.title}
-                  p="1rem 1rem"
-                  borderRadius="0.75rem"
-                >
-                  <Flex justify="start" align="center" gap="2rem" opacity="0.5">
-                    <Box w="1.8rem" h="1.8rem">
-                      <img src={item.icon} height="100%" width="100%" />
-                    </Box>
-                    <Text fontSize="1.6rem" color="blue.200" fontWeight={500}>
-                      {item.title}
-                    </Text>
-                  </Flex>
-                </ListItem>
-              ))}
+              : !searchValue && (
+                <>
+                  {sidebarContent.map((item) => (
+                    <ListItem
+                      key={item.title}
+                      p="1rem 1rem"
+                      borderRadius="0.75rem"
+                    >
+                      <Flex justify="start" align="center" gap="2rem" opacity="0.5">
+                        <Box w="1.8rem" h="1.8rem">
+                          <img src={item.icon} height="100%" width="100%" />
+                        </Box>
+                        <Text fontSize="1.6rem" color="blue.200" fontWeight={500}>
+                          {item.title}
+                        </Text>
+                      </Flex>
+                    </ListItem>
+                  ))}
+                  < Divider />
+                  <ListItem
+                    _hover={{ bg: "#23213987" }}
+                    p="1rem 1rem"
+                    borderRadius="0.75rem"
+                  >
+                    <Flex justify="space-between" align="center">
+                      <Flex justify="center"
+                        onClick={() => {
+                          if (!publicKey) {
+                            toast({
+                              status: "error",
+                              title: "Connect Wallet Required"
+                            })
+                            return
+                          }
+                          savedPg.onOpen()
+                        }} align="center" gap="2rem">
+                        <Box w="1.8rem" h="1.8rem">
+                          <img src="/icons/Load.svg" height="100%" width="100%" />
+                        </Box>
+                        <Text fontSize="1.6rem" color="blue.200" fontWeight={500}>
+                          Load playground
+                        </Text>
+                      </Flex>
+                      <Text fontSize="1.6rem" bg="gray.100" p="0.2rem" borderRadius="5px" color="magenta.100" fontWeight={500}>
+                        ⌘ + L
+                      </Text>
+                    </Flex>
+                  </ListItem>
+                </>
+              )
+            }
 
           </List>
 

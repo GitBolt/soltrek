@@ -15,27 +15,30 @@ import {
   SimpleGrid,
   Flex,
   Divider,
+  useToast,
 } from '@chakra-ui/react'
 import prisma from '@/lib/prisma'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useReactFlow } from 'reactflow'
 import { SavedPlaygroundType } from '@/types/playground'
+import { useCustomModal } from '@/context/modalContext'
 
 
 type Props = {
-  isOpen: boolean,
-  onClose: () => void,
   user: any,
   setCurrentPlayground: React.Dispatch<React.SetStateAction<any>>
 }
 
-export const SavedPlaygrounds = ({ isOpen, onClose, user, setCurrentPlayground }: Props) => {
+export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
   const [playgrounds, setPlaygrounds] = useState<SavedPlaygroundType[]>([])
   const { setEdges, setViewport, setNodes } = useReactFlow()
 
+  const { savedPg } = useCustomModal()
+  const toast = useToast()
+  const { publicKey } = useWallet()
   useEffect(() => {
 
-    if (!isOpen) return
+    if (!savedPg.isOpen || !user) return
 
     const run = async () => {
       const res = await fetch(`/api/playground/get/${user.publicKey}`)
@@ -44,7 +47,33 @@ export const SavedPlaygrounds = ({ isOpen, onClose, user, setCurrentPlayground }
       setPlaygrounds(data.playgrounds)
     }
     run()
-  }, [isOpen, user])
+  }, [savedPg.isOpen, user])
+
+
+  const handleKeyDown = (event: any) => {
+    if (event.key === "l" && event.ctrlKey) {
+      console.log(publicKey)
+      if (!publicKey) {
+        toast({
+          status: "error",
+          title: "Connect wallet required",
+        })
+        return
+      }
+      event.preventDefault();
+      savedPg.onOpen();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   const handleLoad = (pg: SavedPlaygroundType) => {
     setCurrentPlayground(pg)
@@ -52,13 +81,13 @@ export const SavedPlaygrounds = ({ isOpen, onClose, user, setCurrentPlayground }
     setNodes(parsed.nodes || [])
     setEdges(parsed.edges || [])
     setViewport(parsed.viewport || [])
-    onClose()
+    savedPg.onClose()
   }
   return (
     <>
-      <Modal size="10xl" isOpen={isOpen} onClose={onClose}>
+      <Modal size="10xl" isOpen={savedPg.isOpen} onClose={savedPg.onClose}>
         <ModalOverlay />
-        <ModalContent p="1rem 2rem" minH="60vh" bg="#5458792E" style={{ backdropFilter: 'blur(10px)' }} color="white" w="70vw" borderRadius="2rem">
+        {user && <ModalContent p="1rem 2rem" minH="60vh" bg="#5458792E" style={{ backdropFilter: 'blur(10px)' }} color="white" w="70vw" borderRadius="2rem">
           <ModalHeader mb="1rem" fontSize="2rem" color="magenta.100" borderBottom="1px solid" borderColor="gray.200">My Playgrounds</ModalHeader>
           <ModalCloseButton />
           {playgrounds.length ? (
@@ -105,7 +134,7 @@ export const SavedPlaygrounds = ({ isOpen, onClose, user, setCurrentPlayground }
           ) : (
             <Text fontSize="xl" p={4}>No playgrounds found.</Text>
           )}
-        </ModalContent>
+        </ModalContent>}
       </Modal>
 
     </>
