@@ -10,8 +10,6 @@ import {
   PhantomWalletAdapter,
   SlopeWalletAdapter,
   SolflareWalletAdapter,
-  SolletExtensionWalletAdapter,
-  SolletWalletAdapter,
   GlowWalletAdapter,
   BackpackWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
@@ -35,9 +33,7 @@ export const Wallet: FC<Props> = ({ children }: Props) => {
       new SolflareWalletAdapter({ network }),
       new GlowWalletAdapter(),
       new LedgerWalletAdapter(),
-      new SolletWalletAdapter({ network }),
       new SlopeWalletAdapter(),
-      new SolletExtensionWalletAdapter({ network }),
     ],
     [network]
   );
