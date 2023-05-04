@@ -14,8 +14,8 @@ import {
 } from "@metaplex-foundation/mpl-token-metadata";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { Metaplex } from "@metaplex-foundation/js";
-import { Web3Storage } from "web3.storage";
 import { SystemProgram } from "@solana/web3.js";
+import { uploadJson } from "./upload";
 const METAPLEX_TOKEN_METADATA_PROGRAM_ADDRESS =
   "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
 
@@ -35,17 +35,12 @@ const createMetaData = async (
     description: description,
     image: image,
   };
-  const token = process.env.NEXT_PUBLIC_WEB3_STORAGE as string;
-  const client = new Web3Storage({ token });
-  const blob = new Blob([JSON.stringify(MY_TOKEN_METADATA)], {
-    type: "application/json",
-  });
-  const metadataFile = new File([blob], "metadata.json");
-  const meta_cid = await client.put([metadataFile]);
+  const uri = await uploadJson(JSON.stringify(MY_TOKEN_METADATA))
+
   const ON_CHAIN_METADATA = {
     name: MY_TOKEN_METADATA.name,
     symbol: MY_TOKEN_METADATA.symbol,
-    uri: `https://cloudflare-ipfs.com/ipfs/${meta_cid}/metadata.json`,
+    uri,
     sellerFeeBasisPoints: 0,
     creators: null,
     collection: null,
@@ -56,7 +51,6 @@ const createMetaData = async (
 export const createNewMint = async (
   rpc: string | undefined,
   payer: web3.Keypair,
-  mintKeypair: web3.Keypair,
   destinationWallet: web3.PublicKey,
   mintAuthority: web3.PublicKey,
   freezeAuthority: web3.PublicKey,
@@ -71,6 +65,7 @@ export const createNewMint = async (
   } else {
     connection = new web3.Connection(web3.clusterApiUrl("devnet"));
   }
+  const mintKeypair = new web3.Keypair()
   const payerWallet = new NodeWallet(payer);
   const metaplex = new Metaplex(connection);
   const ix: web3.TransactionInstruction[] = [];

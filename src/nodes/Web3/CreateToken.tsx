@@ -52,12 +52,10 @@ const CreateToken: FC<NodeProps> = (props) => {
     );
     if (!Object.values(values).length || !run) return;
 
-    const mintKeypair = Keypair.generate();
 
     createNewMint(
       values["rpc_url"] ?? undefined,
       Keypair.fromSecretKey(base58.decode(values["privatekey"])),
-      mintKeypair,
       new PublicKey(values["publickey"]),
       new PublicKey(values["publickey"]),
       new PublicKey(values["publickey"]),

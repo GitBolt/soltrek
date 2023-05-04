@@ -27,6 +27,12 @@ export const Navbar = () => {
   const { setNodes, setEdges, setViewport } = useReactFlow()
 
   useEffect(() => {
+    if (!currentPlayground) return
+    setName(currentPlayground.name)
+  }, [currentPlayground])
+
+
+  useEffect(() => {
     if (!publicKey) return
     const run = async () => {
       const userReq = await fetch(`/api/user/${publicKey.toBase58()}`)
@@ -143,7 +149,7 @@ export const Navbar = () => {
         setCurrentPlayground(undefined)
         setNodes([])
         setEdges([])
-        setViewport({ x: 800, y: 800, zoom: 1.5 })
+        setViewport({ x: 0, y: 0, zoom: 1.5 })
       }} leftIcon={<AddIcon />}>New</Button>
       <Divider w="2px" h="4rem" bg="gray.200" />
       <NetworkSelector />
