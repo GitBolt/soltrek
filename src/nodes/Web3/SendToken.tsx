@@ -9,16 +9,14 @@ import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
 import { sendSPL, CodeSPL } from "@/util/sendToken";
-import { TransactionInstruction } from "@solana/web3.js";
+import { PublicKey, TransactionInstruction } from "@solana/web3.js";
 
 const SendToken: FC<NodeProps> = (props) => {
   const { getNode, setNodes, getEdges } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string)
 
-  const [ix, setIx] = useState<
-    TransactionInstruction | TransactionInstruction[] | null
-  >([]);
+  const [ix, setIx] = useState<TransactionInstruction | null | TransactionInstruction[]>(null);
 
   const updateNodeData = (nodeId: string, data: any) => {
     setNodes((nds) =>
@@ -48,11 +46,14 @@ const SendToken: FC<NodeProps> = (props) => {
       "rpc",
       "token",
     ]);
-    if (currentNode && values) {
+
+    console.log(values)
+
+    if (currentNode && Object.values(values).filter(i => i).length == 4) {
       sendSPL(
-        values["tokens"],
-        values["sender"],
-        values["receiver"],
+        new PublicKey(values["token"]),
+        new PublicKey(values["sender"]),
+        new PublicKey(values["receiver"]),
         values["amount"],
         values["rpc"]
       ).then((ix) => {

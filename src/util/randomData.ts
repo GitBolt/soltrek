@@ -1,4 +1,5 @@
 let nodeIdCounter = 0;
+
 export const createNodeId = () => {
     return "node-" + (++nodeIdCounter);
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState, useRef, useEffect } from "react";
 import {
   Input,
@@ -6,7 +7,6 @@ import {
   Flex,
   ListItem,
   Text,
-  useDisclosure,
   ModalContent,
   ModalOverlay,
   Box,

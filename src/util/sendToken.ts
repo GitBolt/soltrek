@@ -10,26 +10,25 @@ import {
   createAssociatedTokenAccountInstruction,
   createTransferInstruction,
 } from "@solana/spl-token";
-import { web3 } from "@project-serum/anchor";
+
+
 export const sendSPL = async (
-  mint: string,
+  token: PublicKey,
   fromPubKey: PublicKey,
   toPubKey: PublicKey,
   amount: number,
-  rpc: string | undefined
+  rpc?: string
 ) => {
-  let connection;
-  if (rpc) {
-    connection = new Connection(rpc);
-  } else {
-    connection = new Connection(web3.clusterApiUrl("devnet"));
-  }
+
+  const connection = new Connection(rpc || process.env.NEXT_PUBLIC_DEFAULT_RPC as string)
   try {
-    const token = new PublicKey(mint);
     const fromTokenAccount = await getAssociatedTokenAddress(token, fromPubKey);
     const toTokenAccount = await getAssociatedTokenAddress(token, toPubKey);
     const toTokenAccountInfo = await connection.getAccountInfo(toTokenAccount);
+
     const ix: TransactionInstruction[] = [];
+    
+    console.log(fromTokenAccount)
     if (!toTokenAccountInfo) {
       ix.push(
         createAssociatedTokenAccountInstruction(

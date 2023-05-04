@@ -1,5 +1,4 @@
-import bs58 from "bs58";
-import { PublicKey, Keypair } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { sha256 } from "@noble/hashes/sha256";
 
 const toBuffer = (arr: Buffer | Uint8Array | Array<number>) => {

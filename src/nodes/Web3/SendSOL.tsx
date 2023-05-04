@@ -49,6 +49,7 @@ const SendSOL: FC<NodeProps> = (props) => {
     if (currentNode && Object.values(values).length) {
       sendSOL(values["sender"], values["receiver"], values["amount"]).then(
         (ix) => {
+          console.log("done", ix)
           setIx(ix);
         }
       );
