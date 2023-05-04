@@ -1,8 +1,7 @@
 export const compressImage = (blob: Blob, options = {}): Promise<Blob> => {
   const defaults = {
-    maxWidth: 700,
-    maxHeight: 700,
-    quality: 0.5,
+    maxWidth: 500,
+    maxHeight: 500,
     format: 'image/png',
   };
   const settings = { ...defaults, ...options };
@@ -37,7 +36,7 @@ export const compressImage = (blob: Blob, options = {}): Promise<Blob> => {
         console.log(`Output image size: ${(compressedBlob!.size / 1024).toFixed(2)} KB (${(reductionRatio * 100).toFixed(2)}% reduction)`);
 
         resolve(compressedBlob!);
-      }, settings.format, settings.quality);
+      }, settings.format);
     };
 
     image.onerror = (error) => {
@@ -45,5 +44,16 @@ export const compressImage = (blob: Blob, options = {}): Promise<Blob> => {
     };
 
     image.src = URL.createObjectURL(blob);
+  });
+};
+
+
+export const blobToBase64 = (img: Blob) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(img);
+  return new Promise(resolve => {
+    reader.onloadend = () => {
+      resolve(reader.result);
+    };
   });
 };

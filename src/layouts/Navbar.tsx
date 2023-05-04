@@ -9,7 +9,7 @@ import { SavedPlaygrounds } from "@/components/SavedPlaygrounds"
 import { cloudinaryUpload, uploadFile } from "@/util/upload"
 import html2canvas from "html2canvas"
 import { dataURItoBlob } from "@/util/helper"
-import { compressImage } from "@/util/compressor"
+import { blobToBase64, compressImage } from "@/util/compressor"
 import { SavedPlaygroundType } from "@/types/playground"
 import { useCustomModal } from "@/context/modalContext"
 import { AddIcon } from "@chakra-ui/icons"
@@ -26,6 +26,7 @@ export const Navbar = () => {
   const [name, setName] = useState<string>(currentPlayground?.name || 'Untitled')
   const { setNodes, setEdges, setViewport } = useReactFlow()
 
+  
   useEffect(() => {
     if (!currentPlayground) return
     setName(currentPlayground.name)
@@ -33,7 +34,10 @@ export const Navbar = () => {
 
 
   useEffect(() => {
-    if (!publicKey) return
+    if (!publicKey) {
+      setUser(null)
+      return
+    }
     const run = async () => {
       const userReq = await fetch(`/api/user/${publicKey.toBase58()}`)
       let user = await userReq.json()
@@ -62,15 +66,20 @@ export const Navbar = () => {
     const canvas = await html2canvas(container!, {
       ignoreElements: (element) => element.className === "solflare-wallet-adapter-iframe",
       width: window.screen.width,
-      height: window.screen.height,
+      height: window.screen.height + 100,
     }); const imageData = canvas.toDataURL()
+
+
+
     const blob = dataURItoBlob(imageData)
 
     const compressed = await compressImage(blob)
 
-    const file = new File([compressed as Blob], "img.png", { type: "image/png" });
+    // const file = new File([compressed as Blob], "img.png", { type: "image/png" });
 
-    const preview_uri = await cloudinaryUpload(file)
+    // const imageUri = await cloudinaryUpload(file)
+
+    const imageUri = await blobToBase64(compressed)
 
     let response: any
     if (currentPlayground && currentPlayground.id) {
@@ -83,7 +92,7 @@ export const Navbar = () => {
           playgroundId: currentPlayground.id,
           name,
           data: JSON.stringify(toObject()),
-          preview_uri
+          preview_uri: imageUri,
         }),
       })
 
@@ -97,7 +106,7 @@ export const Navbar = () => {
           userId: user.id,
           name,
           data: JSON.stringify(toObject()),
-          preview_uri
+          preview_uri: imageUri,
         }),
       })
     }

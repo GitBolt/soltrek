@@ -14,6 +14,9 @@ import styles from '@/styles/Playground.module.css'
 import { nodeTypes } from '@/nodes';
 import NodeEdge from '@/layouts/NodeEdge';
 import useCtrlA from '@/util/useCtrlA';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useToast } from '@chakra-ui/react';
+import { useCustomModal } from '@/context/modalContext';
 
 
 const Playground = function Playground() {
@@ -21,12 +24,38 @@ const Playground = function Playground() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const ctrlAPress = useCtrlA()
   const backspacePress = useKeyPress('Backspace')
-
+  const { publicKey } = useWallet()
+  const { savedPg } = useCustomModal()
+  const toast = useToast()
 
   const onConnect = useCallback((params: Connection) =>
     setEdges((eds) => addEdge(params, eds))
     , [setEdges]
   );
+
+
+  const handleKeyDown = (event: any) => {
+    if (event.key === "l" && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      if (!publicKey) {
+        toast({
+          status: "error",
+          title: "Connect wallet required",
+        })
+        return
+      }
+      savedPg.onOpen();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publicKey]);
 
 
   useEffect(() => {

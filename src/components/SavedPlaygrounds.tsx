@@ -17,8 +17,6 @@ import {
   Divider,
   useToast,
 } from '@chakra-ui/react'
-import prisma from '@/lib/prisma'
-import { useWallet } from '@solana/wallet-adapter-react'
 import { useReactFlow } from 'reactflow'
 import { SavedPlaygroundType } from '@/types/playground'
 import { useCustomModal } from '@/context/modalContext'
@@ -34,8 +32,7 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
   const { setEdges, setViewport, setNodes } = useReactFlow()
 
   const { savedPg } = useCustomModal()
-  const toast = useToast()
-  const { publicKey } = useWallet()
+
   useEffect(() => {
 
     if (!savedPg.isOpen || !user) return
@@ -47,30 +44,6 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
     }
     run()
   }, [savedPg.isOpen, user])
-
-
-  const handleKeyDown = (event: any) => {
-    if (event.key === "l" && event.ctrlKey) {
-      if (!publicKey) {
-        toast({
-          status: "error",
-          title: "Connect wallet required",
-        })
-        return
-      }
-      event.preventDefault();
-      savedPg.onOpen();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
 
   const handleLoad = (pg: SavedPlaygroundType) => {

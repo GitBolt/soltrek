@@ -44,7 +44,7 @@ export const CommandPalette = () => {
   }
 
   const handleKeyDown = (event: any) => {
-    if (event.key === "k" && event.ctrlKey) {
+    if (event.key === "k" &&(event.ctrlKey || event.metaKey)) {
       event.preventDefault();
       cmdPalette.onOpen();
       inputRef.current?.focus();
