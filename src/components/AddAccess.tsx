@@ -18,16 +18,16 @@ import {
   useToast,
   Input,
 } from '@chakra-ui/react'
-import { useReactFlow } from 'reactflow'
 import { SavedPlaygroundType } from '@/types/playground'
 import { useCustomModal } from '@/context/modalContext'
+import { truncatedPublicKey } from '@/util/helper'
 
 type Props = {
-  user: any,
-  playgroundId: number,
+  playground: SavedPlaygroundType,
+  setCurrentPlayground: React.Dispatch<React.SetStateAction<any>>,
 }
 
-export const AddAccess = ({ user, playgroundId }: Props) => {
+export const AddAccess = ({ playground, setCurrentPlayground}: Props) => {
   const [value, setValue] = useState('')
   const { accessModal } = useCustomModal()
   const toast = useToast()
@@ -39,17 +39,22 @@ export const AddAccess = ({ user, playgroundId }: Props) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ new_wallet: value, playgroundId })
+      body: JSON.stringify({ new_wallet: value, playgroundId: playground.id })
     })
-    if (res.ok){
+    if (res.ok) {
       toast({
-        status:"success",
-        title:"Gave edit access"
+        status: "success",
+        title: "Gave edit access"
       })
+
+      const res = await fetch(`/api/playground/get/id/${playground.id}`)
+      const data = await res.json()
+      setCurrentPlayground(data)
+
     } else {
       toast({
-        status:"error",
-        title:"Error giving edit access"
+        status: "error",
+        title: "Error giving edit access"
       })
     }
     console.log(res)
@@ -59,8 +64,8 @@ export const AddAccess = ({ user, playgroundId }: Props) => {
     <>
       <Modal size="lg" isOpen={accessModal.isOpen} onClose={accessModal.onClose}>
         <ModalOverlay />
-        <ModalContent p="1rem 2rem" minH="60vh" bg="#5458792E" style={{ backdropFilter: 'blur(10px)' }} color="white" w="98rem" borderRadius="2rem">
-          <ModalHeader mb="1rem" fontSize="2rem" color="magenta.100" borderBottom="1px solid" borderColor="gray.200">Give Edit Access</ModalHeader>
+        <ModalContent p="1rem 2rem" minH="50vh" bg="#5458792E" style={{ backdropFilter: 'blur(10px)' }} color="white" borderRadius="2rem">
+          <ModalHeader mb="1rem" fontSize="2rem" color="magenta.100" >Give Edit Access</ModalHeader>
           <Flex flexFlow="column" gap="1rem" justify="center" align="center">
 
             <Input
@@ -75,7 +80,10 @@ export const AddAccess = ({ user, playgroundId }: Props) => {
             <Button w="90%" variant="filled" onClick={giveAccess}>Give access</Button>
             <Divider mt="2rem" />
             <Text textAlign="start" fontSize="2rem" color="blue.400" fontWeight="600" alignSelf="start">Access Given</Text>
-            <Text color="white" opacity="60%" fontSize="2.4rem" alignSelf="start" fontWeight="700">Coming soon</Text>
+
+            {playground && playground.edit_access.length ? playground.edit_access.map((item) => (
+              <Text key={item} color="white" opacity="80%" fontSize="1.5rem" alignSelf="start" fontWeight="400">{truncatedPublicKey(item, 13)}</Text>
+            )) : null}
           </Flex>
         </ModalContent>
       </Modal>

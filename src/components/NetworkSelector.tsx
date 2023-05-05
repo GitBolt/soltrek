@@ -29,16 +29,16 @@ export const NetworkSelector = () => {
     <Menu>
       <MenuButton
         as={Button}
-        w="16rem"
+        w="12rem"
         borderRadius="0.5rem"
         h='3.6rem'
         variant="filled"
-        fontSize="1.4rem"
+        fontSize="1.3rem"
         color="white"
         bg="blue.gradient"
-        leftIcon={<Box borderRadius="50%" h="1.2rem" w="1.2rem" mr="0.5rem" bg="lime" />}
+        leftIcon={<Box borderRadius="50%" h="1rem" w="1rem" bg="lime" />}
         rightIcon={
-          <ChevronDownIcon color="white" w="2rem" h="2rem" />
+          <ChevronDownIcon color="white" w="1.5rem" h="1.5rem" />
         }
       >
         {getNetworkName(selectedNetwork || "")}

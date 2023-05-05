@@ -49,34 +49,35 @@ export const ConnectWalletButton = () => {
     <Menu>
       <MenuButton
         as={Button}
-        w="22rem"
+        w="17rem"
         borderRadius="0.5rem"
         mr="2rem"
-        h={connected ? '3.8rem' : '3.6rem'}
+        h="3.6rem"
         variant="filled"
         color="white"
         bg="blue.gradient"
         rightIcon={
           connected && wallet ? (
-            <Box h="2.5rem" w="2.5rem">
+            <Box h="2.5rem" w="2.5rem" mr="1rem">
               <img
                 src={wallet.adapter.icon}
                 alt={`${wallet.adapter.name} Icon`}
               />
             </Box>
-          ) : <ChevronDownIcon color="white" w="2rem" h="2rem" />
+          ) : <ChevronDownIcon color="white" w="2.5rem" h="2.5rem" />
         }
       >
-        {!connected && <Text fontSize="1.6rem">Connect Wallet</Text>}
+        {!connected && <Text fontSize="1.55rem">Connect Wallet</Text>}
         {connected && wallet !== null && (
-          <Text fontSize="1.4rem">
-            {truncatedPublicKey(publicKey!.toString(), 7)}
+          <Text fontSize="1.55rem">
+            {truncatedPublicKey(publicKey!.toString(), 4)}
           </Text>
         )}
       </MenuButton>
+
       {connected && (
         <MenuList
-          w="22rem"
+          w="17rem"
           p="0.5rem"
           bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
           borderRadius="1rem"
@@ -109,9 +110,11 @@ export const ConnectWalletButton = () => {
           </MenuItem>
         </MenuList>
       )}
+
+
       {!connected && (
         <MenuList
-          w="22rem"
+          w="17rem"
           p="0.5rem"
           bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
           borderRadius="1rem"

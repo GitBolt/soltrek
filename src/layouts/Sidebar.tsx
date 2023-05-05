@@ -158,7 +158,7 @@ const Sidebar = ({ sidebarContent }: Props) => {
         borderColor: "gray.100",
         flexFlow: "column"
       }}>
-        <Box mt="6rem" />
+        <Box mt="2rem" />
         <Branding />
 
         <List mb="2rem">
