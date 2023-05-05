@@ -7,40 +7,46 @@ import { Navbar } from "@/layouts/Navbar";
 
 import { io } from 'socket.io-client';
 import { useEffect, useState, useRef } from "react";
-import { useReactFlow, useNodes, useEdges, useNodesState, useEdgesState, NodeChange, EdgeChange } from "reactflow";
+import { useReactFlow, useNodesState, useEdgesState, NodeChange, EdgeChange } from "reactflow";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Flex } from "@chakra-ui/react";
 
 const socket = io('http://localhost:3001');
 
 const Home: NextPage = ({ playground }: any) => {
-  const { getNodes, getEdges, toObject } = useReactFlow()
+  const { toObject } = useReactFlow()
 
   const { publicKey } = useWallet()
 
   const [user, setUser] = useState(null)
-  const [isAllowed, setIsAllowed] = useState(false)
+  const [editAccess, setEditAccess] = useState(false)
   const socketRef = useRef(socket)
 
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
 
-  socketRef.current.on("serverUpdate", (playground) => {
+  socketRef.current.on("serverUpdate", (data) => {
+    setNodes(data.nodes)
+
+    if (data.edges) {
+      setEdges(data.edges)
+    }
   })
 
   const nodeChangeHandler = (changes: NodeChange[]) => {
-    console.log("Change to nodes", changes)
+    socketRef.current.emit("update", { nodes })
     onNodesChange(changes)
   }
 
   const edgeChangeHandler = (changes: EdgeChange[]) => {
-    console.log("Change to edges")
+    socketRef.current.emit("update", { edges })
     onEdgesChange(changes)
   }
 
   useEffect(() => {
     if (!publicKey) {
       setUser(null)
+      setEditAccess(false)
       return
     }
     const run = async () => {
@@ -48,27 +54,32 @@ const Home: NextPage = ({ playground }: any) => {
       if (res.ok) {
         const data = await res.json()
         setUser(data)
-        setIsAllowed(playground.edit_access.includes(publicKey.toBase58()))
+        console.log(data.id, playground.userId)
+        setEditAccess(
+          data.id == playground.userId ||
+          playground.edit_access.includes(publicKey.toBase58())
+        )
+
       }
     }
     run()
   }, [publicKey, playground])
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    socketRef.current.emit('update', { ...toObject() });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodes, edges])
+  //   socketRef.current.emit('update', { ...toObject() });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [nodes, edges])
 
   return (
     <>
       <Flex flexFlow="column" h="100%">
-        <Navbar />
-        <Sidebar sidebarContent={sidebarContent} />
+        <Navbar multiplayer />
+        {editAccess && <Sidebar sidebarContent={sidebarContent} />}
         <CommandPalette />
         <Playground
 
-          readOnly={!isAllowed}
+          editable={editAccess}
           edges={edges}
           nodes={nodes}
 
@@ -76,7 +87,7 @@ const Home: NextPage = ({ playground }: any) => {
           setNodes={setNodes}
 
           onNodeChange={nodeChangeHandler}
-          onEdgeChange={onEdgesChange}
+          onEdgeChange={edgeChangeHandler}
         />
       </Flex>
     </>

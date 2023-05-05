@@ -20,7 +20,7 @@ import { useToast } from '@chakra-ui/react';
 import { useCustomModal } from '@/context/modalContext';
 
 type Props = {
-  readOnly?: boolean,
+  editable?: boolean,
 
   onNodeChange: React.Dispatch<React.SetStateAction<any>>,
   nodes: Node[],
@@ -32,7 +32,7 @@ type Props = {
 }
 
 const Playground = function Playground({
-  readOnly,
+  editable = false,
 
   onEdgeChange,
   edges,
@@ -51,8 +51,9 @@ const Playground = function Playground({
   const toast = useToast()
 
 
-  const onConnect = useCallback((params: Connection) =>
+  const onConnect = useCallback((params: Connection) => {
     setEdges((eds) => addEdge(params, eds))
+  }
     , [setEdges]
   );
 
@@ -110,11 +111,11 @@ const Playground = function Playground({
       nodeTypes={nodeTypes}
       edges={edges}
       id="rf-main"
-      nodesDraggable={readOnly || true}
+      nodesDraggable={editable}
       proOptions={{ hideAttribution: true }}
       onNodesChange={onNodeChange}
       onEdgesChange={onEdgeChange}
-      onConnect={onConnect}
+      onConnect={editable ? onConnect : () => { }}
       edgeTypes={{ default: NodeEdge }}
     >
       <Controls className={styles.controls} position="bottom-right" />

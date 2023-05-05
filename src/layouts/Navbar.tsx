@@ -14,8 +14,9 @@ import { SavedPlaygroundType } from "@/types/playground"
 import { useCustomModal } from "@/context/modalContext"
 import { AddIcon } from "@chakra-ui/icons"
 import { AddAccess } from "@/components/AddAccess"
+import { useRouter } from "next/router"
 
-export const Navbar = () => {
+export const Navbar = ({ multiplayer }: { multiplayer?: boolean }) => {
 
   const { toObject } = useReactFlow()
 
@@ -23,10 +24,10 @@ export const Navbar = () => {
   const [user, setUser] = useState<any>(null)
   const toast = useToast()
   const [currentPlayground, setCurrentPlayground] = useState<SavedPlaygroundType>()
-  const { savedPg, accessModal} = useCustomModal()
+  const { savedPg, accessModal } = useCustomModal()
   const [name, setName] = useState<string>(currentPlayground?.name || 'Untitled')
   const { setNodes, setEdges, setViewport } = useReactFlow()
-
+  const router = useRouter()
 
   useEffect(() => {
     if (!currentPlayground) return
@@ -130,15 +131,44 @@ export const Navbar = () => {
   }
 
 
+  const startMultiplayer = async () => {
+
+    const response = await fetch('/api/playground/new', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: user.id,
+        name: "Untitled",
+        data: "",
+        preview_uri: "",
+      }),
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      router.push(`/playground/${data.id}`)
+    }
+  }
 
   return (
     <Flex w="100%" h="6rem" pos="static" top="0" bg="bg.100" align="center" justify="end" gap="2rem">
 
+
       <SavedPlaygrounds user={user} setCurrentPlayground={setCurrentPlayground} />
       <AddAccess user={user} playgroundId={Number(currentPlayground?.id)} />
 
+
+      {multiplayer && <>
+        <Flex borderRight="2px solid" borderColor="gray.200" p="0 2rem" gap="2rem">
+          <Button variant="outline" onClick={accessModal.onOpen} w="15rem">Add Access</Button>
+        </Flex>
+
+      </>
+      }
+
       {user && <Flex borderRight="2px solid" borderColor="gray.200" p="0 2rem" gap="2rem">
-        <Button variant="outline" onClick={accessModal.onOpen}>Add Access</Button>
         <Button variant="filled" onClick={handlePlaygroundSave}>Save</Button>
         <Button variant="outline" onClick={savedPg.onOpen}>Load</Button>
         <Input
@@ -157,12 +187,16 @@ export const Navbar = () => {
       </Flex>
 
       }
-      <Button justifySelf="start" variant="filled" bg="magenta.100" fontSize="1.5rem" h="3rem" onClick={() => {
+      <Button justifySelf="start" variant="filled" bg="magenta.100"  w="fit-content" fontSize="1.5rem" h="3rem" onClick={() => {
         setCurrentPlayground(undefined)
         setNodes([])
         setEdges([])
         setViewport({ x: 0, y: 0, zoom: 1.5 })
-      }} leftIcon={<AddIcon />}>New</Button>
+        router.push('/')
+      }} leftIcon={<AddIcon />}>Single Player</Button>
+
+      <Button justifySelf="start" variant="filled" w="fit-content" bg="magenta.100" fontSize="1.5rem" h="3rem"
+        onClick={startMultiplayer} leftIcon={<AddIcon />}>Multiplayer</Button>
       <Divider w="2px" h="4rem" bg="gray.200" />
       <NetworkSelector />
       <ConnectWalletButton />

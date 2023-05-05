@@ -22,5 +22,6 @@ model Playground {
   createdAt   DateTime @default(now())
   userId      Int
   preview_url String
+  multiplayer Boolean
   user        User     @relation(fields: [userId], references: [id])
 }
