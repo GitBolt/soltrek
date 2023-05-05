@@ -10,4 +10,5 @@ export interface SavedPlaygroundType {
     data: string,
     name: string,
     createdAt: string,
+    userId: number
 }

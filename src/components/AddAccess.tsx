@@ -30,6 +30,7 @@ type Props = {
 export const AddAccess = ({ user, playgroundId }: Props) => {
   const [value, setValue] = useState('')
   const { accessModal } = useCustomModal()
+  const toast = useToast()
 
   const giveAccess = async () => {
 
@@ -38,20 +39,44 @@ export const AddAccess = ({ user, playgroundId }: Props) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ new_access: value, playgroundId })
+      body: JSON.stringify({ new_wallet: value, playgroundId })
     })
-
+    if (res.ok){
+      toast({
+        status:"success",
+        title:"Gave edit access"
+      })
+    } else {
+      toast({
+        status:"error",
+        title:"Error giving edit access"
+      })
+    }
     console.log(res)
   }
 
   return (
     <>
-      <Modal size="10xl" isOpen={accessModal.isOpen} onClose={accessModal.onClose}>
+      <Modal size="lg" isOpen={accessModal.isOpen} onClose={accessModal.onClose}>
         <ModalOverlay />
         <ModalContent p="1rem 2rem" minH="60vh" bg="#5458792E" style={{ backdropFilter: 'blur(10px)' }} color="white" w="98rem" borderRadius="2rem">
           <ModalHeader mb="1rem" fontSize="2rem" color="magenta.100" borderBottom="1px solid" borderColor="gray.200">Give Edit Access</ModalHeader>
-          <Input onChange={(e) => setValue(e.target.value)} />
-          <Button onClick={giveAccess}>Give access</Button>
+          <Flex flexFlow="column" gap="1rem" justify="center" align="center">
+
+            <Input
+              pos="static"
+              placeholder="Enter public key "
+              w="90%"
+              mb="1rem"
+              h="4rem"
+              fontSize="1.8rem"
+
+              onChange={(e) => setValue(e.target.value)} />
+            <Button w="90%" variant="filled" onClick={giveAccess}>Give access</Button>
+            <Divider mt="2rem" />
+            <Text textAlign="start" fontSize="2rem" color="blue.400" fontWeight="600" alignSelf="start">Access Given</Text>
+            <Text color="white" opacity="60%" fontSize="2.4rem" alignSelf="start" fontWeight="700">Coming soon</Text>
+          </Flex>
         </ModalContent>
       </Modal>
 

@@ -112,6 +112,7 @@ export const theme = extendTheme({
     },
     Button: {
       baseStyle: {
+        minWidth:"fit-content",
         fontWeight: "600",
         boxShadow: "4px 4px 0px -1px rgba(0, 0, 0, 0.15)",
       },

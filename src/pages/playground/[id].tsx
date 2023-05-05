@@ -55,6 +55,7 @@ const Home: NextPage = ({ playground }: any) => {
         const data = await res.json()
         setUser(data)
         console.log(data.id, playground.userId)
+        console.log(playground)
         setEditAccess(
           data.id == playground.userId ||
           playground.edit_access.includes(publicKey.toBase58())
@@ -74,7 +75,7 @@ const Home: NextPage = ({ playground }: any) => {
   return (
     <>
       <Flex flexFlow="column" h="100%">
-        <Navbar multiplayer />
+        <Navbar multiplayer editAccess={editAccess} />
         {editAccess && <Sidebar sidebarContent={sidebarContent} />}
         <CommandPalette />
         <Playground
