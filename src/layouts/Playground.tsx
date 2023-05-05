@@ -3,12 +3,13 @@ import ReactFlow, {
   MiniMap,
   Controls,
   Background,
-  useNodesState,
-  useEdgesState,
   addEdge,
   BackgroundVariant,
   useKeyPress,
   Connection,
+  Node,
+  Instance,
+  Edge
 } from 'reactflow';
 import styles from '@/styles/Playground.module.css'
 import { nodeTypes } from '@/nodes';
@@ -18,21 +19,42 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useToast } from '@chakra-ui/react';
 import { useCustomModal } from '@/context/modalContext';
 
+type Props = {
+  readOnly?: boolean,
 
-const Playground = function Playground() {
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  onNodeChange: React.Dispatch<React.SetStateAction<any>>,
+  nodes: Node[],
+  setNodes: Instance.SetNodes<any>,
+
+  onEdgeChange: React.Dispatch<React.SetStateAction<any>>,
+  edges: Edge[],
+  setEdges: Instance.SetEdges<any>,
+}
+
+const Playground = function Playground({
+  readOnly,
+
+  onEdgeChange,
+  edges,
+  setEdges,
+
+  onNodeChange,
+  nodes,
+  setNodes,
+}: Props) {
+
   const ctrlAPress = useCtrlA()
   const backspacePress = useKeyPress('Backspace')
+
   const { publicKey } = useWallet()
   const { savedPg } = useCustomModal()
   const toast = useToast()
+
 
   const onConnect = useCallback((params: Connection) =>
     setEdges((eds) => addEdge(params, eds))
     , [setEdges]
   );
-
 
   const handleKeyDown = (event: any) => {
     if (event.key === "l" && (event.ctrlKey || event.metaKey)) {
@@ -73,8 +95,6 @@ const Playground = function Playground() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [backspacePress]);
 
-
-
   useEffect(() => {
     if (ctrlAPress.split("-")[0] == "true") {
       setNodes((nodes) => nodes.map((nd) => { return { ...nd, selected: true } }))
@@ -90,9 +110,10 @@ const Playground = function Playground() {
       nodeTypes={nodeTypes}
       edges={edges}
       id="rf-main"
+      nodesDraggable={readOnly || true}
       proOptions={{ hideAttribution: true }}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
+      onNodesChange={onNodeChange}
+      onEdgesChange={onEdgeChange}
       onConnect={onConnect}
       edgeTypes={{ default: NodeEdge }}
     >

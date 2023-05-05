@@ -13,6 +13,7 @@ import { blobToBase64, compressImage } from "@/util/compressor"
 import { SavedPlaygroundType } from "@/types/playground"
 import { useCustomModal } from "@/context/modalContext"
 import { AddIcon } from "@chakra-ui/icons"
+import { AddAccess } from "@/components/AddAccess"
 
 export const Navbar = () => {
 
@@ -22,11 +23,11 @@ export const Navbar = () => {
   const [user, setUser] = useState<any>(null)
   const toast = useToast()
   const [currentPlayground, setCurrentPlayground] = useState<SavedPlaygroundType>()
-  const { savedPg } = useCustomModal()
+  const { savedPg, accessModal} = useCustomModal()
   const [name, setName] = useState<string>(currentPlayground?.name || 'Untitled')
   const { setNodes, setEdges, setViewport } = useReactFlow()
 
-  
+
   useEffect(() => {
     if (!currentPlayground) return
     setName(currentPlayground.name)
@@ -134,8 +135,10 @@ export const Navbar = () => {
     <Flex w="100%" h="6rem" pos="static" top="0" bg="bg.100" align="center" justify="end" gap="2rem">
 
       <SavedPlaygrounds user={user} setCurrentPlayground={setCurrentPlayground} />
+      <AddAccess user={user} playgroundId={Number(currentPlayground?.id)} />
 
       {user && <Flex borderRight="2px solid" borderColor="gray.200" p="0 2rem" gap="2rem">
+        <Button variant="outline" onClick={accessModal.onOpen}>Add Access</Button>
         <Button variant="filled" onClick={handlePlaygroundSave}>Save</Button>
         <Button variant="outline" onClick={savedPg.onOpen}>Load</Button>
         <Input

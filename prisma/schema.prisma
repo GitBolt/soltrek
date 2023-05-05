@@ -18,6 +18,7 @@ model Playground {
   id          Int      @id @default(autoincrement())
   data        String
   name        String
+  edit_access String[]
   createdAt   DateTime @default(now())
   userId      Int
   preview_url String

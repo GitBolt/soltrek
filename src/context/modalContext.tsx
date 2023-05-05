@@ -12,6 +12,11 @@ type ModalContextType = {
     onOpen: () => void;
     onClose: () => void;
   };
+  accessModal: {
+    isOpen: boolean;
+    onOpen: () => void;
+    onClose: () => void;
+  };
 };
 
 export const ModalContext = createContext<ModalContextType>({
@@ -25,14 +30,20 @@ export const ModalContext = createContext<ModalContextType>({
     onOpen: () => { },
     onClose: () => { },
   },
+  accessModal: {
+    isOpen: false,
+    onOpen: () => { },
+    onClose: () => { },
+  },
 });
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const savedPg = useDisclosure();
   const cmdPalette = useDisclosure();
+  const accessModal = useDisclosure();
 
   return (
-    <ModalContext.Provider value={{ savedPg, cmdPalette }}>
+    <ModalContext.Provider value={{ savedPg, cmdPalette, accessModal }}>
       {children}
     </ModalContext.Provider>
   );
