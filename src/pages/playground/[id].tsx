@@ -66,11 +66,6 @@ const Home: NextPage = ({ playground }: any) => {
     run()
   }, [publicKey, playground])
 
-  // useEffect(() => {
-
-  //   socketRef.current.emit('update', { ...toObject() });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [nodes, edges])
 
   return (
     <>

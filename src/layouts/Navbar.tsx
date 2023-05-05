@@ -34,6 +34,22 @@ export const Navbar = ({ multiplayer = false, editAccess = false }: { multiplaye
     setName(currentPlayground.name)
   }, [currentPlayground])
 
+  useEffect(() => {
+
+    const run = async () => {
+      if (multiplayer) {
+        const res = await fetch(`/api/playground/get/id/${router.query.id}`)
+        const data = await res.json()
+        setCurrentPlayground(data)
+      } else {
+        const res = await fetch(`/api/playground/get/${publicKey?.toBase58()}`)
+        const data = await res.json()
+        setCurrentPlayground(data)
+      }
+    }
+    run()
+  }, [multiplayer, router.query.id, publicKey])
+  
 
   useEffect(() => {
     if (!publicKey) {
@@ -148,12 +164,10 @@ export const Navbar = ({ multiplayer = false, editAccess = false }: { multiplaye
     if (response.ok) {
       const data = await response.json()
       router.push(`/playground/${data.id}`)
-      setCurrentPlayground(data)
       console.log("aaui", user, data, multiplayer && user && data && user.id == data.userId)
     }
   }
 
-  console.log(multiplayer)
   return (
     <Flex w="100%" h="6rem" pos="static" top="0" bg="bg.100" align="center" justify="end" gap="2rem">
 
@@ -166,6 +180,7 @@ export const Navbar = ({ multiplayer = false, editAccess = false }: { multiplaye
           <Button variant="outline" onClick={accessModal.onOpen} w="15rem">Add Access</Button>
         </Flex>
       }
+
 
 
       {user && <Flex borderRight="2px solid" borderColor="gray.200" p="0 2rem" gap="2rem">
