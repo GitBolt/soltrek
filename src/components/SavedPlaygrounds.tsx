@@ -20,7 +20,7 @@ import {
 import { useReactFlow } from 'reactflow'
 import { SavedPlaygroundType } from '@/types/playground'
 import { useCustomModal } from '@/context/modalContext'
-
+import { useRouter } from 'next/router'
 
 type Props = {
   user: any,
@@ -30,7 +30,7 @@ type Props = {
 export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
   const [playgrounds, setPlaygrounds] = useState<SavedPlaygroundType[]>([])
   const { setEdges, setViewport, setNodes } = useReactFlow()
-
+  const router = useRouter()
   const { savedPg } = useCustomModal()
 
   useEffect(() => {
@@ -47,12 +47,19 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
 
 
   const handleLoad = (pg: SavedPlaygroundType) => {
-    setCurrentPlayground(pg)
-    const parsed = JSON.parse(pg.data)
-    setNodes(parsed.nodes || [])
-    setEdges(parsed.edges || [])
-    setViewport(parsed.viewport || [])
-    savedPg.onClose()
+    if (pg.multiplayer) {
+      router.push(`/playground/${pg.id}`)
+      savedPg.onClose()
+    } else {
+      const parsed = JSON.parse(pg.data)
+      setCurrentPlayground(pg)
+      setNodes(parsed.nodes || [])
+      setEdges(parsed.edges || [])
+      setViewport(parsed.viewport || [])
+      router.push(`/`)
+      savedPg.onClose()
+    }
+
   }
   return (
     <>
@@ -92,6 +99,7 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
                     justify="center" align="start" w="100%" h="5rem">
                     <Text fontSize="2rem" color="blue.100" fontWeight="500">{playground.name}</Text>
                     <Text fontSize="1.1rem" color="blue.300" fontWeight="200">Created at: {new Date(Date.parse(playground.createdAt)).toLocaleString()}</Text>
+                    {playground.multiplayer && <Text fontSize="1.1rem" color="magenta.200" fontWeight="200">Multiplayer</Text>}
                   </Flex>
                 </Flex>
               ))}

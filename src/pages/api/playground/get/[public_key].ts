@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         userId: Number(user.id),
       },
       orderBy: {
-        createdAt: 'asc',
+        createdAt: 'desc',
       },
     })
 

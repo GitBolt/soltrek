@@ -21,6 +21,7 @@ model Playground {
   edit_access String[]
   createdAt   DateTime @default(now())
   userId      Int
+  multiplayer Boolean  @default(false)
   preview_url String
   user        User     @relation(fields: [userId], references: [id])
 }

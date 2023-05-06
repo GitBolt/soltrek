@@ -6,16 +6,18 @@ import { sidebarContent } from "@/util/sidebarContent";
 import { CommandPalette } from "@/components/CommandPalette";
 import { Navbar } from "@/layouts/Navbar";
 import { useEdgesState, useNodesState } from "reactflow";
+import { useState } from "react";
 
 const Home: NextPage = () => {
 
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [nodes, setNodes, onNodesChange] = useNodesState([])
+  const [pgName, setPgName] = useState<string>('Untitled')
 
   return (
     <>
       <Flex flexFlow="column" h="100%">
-        <Navbar />
+        <Navbar pgName={pgName} setPgName={setPgName}/>
         <Sidebar sidebarContent={sidebarContent} />
         <CommandPalette />
         <Playground

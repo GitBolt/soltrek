@@ -42,10 +42,11 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
         preview_uri: "",
       }),
     })
-
+    const data = await response.json()
+    setCurrentPlayground(data)
     if (response.ok) {
-      const data = await response.json()
       router.push(`/playground/${data.id}`)
+      setCurrentPlayground(data)
     }
   }
 

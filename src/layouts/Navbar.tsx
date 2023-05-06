@@ -1,23 +1,32 @@
-import { Button, Divider, Flex, Input, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure, useToast } from "@chakra-ui/react"
+import { Button, Divider, Flex, Input, Text, useToast } from "@chakra-ui/react"
 import { ConnectWalletButton } from "../components/ConnectWalletButton"
 import { NetworkSelector } from "../components/NetworkSelector"
-import { useEffect, useState } from "react"
-import { getUser } from "@/util/program/user"
-import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react"
+import React, { useEffect, useState } from "react"
+import { useWallet } from "@solana/wallet-adapter-react"
 import { useReactFlow } from "reactflow"
 import { SavedPlaygrounds } from "@/components/SavedPlaygrounds"
-import { cloudinaryUpload, uploadFile } from "@/util/upload"
 import html2canvas from "html2canvas"
 import { dataURItoBlob } from "@/util/helper"
 import { blobToBase64, compressImage } from "@/util/compressor"
 import { SavedPlaygroundType } from "@/types/playground"
 import { useCustomModal } from "@/context/modalContext"
-import { AddIcon } from "@chakra-ui/icons"
 import { AddAccess } from "@/components/AddAccess"
 import { useRouter } from "next/router"
 import { NewButton } from "@/components/NewButton"
 
-export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess }: { multiplayer?: boolean, editAccess?: boolean, setEditAccess?: any }) => {
+type Props = {
+  multiplayer?: boolean,
+  setEditAccess?: any,
+  pgName: string,
+  setPgName: React.Dispatch<React.SetStateAction<string>>
+}
+
+export const Navbar = ({
+  multiplayer = false,
+  setEditAccess,
+  pgName,
+  setPgName
+}: Props) => {
 
   const { toObject } = useReactFlow()
 
@@ -26,20 +35,22 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
   const toast = useToast()
   const [currentPlayground, setCurrentPlayground] = useState<SavedPlaygroundType>()
   const { savedPg, accessModal } = useCustomModal()
-  const [name, setName] = useState<string>(currentPlayground?.name || 'Untitled')
   const { setNodes, setEdges, setViewport } = useReactFlow()
   const router = useRouter()
 
+  // useEffect(() => {
+  //   if (!currentPlayground) return
+  //   setPgName(currentPlayground.name)
+  // }, [currentPlayground])
+
   useEffect(() => {
-    if (!currentPlayground) return
-    setName(currentPlayground.name)
-  }, [currentPlayground])
+    console.log(pgName, "sasdfadsgf")
+  }, [pgName])
 
 
   useEffect(() => {
 
     const run = async () => {
-
       if (!publicKey) {
         setUser(null)
         if (setEditAccess) setEditAccess(null)
@@ -58,14 +69,12 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
         })
         userData = await newUserReq.json()
       }
-
       setUser(userData)
 
       if (multiplayer) {
         const res = await fetch(`/api/playground/get/id/${router.query.id}`)
         const pgData = await res.json()
         setCurrentPlayground(pgData)
-        console.log(pgData, userData)
         setEditAccess(
           userData.id == pgData.userId ||
           pgData.edit_access.includes(publicKey.toBase58())
@@ -75,14 +84,20 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
 
     run()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [multiplayer, router.query.id, publicKey])
+  }, [multiplayer, publicKey])
 
 
 
 
   const handlePlaygroundSave = async () => {
-    if (!user) return
-
+    console.log("SUIIIIII", currentPlayground)
+    if (!user) {
+      toast({
+        status: "error",
+        title: "User not found"
+      })
+      return
+    }
     const container = document.getElementById('rf-main');
     const canvas = await html2canvas(container!, {
       ignoreElements: (element) => element.className === "solflare-wallet-adapter-iframe",
@@ -90,20 +105,15 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
       height: window.screen.height + 100,
     }); const imageData = canvas.toDataURL()
 
-
-
     const blob = dataURItoBlob(imageData)
-
     const compressed = await compressImage(blob)
-
-    // const file = new File([compressed as Blob], "img.png", { type: "image/png" });
-
-    // const imageUri = await cloudinaryUpload(file)
 
     const imageUri = await blobToBase64(compressed)
 
     let response: any
-    if (currentPlayground && currentPlayground.id) {
+    const existingPg = currentPlayground && currentPlayground.data && currentPlayground.preview_url
+    if (existingPg) {
+      console.log("Updating current")
       response = await fetch('/api/playground/update', {
         method: 'POST',
         headers: {
@@ -111,13 +121,14 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
         },
         body: JSON.stringify({
           playgroundId: currentPlayground.id,
-          name,
+          name: pgName,
           data: JSON.stringify(toObject()),
           preview_uri: imageUri,
         }),
       })
 
     } else {
+      console.log("Creating new")
       response = await fetch('/api/playground/new', {
         method: 'POST',
         headers: {
@@ -125,7 +136,8 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
         },
         body: JSON.stringify({
           userId: user.id,
-          name,
+          name: pgName,
+          multiplayer: multiplayer,
           data: JSON.stringify(toObject()),
           preview_uri: imageUri,
         }),
@@ -133,22 +145,45 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
     }
 
     if (response.ok) {
-      toast({
-        title: `${currentPlayground ? 'Updated' : 'Created'} Playground`,
-        status: "success",
-        position: "bottom-right"
-      })
+      console.log("Res okay")
       const data = await response.json()
       setCurrentPlayground(data)
+      toast({
+        title: `${existingPg ? 'Updated' : 'Created'} Playground`,
+        status: "success",
+      })
+
+
     } else {
       toast({
         title: "Error creating playground",
         status: "error",
-        position: "bottom-right"
       })
     }
   }
 
+  const handleKeyDown = async (event: any) => {
+    if (event.key === "s" && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      if (!publicKey) {
+        toast({
+          status: "error",
+          title: "Connect wallet required",
+        })
+        return
+      }
+      await handlePlaygroundSave()
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publicKey, user, pgName]);
 
   return (
     <Flex w="100%" p="0 1rem" h="6rem" zIndex="5" bg="#1C1C26" pos="static" top="0" align="center" justify="space-between" gap="1rem">
@@ -180,36 +215,36 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
           w="22rem"
           h="3rem"
           onChange={(e) => {
-            setName(e.target.value)
+            setPgName(e.target.value)
           }}
           fontSize="1.5rem"
           color="blue.200"
-          value={name}
-          defaultValue={name}
+          value={pgName}
+          defaultValue={pgName}
           placeholder="Enter Playground Name"
         />
       }
 
       {((multiplayer && !user) || (!multiplayer && !user) || (multiplayer && user && currentPlayground && user.id != currentPlayground.userId)) &&
-        <Text color="blue.200" fontWeight={400} fontSize="2.5rem" textAlign="center" >{name}</Text>}
+        <Text color="blue.200" fontWeight={400} fontSize="2.5rem" textAlign="center" >{pgName}</Text>}
 
       {!multiplayer && user &&
         <Input
           w="22rem"
           h="3rem"
           onChange={(e) => {
-            setName(e.target.value)
+            setPgName(e.target.value)
           }}
           fontSize="1.5rem"
           color="blue.200"
-          value={name}
-          defaultValue={name}
+          value={pgName}
+          defaultValue={pgName}
           placeholder="Enter Playground Name"
         />
       }
 
       <Flex borderRight="1px solid" align="center" borderColor="gray.200" gap="1rem">
-        {user && currentPlayground && user.id == currentPlayground.userId &&
+        {multiplayer && user && currentPlayground && user.id == currentPlayground.userId &&
           <Button variant="filled" h="3rem" w="10rem" fontSize="1.4rem" onClick={accessModal.onOpen}>Give Access</Button>
         }
         {((multiplayer && user && currentPlayground && user.id == currentPlayground.userId) || (!multiplayer)) && (

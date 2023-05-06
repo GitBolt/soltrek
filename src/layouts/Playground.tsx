@@ -21,6 +21,7 @@ import { useCustomModal } from '@/context/modalContext';
 
 type Props = {
   editable?: boolean,
+  multiplayer?: boolean,
 
   onNodeChange: React.Dispatch<React.SetStateAction<any>>,
   nodes: Node[],
@@ -33,6 +34,7 @@ type Props = {
 
 const Playground = function Playground({
   editable = false,
+  multiplayer,
 
   onEdgeChange,
   edges,
@@ -42,7 +44,6 @@ const Playground = function Playground({
   nodes,
   setNodes,
 }: Props) {
-
   const ctrlAPress = useCtrlA()
   const backspacePress = useKeyPress('Backspace')
 
@@ -111,8 +112,8 @@ const Playground = function Playground({
       nodeTypes={nodeTypes}
       edges={edges}
       id="rf-main"
-      nodesDraggable={editable}
-      nodesConnectable={editable}
+      nodesDraggable={multiplayer ? editable : true}
+      nodesConnectable={multiplayer ? editable : true}
       nodesFocusable={editable}
       proOptions={{ hideAttribution: true }}
       onNodesChange={onNodeChange}

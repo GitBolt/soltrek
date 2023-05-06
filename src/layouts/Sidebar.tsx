@@ -155,7 +155,7 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
         flexFlow: "column",
         height: "100%",
       }}>
-        <Box mt="5rem" />
+        <Box mt="8rem" />
         <Branding />
 
         <List mb="2rem">

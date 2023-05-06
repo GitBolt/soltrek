@@ -14,6 +14,7 @@ const socket = io('http://localhost:3001');
 
 const Home: NextPage = ({ playground }: any) => {
   const [editAccess, setEditAccess] = useState(false)
+  const [pgName, setPgName] = useState<string>('')
   const socketRef = useRef(socket)
 
   const [nodes, setNodes, onNodesChange] = useNodesState([])
@@ -43,15 +44,17 @@ const Home: NextPage = ({ playground }: any) => {
     const data = JSON.parse(playground.data)
     setNodes(data.nodes)
     setEdges(data.edges)
+    setPgName(playground.name)
   }, [playground, setEdges, setNodes])
 
   return (
     <>
       <Flex flexFlow="column" h="100%">
-        <Navbar multiplayer editAccess={editAccess} setEditAccess={setEditAccess} />
+        <Navbar pgName={pgName} setPgName={setPgName} multiplayer setEditAccess={setEditAccess} />
         {editAccess && <Sidebar sidebarContent={sidebarContent} multiplayer />}
         <CommandPalette />
         <Playground
+          multiplayer
 
           editable={editAccess}
           edges={edges}

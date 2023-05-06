@@ -10,6 +10,7 @@ export interface SavedPlaygroundType {
     data: string,
     name: string,
     createdAt: string,
+    multiplayer: boolean,
     userId: number,
     edit_access: string[]
 }
