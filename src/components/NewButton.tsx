@@ -78,6 +78,8 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
           color="#ec307f"
           fontSize="1.5rem"
           h="4rem"
+          transition="300ms"
+          _hover={{ filter: "brightness(130%)" }}
           onClick={() => {
             setCurrentPlayground(undefined);
             setNodes([]);
@@ -93,7 +95,9 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
             bg="#1e1c28"
             color="#ec307f"
             fontSize="1.5rem"
+            transition="300ms"
             h="4rem"
+            _hover={{ filter: "brightness(130%)" }}
             onClick={startMultiplayer}
           >
             Multiplayer

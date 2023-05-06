@@ -8,7 +8,6 @@ import { Navbar } from "@/layouts/Navbar";
 import { io } from 'socket.io-client';
 import { useEffect, useState, useRef } from "react";
 import { useNodesState, useEdgesState, NodeChange, EdgeChange } from "reactflow";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { Flex } from "@chakra-ui/react";
 
 const socket = io('http://localhost:3001');
@@ -50,7 +49,7 @@ const Home: NextPage = ({ playground }: any) => {
     <>
       <Flex flexFlow="column" h="100%">
         <Navbar multiplayer editAccess={editAccess} setEditAccess={setEditAccess} />
-        {editAccess && <Sidebar sidebarContent={sidebarContent} />}
+        {editAccess && <Sidebar sidebarContent={sidebarContent} multiplayer />}
         <CommandPalette />
         <Playground
 

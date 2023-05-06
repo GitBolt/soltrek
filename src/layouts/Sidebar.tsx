@@ -11,12 +11,13 @@ import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet';
 
 type Props = {
-  sidebarContent: SidebarContentType[]
+  sidebarContent: SidebarContentType[],
+  multiplayer?: boolean
 }
-const Sidebar = ({ sidebarContent }: Props) => {
-  const { setNodes} = useReactFlow();
+const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
+  const { setNodes } = useReactFlow();
   const [showSublist, setShowSublist] = useState<{ [key: number]: boolean }>({});
-  const [selectedItemTitle, setSelectedItemTitle] = useState<string>('')
+  const [selectedItemTitle, setSelectedItemTitle] = useState<string>('Input')
   const [user, setUser] = useState(null)
   const wallet = useAnchorWallet()
 
@@ -148,12 +149,11 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
       <Flex sx={{
         w: "75%",
-        background:"#14141bc9",
-        overflowY: "auto",
-        overflowX: "hidden",
+        background: "#14141bc9",
         borderRight: "1px solid",
         borderColor: "gray.100",
-        flexFlow: "column"
+        flexFlow: "column",
+        height: "100%",
       }}>
         <Box mt="5rem" />
         <Branding />
@@ -202,6 +202,18 @@ const Sidebar = ({ sidebarContent }: Props) => {
           ))}
         </List>
 
+        {!multiplayer ?
+          <Flex w="100%" borderRadius="2rem 2rem 0 0" h="4rem" pos="relative" bottom="0" align="center" justify="center" bg="bg.300" marginTop="auto">
+            <Text color="blue.100" fontWeight={600} fontSize="1.8rem">
+              Single Player
+            </Text>
+          </Flex>
+          :
+          <Flex w="100%" borderRadius="2rem 2rem 0 0" h="4rem" pos="relative" bottom="0" align="center" justify="center" bg="magenta.400" marginTop="auto">
+            <Text color="magenta.100" fontWeight={600} fontSize="1.8rem">
+              Multi Player
+            </Text>
+          </Flex>}
       </Flex>
     </Flex>
 

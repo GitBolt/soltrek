@@ -161,8 +161,8 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
       {((multiplayer && user && currentPlayground && user.id == currentPlayground?.userId) || (!multiplayer && user)) &&
         <Flex align="center" gap="1rem">
 
-          <Button variant="filled" h="3rem" fontSize="1.7rem" onClick={handlePlaygroundSave}>Save</Button>
-          <Button variant="outline" h="3rem" fontSize="1.7rem" onClick={savedPg.onOpen}>Load</Button>
+          <Button variant="filled" h="3rem" fontSize="1.7rem" w="8rem" onClick={handlePlaygroundSave}>Save</Button>
+          <Button variant="outline" h="3rem" fontSize="1.7rem" w="8rem" onClick={savedPg.onOpen}>Load</Button>
           <NetworkSelector />
         </Flex>
       }
@@ -190,7 +190,8 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
         />
       }
 
-      {((multiplayer && !user) || (!multiplayer && !user)) || (multiplayer && user && currentPlayground && user.id != currentPlayground.userId) && <Text color="blue.200" fontWeight={400} fontSize="2.5rem" textAlign="center" >{name}</Text>}
+      {((multiplayer && !user) || (!multiplayer && !user) || (multiplayer && user && currentPlayground && user.id != currentPlayground.userId)) &&
+        <Text color="blue.200" fontWeight={400} fontSize="2.5rem" textAlign="center" >{name}</Text>}
 
       {!multiplayer && user &&
         <Input
@@ -209,7 +210,7 @@ export const Navbar = ({ multiplayer = false, editAccess = false, setEditAccess 
 
       <Flex borderRight="1px solid" align="center" borderColor="gray.200" gap="1rem">
         {user && currentPlayground && user.id == currentPlayground.userId &&
-          <Button variant="filled" h="3rem" w="12rem" fontSize="1.5rem" onClick={accessModal.onOpen}>Give access</Button>
+          <Button variant="filled" h="3rem" w="10rem" fontSize="1.4rem" onClick={accessModal.onOpen}>Give Access</Button>
         }
         {((multiplayer && user && currentPlayground && user.id == currentPlayground.userId) || (!multiplayer)) && (
           <NewButton
