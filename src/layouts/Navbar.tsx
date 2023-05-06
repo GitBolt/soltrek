@@ -1,5 +1,4 @@
 import { Button, Divider, Flex, Input, Text, useToast } from "@chakra-ui/react"
-import { ConnectWalletButton } from "../components/ConnectWalletButton"
 import { NetworkSelector } from "../components/NetworkSelector"
 import React, { useEffect, useState } from "react"
 import { useWallet } from "@solana/wallet-adapter-react"
@@ -13,6 +12,10 @@ import { useCustomModal } from "@/context/modalContext"
 import { AddAccess } from "@/components/AddAccess"
 import { useRouter } from "next/router"
 import { NewButton } from "@/components/NewButton"
+import dynamic from "next/dynamic"
+
+const Wallets = dynamic(() => import("../components/ConnectWalletButton"), { ssr: false });
+
 
 type Props = {
   multiplayer?: boolean,
@@ -42,11 +45,6 @@ export const Navbar = ({
   //   if (!currentPlayground) return
   //   setPgName(currentPlayground.name)
   // }, [currentPlayground])
-
-  useEffect(() => {
-    console.log(pgName, "sasdfadsgf")
-  }, [pgName])
-
 
   useEffect(() => {
 
@@ -257,7 +255,7 @@ export const Navbar = ({
           />
         )}
         <Divider w="2px" h="4rem" bg="gray.200" />
-        <ConnectWalletButton />
+        <Wallets />
       </Flex>
 
     </Flex>

@@ -52,7 +52,7 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
 
 
   return (
-    <Menu>
+    <Menu placement="bottom-end">
       <MenuButton
         as={Button}
         w="7rem"
@@ -69,11 +69,14 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
         borderRadius="0.7rem"
         borderColor="gray.200"
         border="1px solid"
+        boxShadow="0px 0px 10px #00000070"
       >
         <MenuItem
           bg="#1e1c28"
           color="#ec307f"
           fontSize="1.5rem"
+          borderBottom={user ? "1px solid" : "none"}
+          borderColor="gray.200"
           h="4rem"
           transition="300ms"
           _hover={{ filter: "brightness(130%)" }}

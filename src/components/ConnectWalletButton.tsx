@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 // Components
 import React from 'react';
-import toast from 'react-hot-toast';
 import {
   useWallet,
   Wallet as SolanaWallet,
@@ -17,6 +16,7 @@ import {
   Text,
   Button,
   Box,
+  useToast,
 } from '@chakra-ui/react';
 
 // Icons
@@ -26,12 +26,13 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { truncatedPublicKey } from '@/util/helper';
 
 
-export const ConnectWalletButton = () => {
+const ConnectWalletButton = () => {
   const { wallets, select, connected, publicKey, wallet, connect } = useWallet();
+  const toast = useToast()
 
   const copyPublicKey = () => {
     navigator.clipboard.writeText(publicKey?.toBase58() || '');
-    toast.success('Copied address');
+    toast({ status: "success", title: 'Copied Address' })
   };
 
   const onConnectWallet = async (wallet: SolanaWallet) => {
@@ -41,7 +42,7 @@ export const ConnectWalletButton = () => {
       await connect();
     } catch (e) {
       console.log("Wallet Error: ", e);
-      toast.error('Wallet not found');
+      toast({ status:"info", title: 'A non-critical error occured. Try connecting again.' })
     }
   };
 
@@ -111,19 +112,20 @@ export const ConnectWalletButton = () => {
       )}
 
 
-      {!connected && (
+      {!connected && wallets && (
         <MenuList
           w="17rem"
           p="0.5rem"
           bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
+          boxShadow="0px 0px 10px #00000070"
           borderRadius="1rem"
           borderColor="gray.200"
           border="1px solid"
         >
-          {wallets.map((wallet: SolanaWallet, index) => {
+          {wallets.map((wallet: SolanaWallet) => {
             return (
               <MenuItem
-                key={index}
+                key={wallet.adapter.name}
                 style={{ backdropFilter: "blur(10px)" }}
                 h="5rem"
                 _hover={{ background: "linear-gradient(243.86deg, rgba(38, 42, 55, 0.8) 10%,rgba(38, 42, 55, 0.4) 100%)" }}
@@ -132,7 +134,7 @@ export const ConnectWalletButton = () => {
                   try {
                     onConnectWallet(wallet)
                   } catch (e: any) {
-                    toast.error('Wallet not found');
+                    console.log(e)
                   }
                 }}
               >
@@ -140,6 +142,7 @@ export const ConnectWalletButton = () => {
                   <Box w="2.5rem" h="2.5rem">
                     <img
                       width={100}
+                      loading="lazy"
                       src={
                         wallet.adapter.icon
                       }
@@ -163,3 +166,5 @@ export const ConnectWalletButton = () => {
     </Menu>
   );
 };
+
+export default ConnectWalletButton
