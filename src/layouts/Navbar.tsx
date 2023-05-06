@@ -15,6 +15,7 @@ import { useCustomModal } from "@/context/modalContext"
 import { AddIcon } from "@chakra-ui/icons"
 import { AddAccess } from "@/components/AddAccess"
 import { useRouter } from "next/router"
+import { NewButton } from "@/components/NewButton"
 
 export const Navbar = ({ multiplayer = false, editAccess = false }: { multiplayer?: boolean, editAccess?: boolean }) => {
 
@@ -146,134 +147,79 @@ export const Navbar = ({ multiplayer = false, editAccess = false }: { multiplaye
   }
 
 
-  const startMultiplayer = async () => {
-
-    const response = await fetch('/api/playground/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: user.id,
-        name: "Untitled",
-        data: "",
-        preview_uri: "",
-      }),
-    })
-
-    if (response.ok) {
-      const data = await response.json()
-      router.push(`/playground/${data.id}`)
-      console.log("aaui", user, data, multiplayer && user && data && user.id == data.userId)
-    }
-  }
-
   return (
-    <Flex w="100%" h="6rem" pos="static" top="0" bg="bg.100" align="center" justify="end" gap="1rem">
+    <Flex w="100%" p="0 1rem" h="6rem" zIndex="5" bg="#1C1C26" pos="static" top="0" align="center" justify="space-between" gap="1rem">
 
 
       <SavedPlaygrounds user={user} setCurrentPlayground={setCurrentPlayground} />
       {multiplayer && <AddAccess playground={currentPlayground!} setCurrentPlayground={setCurrentPlayground} />}
 
-      {user && currentPlayground && user.id == currentPlayground.userId &&
-        <Flex borderRight="1px solid" borderColor="gray.200" p="0 1rem" gap="1rem">
-          <Button variant="outline" h="3rem" w="12rem" fontSize="1.7rem" onClick={accessModal.onOpen}>Give access</Button>
+
+      {user ?
+        <Flex align="center" gap="1rem">
+
+          <Button variant="filled" h="3rem" fontSize="1.7rem" onClick={handlePlaygroundSave}>Save</Button>
+          <Button variant="outline" h="3rem" fontSize="1.7rem" onClick={savedPg.onOpen}>Load</Button>
+          <NetworkSelector />
         </Flex>
+        : <NewButton
+          setEdges={setEdges}
+          setNodes={setNodes}
+          setViewport={setViewport}
+          setCurrentPlayground={setCurrentPlayground}
+          user={user}
+        />
       }
 
-
-      {user && <Flex borderRight="1px solid" align="center" borderColor="gray.200" p="0 1rem" gap="1rem">
-        <Button variant="filled" h="3rem" fontSize="1.7rem" onClick={handlePlaygroundSave}>Save</Button>
-        <Button variant="outline" h="3rem" fontSize="1.7rem" onClick={savedPg.onOpen}>Load</Button>
-      </Flex>
-      }
 
       {multiplayer && user && currentPlayground && user.id == currentPlayground.userId ?
         <Input
-          w="18rem"
+          w="22rem"
           h="3rem"
           onChange={(e) => {
             setName(e.target.value)
           }}
           fontSize="1.5rem"
+          color="blue.200"
           value={name}
           defaultValue={name}
           placeholder="Enter Playground Name"
         /> :
-        <Text color="blue.100" fontWeight={400} fontSize="2.5rem" textAlign="center" >{name}</Text>
+        <Text color="blue.200" fontWeight={400} fontSize="2.5rem" textAlign="center" >{name}</Text>
 
       }
       {!multiplayer && user &&
         <Input
-          w="18rem"
+          w="22rem"
           h="3rem"
           onChange={(e) => {
             setName(e.target.value)
           }}
           fontSize="1.5rem"
+          color="blue.200"
           value={name}
           defaultValue={name}
           placeholder="Enter Playground Name"
         />
       }
 
-      {((multiplayer && user) || (!multiplayer && user) || (!multiplayer && !user)) && (
-        <Menu>
-          <MenuButton
-            as={Button}
-            w="7rem"
-            h="3rem"
-            fontSize="1.5rem"
-            borderRadius="0.5rem"
-            variant="filled"
-            color="white"
-            bg="magenta.100"
-            leftIcon={<AddIcon w="1.2rem" h="1.2rem" />}
-          >
-            New
-          </MenuButton>
-          <MenuList
-            w="12rem"
-            p="0.5rem"
-            bg="#1e1c28"
-            borderRadius="0.7rem"
-            borderColor="gray.200"
-            border="1px solid"
-          >
-            <MenuItem
-              bg="#1e1c28"
-              color="#ec307f"
-              fontSize="1.5rem"
-              h="4rem"
-              onClick={() => {
-                setCurrentPlayground(undefined);
-                setNodes([]);
-                setEdges([]);
-                setViewport({ x: 0, y: 0, zoom: 1.5 });
-                router.push("/");
-              }}
-            >
-              Single Player
-            </MenuItem>
-            {user && (
-              <MenuItem
-                bg="#1e1c28"
-                color="#ec307f"
-                fontSize="1.5rem"
-                h="4rem"
-                onClick={startMultiplayer}
-              >
-                Multiplayer
-              </MenuItem>
-            )}
-          </MenuList>
-        </Menu>
-      )}
+      <Flex borderRight="1px solid" align="center" borderColor="gray.200" gap="1rem">
+        {user && currentPlayground && user.id == currentPlayground.userId &&
+          <Button variant="filled" h="3rem" w="12rem" fontSize="1.5rem" onClick={accessModal.onOpen}>Give access</Button>
+        }
+        {((multiplayer && user) || (!multiplayer && user) || (!multiplayer && !user)) && (
+          <NewButton
+            setEdges={setEdges}
+            setNodes={setNodes}
+            setViewport={setViewport}
+            setCurrentPlayground={setCurrentPlayground}
+            user={user}
+          />
+        )}
+        <Divider w="2px" h="4rem" bg="gray.200" />
+        <ConnectWalletButton />
+      </Flex>
 
-
-      <Divider w="2px" h="4rem" bg="gray.200" />
-      <NetworkSelector />
-      <ConnectWalletButton />
     </Flex>
   )
 }

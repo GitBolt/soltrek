@@ -31,7 +31,7 @@ export const NetworkSelector = () => {
         as={Button}
         w="12rem"
         borderRadius="0.5rem"
-        h='3.6rem'
+        h='3rem'
         variant="filled"
         fontSize="1.3rem"
         color="white"

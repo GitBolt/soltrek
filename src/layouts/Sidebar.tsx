@@ -148,14 +148,14 @@ const Sidebar = ({ sidebarContent }: Props) => {
 
       <Flex sx={{
         w: "75%",
-        backdropFilter: "blur(15px)",
+        background:"#14141bc9",
         overflowY: "auto",
         overflowX: "hidden",
         borderRight: "1px solid",
         borderColor: "gray.100",
         flexFlow: "column"
       }}>
-        <Box mt="2rem" />
+        <Box mt="5rem" />
         <Branding />
 
         <List mb="2rem">

@@ -51,7 +51,6 @@ export const ConnectWalletButton = () => {
         as={Button}
         w="17rem"
         borderRadius="0.5rem"
-        mr="2rem"
         h="3.6rem"
         variant="filled"
         color="white"
