@@ -245,7 +245,7 @@ export const Navbar = ({
 
       <Flex borderRight="1px solid" align="center" borderColor="gray.200" gap="1rem">
         {multiplayer && user && currentPlayground && user.id == currentPlayground.userId &&
-          <Button variant="filled" h="3rem" w="10rem" fontSize="1.4rem" onClick={accessModal.onOpen}>Give Access</Button>
+          <Button variant="filled" h="3rem" w="8rem" fontSize="1.4rem" onClick={accessModal.onOpen}>Share</Button>
         }
         {((multiplayer && user && currentPlayground && user.id == currentPlayground.userId) || (!multiplayer)) && (
           <NewButton

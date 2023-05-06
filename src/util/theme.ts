@@ -112,7 +112,7 @@ export const theme = extendTheme({
     },
     Button: {
       baseStyle: {
-        minWidth:"fit-content",
+        minWidth: "fit-content",
         fontWeight: "600",
         boxShadow: "4px 4px 0px -1px rgba(0, 0, 0, 0.15)",
       },
@@ -130,7 +130,11 @@ export const theme = extendTheme({
               bgColor: 'blue.500',
             },
           },
+          _active: {
+            transform: "scale(90%)",
+          }
         },
+
         outline: {
           bg: 'transparent',
           color: 'blue.400',
@@ -149,6 +153,7 @@ export const theme = extendTheme({
           },
           _active: {
             bg: "transparent",
+            transform: "scale(90%)",
           }
         },
         sidebar: {
@@ -169,6 +174,17 @@ export const theme = extendTheme({
             transform: "none",
           }
         },
+
+        magenta: {
+          fontSize: "1.5rem",
+          borderRadius: "0.5rem",
+          variant: "filled",
+          color: "white",
+          bg: "magenta.100",
+          _active: {
+            transform: "scale(90%)",
+          }
+        }
       },
     },
 
@@ -178,7 +194,7 @@ export const theme = extendTheme({
 
         const base = {
           container: {
-            m:"0 2rem",
+            m: "0 2rem",
             padding: "1rem 1rem",
             width: "5rem",
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)",
@@ -251,7 +267,7 @@ export const theme = extendTheme({
           spinner: {
             ...base.icon,
             color: "white",
-          
+
           },
           title: {
             ...base.title,

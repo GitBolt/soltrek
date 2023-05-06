@@ -57,11 +57,7 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
         as={Button}
         w="7rem"
         h="3rem"
-        fontSize="1.5rem"
-        borderRadius="0.5rem"
-        variant="filled"
-        color="white"
-        bg="magenta.100"
+        variant="magenta"
         leftIcon={<AddIcon w="1.2rem" h="1.2rem" />}
       >
         New

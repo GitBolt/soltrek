@@ -1,39 +1,42 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalBody,
-  ModalCloseButton,
   Button,
   Text,
-  VStack,
-  useDisclosure,
-  Box,
-  SimpleGrid,
   Flex,
   Divider,
   useToast,
   Input,
+  useClipboard,
 } from '@chakra-ui/react'
 import { SavedPlaygroundType } from '@/types/playground'
 import { useCustomModal } from '@/context/modalContext'
 import { truncatedPublicKey } from '@/util/helper'
+import { CheckIcon, CopyIcon } from '@chakra-ui/icons'
 
 type Props = {
   playground: SavedPlaygroundType,
   setCurrentPlayground: React.Dispatch<React.SetStateAction<any>>,
 }
 
-export const AddAccess = ({ playground, setCurrentPlayground}: Props) => {
+export const AddAccess = ({ playground, setCurrentPlayground }: Props) => {
   const [value, setValue] = useState('')
   const { accessModal } = useCustomModal()
   const toast = useToast()
+  const { onCopy, hasCopied } = useClipboard(playground ? `localhost:3000/playground/${playground.id}` : '')
 
   const giveAccess = async () => {
-
+    if (!value || value.length < 30) {
+      toast({
+        status: "error",
+        title: "Enter Valid Public Key"
+      })
+      return
+    }
     const res = await fetch(`/api/playground/update_access`, {
       method: "POST",
       headers: {
@@ -57,7 +60,6 @@ export const AddAccess = ({ playground, setCurrentPlayground}: Props) => {
         title: "Error giving edit access"
       })
     }
-    console.log(res)
   }
 
   return (
@@ -77,9 +79,15 @@ export const AddAccess = ({ playground, setCurrentPlayground}: Props) => {
               fontSize="1.8rem"
 
               onChange={(e) => setValue(e.target.value)} />
-            <Button w="90%" variant="filled" onClick={giveAccess}>Give access</Button>
+
+            <Flex justify="space-between" w="90%">
+              <Button w="50%" variant="filled" onClick={giveAccess} h="3rem" fontSize="1.4rem">Add Editor</Button>
+              <Button w="40%" variant="magenta" onClick={onCopy} rightIcon={hasCopied ? <CheckIcon /> : <CopyIcon />} fontSize="1.4rem" h="3rem">Public Link</Button>
+            </Flex>
+
+
             <Divider mt="2rem" />
-            <Text textAlign="start" fontSize="2rem" color="blue.400" fontWeight="600" alignSelf="start">Access Given</Text>
+            <Text textAlign="start" fontSize="2rem" color="blue.400" fontWeight="600" alignSelf="start">Editors</Text>
 
             {playground && playground.edit_access.length ? playground.edit_access.map((item) => (
               <Text key={item} color="white" opacity="80%" fontSize="1.5rem" alignSelf="start" fontWeight="400">{truncatedPublicKey(item, 13)}</Text>
