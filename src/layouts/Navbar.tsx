@@ -173,7 +173,7 @@ export const Navbar = ({ multiplayer = false, editAccess = false }: { multiplaye
 
 
       <SavedPlaygrounds user={user} setCurrentPlayground={setCurrentPlayground} />
-      <AddAccess playground={currentPlayground!} setCurrentPlayground={setCurrentPlayground} />
+      {multiplayer && <AddAccess playground={currentPlayground!} setCurrentPlayground={setCurrentPlayground} />}
 
       {user && currentPlayground && user.id == currentPlayground.userId &&
         <Flex borderRight="1px solid" borderColor="gray.200" p="0 1rem" gap="1rem">

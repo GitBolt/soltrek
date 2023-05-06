@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { useReactFlow } from 'reactflow';
-import { Flex, Button, List, ListItem, Divider, Text, Box } from '@chakra-ui/react'
+import { Flex, Button, List, ListItem, Text, Box } from '@chakra-ui/react'
 import Branding from '@/components/Branding';
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { SidebarContentType } from '@/types/sidebar';
@@ -9,15 +9,12 @@ import { createNodeId, createNodePos } from '@/util/randomData';
 import { getUser } from '@/util/program/user';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet';
-import { Connection, Transaction } from '@solana/web3.js';
-import { PublicKey } from '@metaplex-foundation/js';
-import { IDLData } from '@/types/idl';
 
 type Props = {
   sidebarContent: SidebarContentType[]
 }
 const Sidebar = ({ sidebarContent }: Props) => {
-  const { setNodes, setEdges, setViewport } = useReactFlow();
+  const { setNodes} = useReactFlow();
   const [showSublist, setShowSublist] = useState<{ [key: number]: boolean }>({});
   const [selectedItemTitle, setSelectedItemTitle] = useState<string>('')
   const [user, setUser] = useState(null)

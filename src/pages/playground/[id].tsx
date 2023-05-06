@@ -7,15 +7,13 @@ import { Navbar } from "@/layouts/Navbar";
 
 import { io } from 'socket.io-client';
 import { useEffect, useState, useRef } from "react";
-import { useReactFlow, useNodesState, useEdgesState, NodeChange, EdgeChange } from "reactflow";
+import { useNodesState, useEdgesState, NodeChange, EdgeChange } from "reactflow";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Flex } from "@chakra-ui/react";
 
 const socket = io('http://localhost:3001');
 
 const Home: NextPage = ({ playground }: any) => {
-  const { toObject } = useReactFlow()
-
   const { publicKey } = useWallet()
 
   const [user, setUser] = useState(null)
@@ -66,6 +64,12 @@ const Home: NextPage = ({ playground }: any) => {
     run()
   }, [publicKey, playground])
 
+  useEffect(() => {
+    const data = JSON.parse(playground.data)
+    console.log(data)
+    setNodes(data.nodes)
+    setEdges(data.edges)
+  }, [playground, setEdges, setNodes])
 
   return (
     <>
