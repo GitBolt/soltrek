@@ -118,7 +118,7 @@ const Playground = function Playground({
       proOptions={{ hideAttribution: true }}
       onNodesChange={onNodeChange}
       onEdgesChange={onEdgeChange}
-      onConnect={editable ? onConnect : () => { }}
+      onConnect={!multiplayer || editable ? onConnect : () => { }}
       edgeTypes={{ default: NodeEdge }}
     >
       <Controls className={styles.controls} position="bottom-right" />

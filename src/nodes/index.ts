@@ -24,6 +24,7 @@ import Mnemonic from "./Crypto/Mnemonic";
 import SignMessage from "./Crypto/SignMessage";
 import VerifyMessage from "./Crypto/VerifyMessage";
 import HXROGetUserPositions from "./SDKs/HXRO/GetUserPositions";
+import GetCandyMachine from "./SDKs/CandyMachine/GetCandyMachine";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -52,4 +53,5 @@ export const nodeTypes = {
   hxroPariGetStore: HXROPariGetStore,
   getTransaction: GetTransactionNode,
   solanaPay: SolanaPay,
+  candyMachineGet: GetCandyMachine,
 };

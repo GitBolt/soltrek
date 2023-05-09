@@ -101,6 +101,19 @@ export const sidebarContent: SidebarContentType[] = [
         ]
       },
 
+      {
+        title: "CandyMachine",
+        type: "candyMachine",
+        icon: "/logos/HXRO.svg",
+        sub: [
+          {
+            title: "Get Candy Machine",
+            type: "candyMachineGet"
+          },
+
+        ]
+      },
+
     ],
   },
   {
