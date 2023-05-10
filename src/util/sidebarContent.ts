@@ -18,6 +18,10 @@ export const sidebarContent: SidebarContentType[] = [
         type: "buttonInput",
       },
       {
+        title: "File Input",
+        type: "fileInput",
+      },
+      {
         title: "Candy Machine Config",
         type: "candyMachineInput",
       },

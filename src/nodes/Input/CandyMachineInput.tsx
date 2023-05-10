@@ -77,7 +77,7 @@ const CandyMachineInput: FC<NodeProps<InputNodeType>> = (props) => {
 
           <Box>
 
-            <Text color="blue.100" fontSize="1.2rem">Seller Fee Point Basis (Royalty)</Text>
+            <Text color="blue.100" fontSize="1.2rem">Royalty Percentage</Text>
             <Input
               variant="node"
               value={config.sellerFeeBasisPoints}
@@ -99,7 +99,7 @@ const CandyMachineInput: FC<NodeProps<InputNodeType>> = (props) => {
             />
           </Box>
           <Box>
-            <Text color="blue.100" fontSize="1.2rem">Max Edition Supply</Text>
+            <Text color="blue.100" fontSize="1.2rem">Number of NFTs in collection</Text>
 
             <Input
               variant="node"

@@ -27,6 +27,7 @@ import HXROGetUserPositions from "./SDKs/HXRO/GetUserPositions";
 import GetCandyMachine from "./SDKs/CandyMachine/GetCandyMachine";
 import CandyMachineInput from "./Input/CandyMachineInput";
 import CreateCandyMachine from "./SDKs/CandyMachine/CreateCandyMachine";
+import FileInputNode from "./Input/FileInput";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -58,4 +59,5 @@ export const nodeTypes = {
   candyMachineGet: GetCandyMachine,
   candyMachineCreate: CreateCandyMachine,
   candyMachineInput: CandyMachineInput,
+  fileInput: FileInputNode
 };

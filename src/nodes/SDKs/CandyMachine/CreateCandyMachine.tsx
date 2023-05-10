@@ -68,7 +68,7 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
 
     if (!values["configs"] || !values["kp"]) return;
 
-
+    const configs = values["configs"]
     setEdges((edgs) =>
       edgs.map((ed) => {
         if (ed.source == id) {
@@ -97,25 +97,32 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
 
     const run = async () => {
       // Create the Collection NFT.
-      const { nft: collectionNft } = await metaplex.nfts().create({
-        name: "My Collection NFT",
-        uri: "https://bafkreic6e7wwviz7acm37qwlgspfgq7jgoowt2iy7l3jspkwln3ra37w3e.ipfs.nftstorage.link/",
-        sellerFeeBasisPoints: 0,
-        isCollection: true,
-      }, { commitment: "finalized" });
 
-      console.log(collectionNft)
-      // Create the Candy Machine.
-      const { candyMachine } = await metaplex.candyMachines().create({
-        itemsAvailable: toBigNumber(5000),
-        sellerFeeBasisPoints: 333, // 3.33%
-        collection: {
-          address: collectionNft.address,
-          updateAuthority: metaplex.identity(),
-        },
-      }, { commitment: "finalized" });
+      try {
+        const { nft: collectionNft } = await metaplex.nfts().create({
+          
+          name: "My Collection NFT",
+          uri: "https://bafkreic6e7wwviz7acm37qwlgspfgq7jgoowt2iy7l3jspkwln3ra37w3e.ipfs.nftstorage.link/",
+          sellerFeeBasisPoints: configs.sellerFeeBasisPoints * 100,
+        }, { commitment: "finalized" });
 
-      console.log(candyMachine)
+        console.log(collectionNft)
+        // Create the Candy Machine.
+        const { candyMachine } = await metaplex.candyMachines().create({
+
+          itemsAvailable: toBigNumber(configs.itemsAvailable),
+          sellerFeeBasisPoints: configs.sellerFeeBasisPoints * 100, // 3.33%
+          collection: {
+            address: collectionNft.address,
+            updateAuthority: metaplex.identity(),
+          },
+        }, { commitment: "finalized" });
+
+        console.log(candyMachine)
+      }
+      catch (e: any) {
+        setError(e.toString())
+      }
     }
 
     run()
@@ -135,8 +142,8 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
 
     >
       {error ?
-        <Text fontSize="1.5rem" transform="translate(0, 3rem)" zIndex="3" color="blue.400" fontWeight={600}>{error.toLocaleString()}</Text> : null}
-      <CustomHandle
+        <Text fontSize="1.5rem" transform="translate(7rem, 3rem)" mr="10rem" zIndex="3" color="blue.400" maxW="30rem" fontWeight={600}>{error.toLocaleString()}</Text> : null}
+        <CustomHandle
         pos="left"
         type="target"
         style={{ marginTop: "-1rem" }}
