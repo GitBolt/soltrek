@@ -158,6 +158,20 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
         <Box mt="8rem" />
         <Branding />
 
+        {!multiplayer ?
+
+          <Flex w="100%" borderRadius="2rem 2rem 0 0" h="4rem" align="center" justify="center" bg="bg.300">
+            <Text color="blue.100" fontWeight={600} fontSize="1.8rem">
+              Single Player
+            </Text>
+          </Flex>
+          :
+          <Flex w="100%" borderRadius="2rem 2rem 0 0" h="4rem" align="center" justify="center" bg="magenta.400">
+            <Text color="magenta.100" fontWeight={600} fontSize="1.8rem">
+              Multi Player
+            </Text>
+          </Flex>}
+
         <List mb="2rem">
           {selectedItemTitle && sidebarContent.find((item) => item.title == selectedItemTitle)!.items.map((item, index) => (
             <ListItem key={item.title}>
@@ -202,18 +216,6 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
           ))}
         </List>
 
-        {!multiplayer ?
-          <Flex w="100%" borderRadius="2rem 2rem 0 0" h="4rem" pos="relative" bottom="0" align="center" justify="center" bg="bg.300" marginTop="auto">
-            <Text color="blue.100" fontWeight={600} fontSize="1.8rem">
-              Single Player
-            </Text>
-          </Flex>
-          :
-          <Flex w="100%" borderRadius="2rem 2rem 0 0" h="4rem" pos="relative" bottom="0" align="center" justify="center" bg="magenta.400" marginTop="auto">
-            <Text color="magenta.100" fontWeight={600} fontSize="1.8rem">
-              Multi Player
-            </Text>
-          </Flex>}
       </Flex>
     </Flex>
 

@@ -32,7 +32,7 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
   const currentNode = getNode(id as string);
   const { selectedNetwork } = useNetworkContext()
 
-  const [txId, setTxId] = useState<any>();
+  const [address, setAddress] = useState<any>();
   const [error, setError] = useState<any>('');
   const [sigOutputs, setSigOutputs] = useState<string[]>([])
 
@@ -52,10 +52,18 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
   };
 
 
+  const onConnect = (e: RCon) => {
+    if (!e.target) return
+    setSigOutputs([...sigOutputs, e.target])
+    updateNodeData(e.target, address)
+  };
+
+
+
   useEffect(() => {
-    sigOutputs.forEach((target) => updateNodeData(target, txId));
+    sigOutputs.forEach((target) => updateNodeData(target, address));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [txId, error]);
+  }, [address, error]);
 
 
   useEffect(() => {
@@ -117,7 +125,10 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
           },
         }, { commitment: "finalized" });
 
+        
         console.log(candyMachine)
+
+        setAddress(candyMachine.address.toBase58())
       }
       catch (e: any) {
         setError(e.toString())
@@ -167,6 +178,23 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
         style={{ marginTop: "4rem" }}
         label="Authority (Private Key)"
       />
+
+      <CustomHandle
+        pos="left"
+        type="target"
+        id="kp"
+        style={{ marginTop: "4rem" }}
+        label="Authority (Private Key)"
+      />
+
+      <CustomHandle
+        pos="right"
+        type="source"
+        id="address"
+        onConnect={onConnect}
+        label="Address"
+      />
+
     </BaseNode>
   );
 };
