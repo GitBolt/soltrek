@@ -21,10 +21,6 @@ export const sidebarContent: SidebarContentType[] = [
         title: "File Input",
         type: "fileInput",
       },
-      {
-        title: "Candy Machine Config",
-        type: "candyMachineInput",
-      },
     ],
   },
   {
@@ -64,7 +60,7 @@ export const sidebarContent: SidebarContentType[] = [
       {
         title: "Verify Message",
         type: "verifyMessage",
-      },      
+      },
     ],
   },
   {
@@ -122,6 +118,14 @@ export const sidebarContent: SidebarContentType[] = [
             title: "Create Candy Machine",
             type: "candyMachineCreate"
           },
+          {
+            title: "Candy Machine Config",
+            type: "candyMachineInput",
+          },
+          {
+            title: "NFT Info Input",
+            type: "nftInfoInput",
+          },
         ]
       },
 
@@ -142,6 +146,10 @@ export const sidebarContent: SidebarContentType[] = [
       {
         title: "Get SNS Domain",
         type: "getSns",
+      },
+      {
+        title: "Get SOL Balance",
+        type: "getSOLBalance",
       },
     ],
   },

@@ -36,7 +36,6 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
   const [error, setError] = useState<any>('');
   const [sigOutputs, setSigOutputs] = useState<string[]>([])
 
-  const umi = createUmi(selectedNetwork).use(mplCandyMachine());
 
   const updateNodeData = (nodeId: string, data: string) => {
     setNodes((nds) =>
@@ -63,21 +62,21 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
       "configs",
-      "kp"
+      "kp",
+      "run"
     ]);
 
-    if (!values["configs"] || !values["kp"]) return;
+    const dataKeys: string[] = Object.keys(currentNode?.data || {});
+
+    const shouldRun = dataKeys.find(
+      (key) => key.startsWith("btn") && currentNode?.data[key] == true
+    );
+
+    if (!values["configs"] || !values["kp"] || !shouldRun) return;
+
+
 
     const configs = values["configs"]
-    setEdges((edgs) =>
-      edgs.map((ed) => {
-        if (ed.source == id) {
-          ed.animated = true;
-          return ed;
-        }
-        return ed;
-      })
-    );
     let privKey = values["kp"]
     let parsed: any
 
@@ -100,7 +99,7 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
 
       try {
         const { nft: collectionNft } = await metaplex.nfts().create({
-          
+
           name: "My Collection NFT",
           uri: "https://bafkreic6e7wwviz7acm37qwlgspfgq7jgoowt2iy7l3jspkwln3ra37w3e.ipfs.nftstorage.link/",
           sellerFeeBasisPoints: configs.sellerFeeBasisPoints * 100,
@@ -138,15 +137,25 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
     <BaseNode
       code={CODE}
       {...props}
+      height="15rem"
       title="Candy Machine - Create"
 
     >
       {error ?
         <Text fontSize="1.5rem" transform="translate(7rem, 3rem)" mr="10rem" zIndex="3" color="blue.400" maxW="30rem" fontWeight={600}>{error.toLocaleString()}</Text> : null}
-        <CustomHandle
+
+      <CustomHandle
         pos="left"
         type="target"
-        style={{ marginTop: "-1rem" }}
+        style={{ marginTop: "-3rem" }}
+        id="run"
+        label="Run"
+      />
+
+      <CustomHandle
+        pos="left"
+        type="target"
+        style={{ marginTop: "0.5rem" }}
         id="configs"
         label="Configurations"
       />
@@ -155,7 +164,7 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
         pos="left"
         type="target"
         id="kp"
-        style={{ marginTop: "2rem" }}
+        style={{ marginTop: "4rem" }}
         label="Authority (Private Key)"
       />
     </BaseNode>

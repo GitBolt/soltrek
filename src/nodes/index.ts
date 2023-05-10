@@ -25,9 +25,11 @@ import SignMessage from "./Crypto/SignMessage";
 import VerifyMessage from "./Crypto/VerifyMessage";
 import HXROGetUserPositions from "./SDKs/HXRO/GetUserPositions";
 import GetCandyMachine from "./SDKs/CandyMachine/GetCandyMachine";
-import CandyMachineInput from "./Input/CandyMachineInput";
+import CandyMachineInput from "./SDKs/CandyMachine/CandyMachineInput";
 import CreateCandyMachine from "./SDKs/CandyMachine/CreateCandyMachine";
 import FileInputNode from "./Input/FileInput";
+import GetSOLBalance from "./Explorer/GetSOLBalance";
+import NFTInfoInput from "./SDKs/CandyMachine/NFTInfoInput";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -59,5 +61,7 @@ export const nodeTypes = {
   candyMachineGet: GetCandyMachine,
   candyMachineCreate: CreateCandyMachine,
   candyMachineInput: CandyMachineInput,
-  fileInput: FileInputNode
+  fileInput: FileInputNode,
+  getSOLBalance: GetSOLBalance,
+  nftInfoInput: NFTInfoInput
 };
