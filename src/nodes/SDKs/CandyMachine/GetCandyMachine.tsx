@@ -10,12 +10,14 @@ import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
 import { HXRO } from "@/sdks/hxro";
-import { Text } from "@chakra-ui/react";
+import { Box, Text, useClipboard } from "@chakra-ui/react";
 import { SDKResponse } from "@/types/response";
 import base58 from "bs58";
 import { useNetworkContext } from "@/context/configContext";
 import { PublicKey } from "@solana/web3.js";
 import { publicKey } from "@metaplex-foundation/umi";
+import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
+import { stringify } from "@/util/helper";
 
 
 const GetCandyMachine: FC<NodeProps> = (props) => {
@@ -27,8 +29,10 @@ const GetCandyMachine: FC<NodeProps> = (props) => {
   const [txId, setTxId] = useState<any>();
   const [error, setError] = useState<any>('');
   const [sigOutputs, setSigOutputs] = useState<string[]>([])
-
+  const [data, setData] = useState<any>()
   const umi = createUmi(selectedNetwork).use(mplCandyMachine());
+  const { hasCopied, onCopy } = useClipboard(data || '')
+
 
   const updateNodeData = (nodeId: string, data: string) => {
     setNodes((nds) =>
@@ -58,9 +62,34 @@ const GetCandyMachine: FC<NodeProps> = (props) => {
     ]);
 
     if (!values["address"]) return;
-
+    console.log(1)
     fetchCandyMachine(umi, publicKey(values["address"]))
-      .then((res) => console.log(res))
+      .then((res) => {
+        setData(stringify(
+          {
+            authority: new PublicKey(new Uint8Array(res.authority.bytes)).toBase58(),
+            collectionMint: new PublicKey(new Uint8Array(res.collectionMint.bytes)).toBase58(),
+            data: {
+              configLineSettings: res.data.configLineSettings,
+              creators: res.data.creators.map((creator) => {
+                return ({
+                  address: new PublicKey(new Uint8Array(creator.address.bytes)).toBase58(),
+                  percentageShare: creator.percentageShare,
+                  verified: creator.verified,
+                })
+              })
+            },
+            discriminator: new PublicKey(new Uint8Array(res.discriminator)).toBase58(),
+            items: res.items,
+            itemsLoaded: res.itemsLoaded,
+            itemsRedeemed: res.itemsRedeemed,
+            mintAuthority: new PublicKey(new Uint8Array(res.authority.bytes)).toBase58(),
+            publicKey: new PublicKey(new Uint8Array(res.publicKey.bytes)).toBase58(),
+            tokenStandard: res.tokenStandard,
+            version: res.version,
+          })); console.log(res)
+      })
+      .catch((e) => setError(e.toString()))
 
     setEdges((edgs) =>
       edgs.map((ed) => {
@@ -76,8 +105,7 @@ const GetCandyMachine: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
 
-  const cleanedCode = HXRO.destroyPosition.toString().replace(/_.*?(\.|import)/g, '');
-  const CODE = `export const destroyPosition = ${cleanedCode}`;
+  const CODE = `fetchCandyMachine(umi, publicKey(address)).then((res) => console.log(res))`;
 
   return (
     <BaseNode
@@ -86,8 +114,19 @@ const GetCandyMachine: FC<NodeProps> = (props) => {
       title="Candy Machine - Get"
 
     >
+      {data ?
+        <>
+          <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" ml="4rem" my="2rem">{data.toLocaleString()}</Text>
+          <Box pos="absolute" top="3rem" right="1rem">
+            {hasCopied ? <CheckIcon color="blue.200" w="1.5rem" h="1.5rem" /> :
+              <CopyIcon onClick={onCopy} color="blue.200" w="1.5rem" h="1.5rem" />}
+          </Box>
+        </>
+        :
+        <Text color="blue.300" opacity="50%" fontSize="1.5rem">{error || 'Empty...'}</Text>}
+
       {error ?
-        <Text fontSize="1.5rem" transform="translate(0, 3rem)" zIndex="3" color="blue.400" fontWeight={600}>{error.toLocaleString()}</Text> : null}
+        <Text fontSize="1.5rem" transform="translate(7rem, 3rem)" mr="10rem" zIndex="3" color="blue.400" maxW="30rem" fontWeight={600}>{error.toLocaleString()}</Text> : null}
       <CustomHandle
         pos="left"
         type="target"

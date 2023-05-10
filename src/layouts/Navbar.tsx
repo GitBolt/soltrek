@@ -255,6 +255,7 @@ export const Navbar = ({
           />
         )}
         <Divider w="2px" h="4rem" bg="gray.200" />
+        <NetworkSelector />
         <Wallets />
       </Flex>
 

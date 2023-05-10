@@ -69,7 +69,7 @@ const KeypairNode: FC<NodeProps> = (props) => {
           setKp(new Keypair());
         }
       });
-    }, 1000)
+    }, 200)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);

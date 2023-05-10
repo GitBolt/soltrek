@@ -17,6 +17,10 @@ export const sidebarContent: SidebarContentType[] = [
         title: "Button",
         type: "buttonInput",
       },
+      {
+        title: "Candy Machine Config",
+        type: "candyMachineInput",
+      },
     ],
   },
   {
@@ -74,28 +78,28 @@ export const sidebarContent: SidebarContentType[] = [
     icon: "/icons/SDK.svg",
     items: [
       {
-        title: "HXRO Network",
+        title: "HXRO - Parimutuel",
         type: "hxroNetwork",
         icon: "/logos/HXRO.svg",
         sub: [
           {
-            title: "Parimutuel - Get Contests",
+            title: "Get Contests",
             type: "hxroPariGet"
           },
           {
-            title: "Parimutuel - Place Position",
+            title: "Place Position",
             type: "hxroPariPlace",
           },
           {
-            title: "Parimutuel - Destroy Position",
+            title: "Destroy Position",
             type: "hxroPariDestroy",
           },
           {
-            title: "Parimutuel - Get Store",
+            title: "Get Store",
             type: "hxroPariGetStore",
           },
           {
-            title: "Parimutuel - Get User Positions",
+            title: "Get User Positions",
             type: "hxroPariGetUserPositions",
           },
         ]
@@ -104,13 +108,16 @@ export const sidebarContent: SidebarContentType[] = [
       {
         title: "CandyMachine",
         type: "candyMachine",
-        icon: "/logos/HXRO.svg",
+        icon: "/logos/Metaplex.svg",
         sub: [
           {
             title: "Get Candy Machine",
             type: "candyMachineGet"
           },
-
+          {
+            title: "Create Candy Machine",
+            type: "candyMachineCreate"
+          },
         ]
       },
 

@@ -68,7 +68,7 @@ const RequestAirdrop: FC<NodeProps> = (props) => {
 
     const connection = new Connection(
       values["rpc_url"] || selectedNetwork
-    );
+      , { commitment: "confirmed" });
     connection
       .requestAirdrop(new PublicKey(values["destination"]), 2)
       .then((res) => setTxid(res))
