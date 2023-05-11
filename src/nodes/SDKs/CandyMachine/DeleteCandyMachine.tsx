@@ -1,23 +1,28 @@
+
+
+
 import React, { useState, useEffect, FC } from "react";
 import { NodeProps, useNodeId, useReactFlow, Connection as RCon } from "reactflow";
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
-import { Spinner, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import base58 from "bs58";
 import { useNetworkContext } from "@/context/configContext";
+import { PublicKey } from "@solana/web3.js";
+
+
 import { CandyMachine } from "@/sdks/candyMachine";
 
-const CreateCandyMachine: FC<NodeProps> = (props) => {
-  const { getNode, getEdges, setNodes, setEdges } = useReactFlow();
+const DeleteCandyMachine: FC<NodeProps> = (props) => {
+  const { getNode, getEdges, setNodes } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
   const { selectedNetwork } = useNetworkContext()
 
-  const [address, setAddress] = useState<any>();
+  const [signature, setSignature] = useState<any>();
   const [error, setError] = useState<any>('');
   const [targetNodes, setTargetNodes] = useState<string[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
 
 
   // Update target nodes (accepting input) data with 100ms delay (required to work properly)
@@ -35,37 +40,35 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
   const onConnect = (e: RCon) => {
     if (!e.target) return
     setTargetNodes([...targetNodes, e.target])
-    updateNodeData([e.target], address)
+    updateNodeData([e.target], signature)
   };
+
 
 
   useEffect(() => {
     if (!targetNodes) return
-    updateNodeData(targetNodes, address)
+    updateNodeData(targetNodes, signature)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
+  }, [signature]);
 
 
   useEffect(() => {
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
-      "configs",
-      "kp",
-      "run"
+      "cmAddress",
+      "guardAddress",
+      "authority"
     ]);
 
     const dataKeys: string[] = Object.keys(currentNode?.data || {});
-
     const shouldRun = dataKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
 
-    if (!values["configs"] || !values["kp"] || !shouldRun) return;
+    if (Object.values(values).filter(i => i).length != 3 || !shouldRun) return;
 
-    const configs = values["configs"]
-    let privKey = values["kp"]
+    let privKey = values["authority"]
     let parsed: any
-
     try {
       parsed = new Uint8Array(base58.decode(privKey))
     } catch {
@@ -75,49 +78,44 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
         console.log("Keypair Error: ", e)
       }
     }
-
-    setLoading(true)
+    
     const run = async () => {
-      const { error: createError, cm, collection } = await CandyMachine.createCandyMachine(
+      const res = await CandyMachine.deleteCandyMachine(
         selectedNetwork,
         parsed,
-        configs,
+        new PublicKey(values["cmAddress"]),
+        new PublicKey(values["guardAddress"])
       )
-      if (createError) {
-        setError(createError)
+      if (res.error) {
+        setError(res.error)
         return
       }
 
-      setAddress(cm!.address.toBase58())
+      setSignature(res.res)
     }
-
-    run().then(() => setLoading(false))
-
+    run()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
 
 
-  const cleanedCode = CandyMachine.createCandyMachine.toString().replace(/_.*?(\.|import)/g, '');
-  const CODE = `export const createCandyMachine = ${cleanedCode}`;
+  const cleanedCode = CandyMachine.deleteCandyMachine.toString().replace(/_.*?(\.|import)/g, '');
+  const CODE = `export const deleteCandyMachine = ${cleanedCode}`;
 
   return (
     <BaseNode
       code={CODE}
       {...props}
-      height="15rem"
-      title="Candy Machine - Create"
+      height="20rem"
+      title="Candy Machine - Delete"
 
     >
-
-      {loading && <Spinner size="lg" style={{ width: "5rem", height: "5rem" }} color="blue.100" thickness="0.5rem" />}
-
       {error ?
         <Text fontSize="1.5rem" transform="translate(7rem, 3rem)" mr="10rem" zIndex="3" color="blue.400" maxW="30rem" fontWeight={600}>{error.toLocaleString()}</Text> : null}
 
       <CustomHandle
         pos="left"
         type="target"
-        style={{ marginTop: "-3rem" }}
+        style={{ marginTop: "-5rem" }}
         id="run"
         label="Run"
       />
@@ -125,39 +123,37 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
       <CustomHandle
         pos="left"
         type="target"
-        style={{ marginTop: "0.5rem" }}
-        id="configs"
-        label="Configurations"
-      />
-
-      <CustomHandle
-        pos="left"
-        type="target"
-        id="kp"
-        style={{ marginTop: "4rem" }}
+        style={{ marginTop: "-1rem" }}
+        id="authority"
         label="Authority (Private Key)"
       />
 
       <CustomHandle
         pos="left"
         type="target"
-        id="kp"
-        style={{ marginTop: "4rem" }}
-        label="Authority (Private Key)"
+        id="cmAddress"
+        style={{ marginTop: "3rem" }}
+        label="Candy Machine Address"
+      />
+
+      <CustomHandle
+        pos="left"
+        type="target"
+        id="guardAddress"
+        style={{ marginTop: "7rem" }}
+        label="Guard Address"
       />
 
       <CustomHandle
         pos="right"
         type="source"
-        id="address"
+        id="res"
         onConnect={onConnect}
-        label="Address"
+        label="Response"
       />
 
     </BaseNode>
   );
 };
 
-export default CreateCandyMachine;
-
-
+export default DeleteCandyMachine;

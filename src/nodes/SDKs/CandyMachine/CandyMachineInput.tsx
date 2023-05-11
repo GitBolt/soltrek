@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import BaseNode from '@/layouts/BaseNode';
 import { Position, NodeProps, Connection, useReactFlow, useNodeId } from 'reactflow';
-import { Box, Checkbox, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Checkbox, Flex, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text } from '@chakra-ui/react';
 import { CustomHandle } from '@/layouts/CustomHandle';
 import { toBigNumber } from '@metaplex-foundation/js';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -14,7 +14,7 @@ const CandyMachineInput: FC<NodeProps<InputNodeType>> = (props) => {
 
   const { publicKey } = useWallet()
   const [config, setConfig] = useState({
-    sellerFeeBasisPoints: 200,
+    sellerFeeBasisPoints: 2.5,
     symbol: "TREK",
     maxEditionSupply: toBigNumber(0),
     isMutable: true,
@@ -78,14 +78,21 @@ const CandyMachineInput: FC<NodeProps<InputNodeType>> = (props) => {
           <Box>
 
             <Text color="blue.100" fontSize="1.2rem">Royalty Percentage</Text>
-            <Input
-              variant="node"
+            <NumberInput
+              precision={2}
+              step={0.1}
               value={config.sellerFeeBasisPoints}
-              placeholder={props.data.placeholder || "Enter seller fee point basis"}
               id={props.id}
-              onChange={(e) => setConfig({ ...config, sellerFeeBasisPoints: Number(e.target.value) })}
-
-            />
+              onChange={(e) => setConfig({ ...config, sellerFeeBasisPoints: Number(e) })}
+            >
+              <NumberInputField
+                placeholder="Enter royalty in percentage"
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper color="white" />
+                <NumberDecrementStepper color="white" />
+              </NumberInputStepper>
+            </NumberInput>
           </Box>
           <Box>
             <Text color="blue.100" fontSize="1.2rem">Max Edition Supply</Text>

@@ -60,7 +60,6 @@ const GetCandyMachine: FC<NodeProps> = (props) => {
     const values = handleValue(currentNode, edges, [
       "address",
     ]);
-
     if (!values["address"]) return;
     console.log(1)
     fetchCandyMachine(umi, publicKey(values["address"]))

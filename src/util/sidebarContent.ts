@@ -119,6 +119,10 @@ export const sidebarContent: SidebarContentType[] = [
             type: "candyMachineCreate"
           },
           {
+            title: "Delete Candy Machine",
+            type: "deleteCandyMachine"
+          },
+          {
             title: "Candy Machine Config",
             type: "candyMachineInput",
           },
