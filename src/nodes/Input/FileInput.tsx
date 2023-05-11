@@ -8,11 +8,7 @@ import { useFileUpload } from 'use-file-upload'
 import { uploadFile } from '@/util/upload';
 
 
-type InputNodeType = {
-  placeholder: string;
-};
-
-const FileInputNode: FC<NodeProps<InputNodeType>> = (props) => {
+const FileInputNode: FC<NodeProps> = (props) => {
 
   const [uri, setUri] = useState<string>('')
   const [targetNodeIds, setTargetNodeIds] = useState<string[]>([])
@@ -22,28 +18,26 @@ const FileInputNode: FC<NodeProps<InputNodeType>> = (props) => {
   const [uploading, setUploading] = useState<boolean>(false)
   const id = useNodeId()
 
-  const updateNodeData = (nodeId: string) => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === nodeId) {
-          node.data = {
-            ...node.data,
-            [id as string]: uri,
-          };
-        }
-        return node;
-      }))
-  }
+  // Update target nodes (accepting input) data with 100ms delay (required to work properly)
+  const updateNodeData = (nodeIds: string[]) => {
+    setTimeout(() => {
+      setNodes(nodes => nodes.map(node =>
+        nodeIds.includes(node.id)
+          ? { ...node, data: { ...node.data, [id as string]: uri } }
+          : node
+      ));
+    }, 100);
+  };
 
   const onConnect = (e: Connection) => {
     if (!e.target) return
     setTargetNodeIds([...targetNodeIds, e.target])
-    updateNodeData(e.target)
+    updateNodeData([e.target])
   };
 
   useEffect(() => {
     if (!targetNodeIds) return
-    targetNodeIds.forEach((target) => updateNodeData(target))
+    updateNodeData(targetNodeIds)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uri])
 

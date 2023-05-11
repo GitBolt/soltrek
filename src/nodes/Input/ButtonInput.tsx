@@ -4,68 +4,37 @@ import { Position, NodeProps, Connection, useReactFlow, useNodeId } from 'reactf
 import { Button } from '@chakra-ui/react';
 import { CustomHandle } from '@/layouts/CustomHandle';
 
-type InputNodeType = {
-  placeholder: string;
-};
+const ButtonInputNode: FC<NodeProps> = (props) => {
 
-const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
-
-  const [currentTarget, setCurrentTarget] = useState<string[]>([])
+  const [targetNodes, setTargetNodes] = useState<string[]>([])
   const { setNodes, setEdges } = useReactFlow()
 
   const id = useNodeId()
 
-  const updateNodeData = (nodeId: string, animate?: boolean) => {
-
-    if (animate) {
-      setEdges((edgs) =>
-        edgs.map((ed) => {
-          if (ed.source == id) {
-            ed.animated = true
-            return ed
-          }
-          return ed;
-        }))
-    }
-
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === nodeId) {
-          node.data = {
-            ...node.data,
-            ['btn' + id || '']: true,
-          };
-        }
-        return node;
-      }))
-
+  const updateNodeData = (nodeIds: string[]) => {
     setTimeout(() => {
-      setNodes((nds) =>
-        nds.map((node) => {
-          if (node.id === nodeId) {
-            node.data = {
-              ...node.data,
-              ['btn' + id || '']: false,
-            };
-          }
-          return node;
-        }))
+      setEdges(edgs => edgs.map(ed => ed.source === id ? { ...ed, animated: true } : ed));
+      setNodes(nodes => nodes.map(node =>
+        nodeIds.includes(node.id) ? { ...node, data: { ...node.data, [`btn${id}`]: true } } : node
+      ));
 
-      setEdges((edgs) =>
-        edgs.map((ed) => {
-          if (ed.source == id) {
-            ed.animated = false
-            return ed
-          }
-          return ed;
-        }))
-    }, 300)
-  }
+      setTimeout(() => {
+        setNodes(nodes => nodes.map(node =>
+          nodeIds.includes(node.id) ? { ...node, data: { ...node.data, [`btn${id}`]: false } } : node
+        ));
+        setEdges(edgs => edgs.map(ed => ed.source === id ? { ...ed, animated: false } : ed));
+      }, 500);
 
-  const CustomHandleConnect = (e: Connection) => {
+    }, 100);
+  };
+
+
+  const onConnect = (e: Connection) => {
     if (!e.target) return
-    setCurrentTarget([...currentTarget, e.target])
-    // updateNodeData(e.target)
+    setTargetNodes([...targetNodes, e.target])
+
+    // We don't want to trigger button action as soon as it connects to any input node
+    // updateNodeData([e.target])
   };
 
 
@@ -79,12 +48,11 @@ const ButtonInputNode: FC<NodeProps<InputNodeType>> = (props) => {
           variant="filled"
           id={props.id}
           onClick={(e) => {
-            if (!currentTarget) return
-            currentTarget.forEach((target) => updateNodeData(target, true))
+            updateNodeData(targetNodes)
           }}
         >Run</Button>
 
-        <CustomHandle pos={Position.Right} type="source" onConnect={(e: any) => CustomHandleConnect(e)} />
+        <CustomHandle pos={Position.Right} type="source" onConnect={onConnect} />
       </BaseNode>
     </div>
   );

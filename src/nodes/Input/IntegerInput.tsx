@@ -10,52 +10,42 @@ import {
 } from '@chakra-ui/react'
 import { CustomHandle } from '@/layouts/CustomHandle';
 
-type InputNodeType = {
-  placeholder: string;
-};
 
-const IntegerInputNode: FC<NodeProps<InputNodeType>> = (props) => {
 
-  const [number, setnumber] = useState<number>(0)
-  const [currentTarget, setCurrentTarget] = useState<string[]>([])
+const IntegerInputNode: FC<NodeProps> = (props) => {
+
+  const [number, setNumber] = useState<number>(0)
+  const [targetNodes, setTargetNodes] = useState<string[]>([])
   const { setNodes } = useReactFlow()
-  const [timerId, setTimerId] = useState<NodeJS.Timeout | null>();
 
   const id = useNodeId()
 
-  const updateText = (number: number) => {
-    if (timerId) clearTimeout(timerId);
-
-    setTimerId(setTimeout(() => {
-      setnumber(number);
-      currentTarget.forEach((target) => updateNodeData(target))
-    }, 200));
+  // Update target nodes (accepting input) data with 100ms delay (required to work properly)
+  const updateNodeData = (nodeIds: string[]) => {
+    setTimeout(() => {
+      setNodes(nodes => nodes.map(node =>
+        nodeIds.includes(node.id)
+          ? { ...node, data: { ...node.data, [id as string]: number } }
+          : node
+      ));
+    }, 100);
   };
 
-  const updateNodeData = (nodeId: string) => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === nodeId) {
-          node.data = {
-            ...node.data,
-            [id as string]: number,
-          };
-        }
-        return node;
-      }))
-  }
-
-  const CustomHandleConnect = (e: Connection) => {
+  // Updating a new input node with data from this node as soon as it's connected
+  const onConnect = (e: Connection) => {
     if (!e.target) return
-    setCurrentTarget([...currentTarget, e.target])
-    updateNodeData(e.target)
+    setTargetNodes([...targetNodes, e.target])
+    updateNodeData([e.target])
   };
 
+  // Pushing new data to all input nodes connected
   useEffect(() => {
-    if (!currentTarget) return
-    currentTarget.forEach((target) => updateNodeData(target))
+    console.log("Target Nodes: ", targetNodes)
+    if (!targetNodes) return
+    updateNodeData(targetNodes)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [number])
+
 
 
   return (
@@ -65,10 +55,10 @@ const IntegerInputNode: FC<NodeProps<InputNodeType>> = (props) => {
         <NumberInput
           w="80%"
           id={props.id}
-          onChange={(e) => updateText(Number(e))}
+          onChange={(e) => setNumber(Number(e))}
         >
           <NumberInputField
-            placeholder={props.data.placeholder || "Enter numbers here..."}
+            placeholder="Enter some numbers..."
 
             h="3rem"
             fontSize="1.2rem"
@@ -79,7 +69,7 @@ const IntegerInputNode: FC<NodeProps<InputNodeType>> = (props) => {
           </NumberInputStepper>
         </NumberInput>
 
-        <CustomHandle pos={Position.Right} type="source" onConnect={(e: any) => CustomHandleConnect(e)} />
+        <CustomHandle pos={Position.Right} type="source" onConnect={onConnect} />
       </BaseNode>
     </div>
   );
