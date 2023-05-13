@@ -52,7 +52,7 @@ const GetUserTokens: FC<NodeProps> = (props) => {
 
     const run = async () => {
       try {
-        const connection = new Connection(selectedNetwork || "https://solana-mainnet.g.alchemy.com/v2/y_Ma7k-IrBxN7wjb6wWF0Mx7EJ_HQ0O_")
+        const connection = new Connection(selectedNetwork)
         console.log(1)
         const filters: GetProgramAccountsFilter[] = [
           {
@@ -84,7 +84,7 @@ const GetUserTokens: FC<NodeProps> = (props) => {
 
           })
         });
-
+        setError('')
         setTokens(finalData)
       } catch (e: any) {
         setError(e.toString())
@@ -100,7 +100,7 @@ const GetUserTokens: FC<NodeProps> = (props) => {
       {tokens && tokens.length ?
         <>
           {tokens.map((token, index) => (
-            <Flex bg="bg.100" opacity="70%" border="1px solid" mx="4rem" w="100%" key={token.mint} p="0 1rem" justify="space-between" gap="1rem" align="center">
+            <Flex bg="bg.100" opacity="70%" borderBottom="1px solid" mx="4rem" w="100%" key={token.mint} p="0 1rem" justify="space-between" gap="1rem" align="center">
               <Flex flexFlow="column" gap="1rem" padding="1rem 0" >
                 <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap" >Mint: {truncatedPublicKey(token.mint)}</Text>
                 <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Token Account: {truncatedPublicKey(token.tokenAccount, 5)}</Text>
@@ -111,7 +111,7 @@ const GetUserTokens: FC<NodeProps> = (props) => {
                 pos="right"
                 type="source"
                 id={"address" + token.mint}
-                style={{ top: `${5 + 9 * index - 1.2}` + "rem" }}
+                style={{ top: `${5 + 8.55 * index + 2}` + "rem" }}
                 label="Mint"
                 onConnect={(e: any) => {
                   onConnect(e, token.mint);
@@ -122,7 +122,7 @@ const GetUserTokens: FC<NodeProps> = (props) => {
         </>
         :
         <Text color="blue.300" opacity="50%" fontSize="1.5rem">{error || 'Empty...'}</Text>}
-        
+
       {error ?
         <Text fontSize="1.5rem" transform="translate(0, 3rem)" zIndex="3" color="blue.400" fontWeight={600}>{error.toLocaleString()}</Text> : null}
 

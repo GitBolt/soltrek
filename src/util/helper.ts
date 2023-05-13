@@ -94,6 +94,8 @@ export const getNetworkName = (rpc_url: string) => {
     return "Testnet";
   } else if (lowerCaseInput.includes("http://127")) {
     return "Localnet";
+  } else {
+    return "Custom RPC"
   }
 }
 
