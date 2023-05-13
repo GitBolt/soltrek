@@ -31,6 +31,7 @@ import FileInputNode from "./Input/FileInput";
 import GetSOLBalance from "./Explorer/GetSOLBalance";
 import NFTInfoInput from "./SDKs/CandyMachine/NFTInfoInput";
 import DeleteCandyMachine from "./SDKs/CandyMachine/DeleteCandyMachine";
+import GetUserTokens from "./Explorer/GetUserTokenAccounts";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -65,5 +66,6 @@ export const nodeTypes = {
   fileInput: FileInputNode,
   getSOLBalance: GetSOLBalance,
   nftInfoInput: NFTInfoInput,
+  getUserTokens: GetUserTokens,
   deleteCandyMachine: DeleteCandyMachine,
 };

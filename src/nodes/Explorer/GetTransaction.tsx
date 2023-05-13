@@ -5,9 +5,12 @@ import { Box, Text, useClipboard } from '@chakra-ui/react';
 import { CustomHandle } from '@/layouts/CustomHandle';
 import { CheckIcon, CopyIcon } from '@chakra-ui/icons';
 import { handleValue } from '@/util/handleNodeValue';
+import { Connection, TransactionResponse } from '@solana/web3.js';
+import { useNetworkContext } from '@/context/configContext';
+import { stringify } from '@/util/helper';
 
 const GetTransactionNode: FC<NodeProps> = (props) => {
-  const [txDetails, setTxDetails] = useState<string | undefined>(undefined);
+  const [txDetails, setTxDetails] = useState<any | undefined>(undefined);
   const [error, setError] = useState<string>('');
   const { getNode, getEdges } = useReactFlow()
   const nodeId = useNodeId()
@@ -15,25 +18,20 @@ const GetTransactionNode: FC<NodeProps> = (props) => {
   const { hasCopied, setValue, onCopy } = useClipboard(txDetails || '')
   const currentNode = getNode(nodeId as string)
 
-
+  const { selectedNetwork } = useNetworkContext()
   useEffect(() => {
     const edges = getEdges()
     const values = handleValue(currentNode, edges, ["txId"])
     if (!values["txId"]) return
-    fetch(`https://api.solana.fm/v0/transactions/${values['txId']}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data) {
-          setTxDetails(undefined)
-          setError("Token not supported")
-        } else {
-          setTxDetails(JSON.stringify(data, null, 2));
-          setValue(JSON.stringify(data, null, 2));
-        }
+
+    const connection = new Connection(selectedNetwork)
+
+    connection.getParsedTransaction(values["txId"])
+      .then((res) => {
+        console.log(res)
+        if (!res) return
+        setTxDetails(stringify(res))
       })
-      .catch((error) => {
-        console.error(error);
-      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data])
 

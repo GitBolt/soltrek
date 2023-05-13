@@ -155,6 +155,10 @@ export const sidebarContent: SidebarContentType[] = [
         title: "Get SOL Balance",
         type: "getSOLBalance",
       },
+      {
+        title: "Get User Tokens",
+        type: "getUserTokens",
+      },
     ],
   },
   {

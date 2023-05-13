@@ -20,6 +20,7 @@ export const Wallet: FC<Props> = ({ children }: Props) => {
 
   const wallets = useMemo(
     () => [
+
     ],
     [network]
   );
