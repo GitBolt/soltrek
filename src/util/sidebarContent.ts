@@ -63,16 +63,16 @@ export const sidebarContent: SidebarContentType[] = [
       },
     ],
   },
-  {
-    title: "Math",
-    icon: "/icons/Math.svg",
-    items: [
-      {
-        title: "Add",
-        type: "add",
-      },
-    ],
-  },
+  // {
+  //   title: "Math",
+  //   icon: "/icons/Math.svg",
+  //   items: [
+  //     {
+  //       title: "Add",
+  //       type: "add",
+  //     },
+  //   ],
+  // },
   {
     title: "SDKs",
     icon: "/icons/SDK.svg",
@@ -200,6 +200,20 @@ export const sidebarContent: SidebarContentType[] = [
       {
         title: "Solana Pay",
         type: "solanaPay",
+      },
+    ],
+  },
+  {
+    title: "Utility",
+    icon: "/icons/Util.svg",
+    items: [
+      {
+        title: "Get Price",
+        type: "getPrice",
+      },
+      {
+        title: "Create NFT Metdata",
+        type: "createNftMetadata",
       },
     ],
   },

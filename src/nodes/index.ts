@@ -1,6 +1,6 @@
 import KeypairNode from "./Crypto/Keypair";
 import GetTokenDetailsNode from "./Explorer/GetTokenDetails";
-import GetPriceNode from "./Functions/GetPrice";
+import GetPriceNode from "./Util/GetPrice";
 import ButtonInputNode from "./Input/ButtonInput";
 import IntegerInputNode from "./Input/IntegerInput";
 import StringInputNode from "./Input/StringInput";
@@ -35,6 +35,7 @@ import GetUserTokens from "./Explorer/GetUserTokenAccounts";
 import InsertNFT from "./SDKs/CandyMachine/InsertNFT";
 import MintNFT from "./SDKs/CandyMachine/MintNFT";
 import FetchNFTs from "./SDKs/CandyMachine/FetchNFTs";
+import CreateNFTMetadata from "./Util/CreateNFTMetadata";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -73,5 +74,6 @@ export const nodeTypes = {
   getUserTokens: GetUserTokens,
   fetchNFTs: FetchNFTs,
   mintNFT: MintNFT,
+  createNftMetadata: CreateNFTMetadata,
   deleteCandyMachine: DeleteCandyMachine,
 };
