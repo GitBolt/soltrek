@@ -61,7 +61,6 @@ const GetCandyMachine: FC<NodeProps> = (props) => {
       "address",
     ]);
     if (!values["address"]) return;
-    console.log(1)
     fetchCandyMachine(umi, publicKey(values["address"]))
       .then((res) => {
         setData(stringify(

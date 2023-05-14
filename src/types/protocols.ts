@@ -1,4 +1,5 @@
 import { MarketStatusEnum } from "@hxronetwork/parimutuelsdk";
+import { BigNumber } from "@metaplex-foundation/js";
 
 export namespace MonacoTypes {
   export type MonacoBet = {
@@ -31,4 +32,29 @@ export namespace HXROTypes {
     locked: { price: number };
     settled: { price: number };
   };
+}
+
+export namespace CandyMachineTypes {
+  export type ConfigBuilder = {
+    sellerFeeBasisPoints: number,
+    symbol: string,
+    collectionName: string,
+    maxEditionSupply: BigNumber,
+    isMutable: boolean,
+    itemsAvailable: BigNumber,
+    creators: [
+      {
+        address: string, share: number
+      },
+    ],
+    itemSettings: {
+      type: string,
+      prefixName: string,
+      nameLength: number,
+      prefixUri: string,
+      uriLength: number,
+      isSequential: boolean,
+    }
+
+  }
 }

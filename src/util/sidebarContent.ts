@@ -130,6 +130,10 @@ export const sidebarContent: SidebarContentType[] = [
             title: "NFT Info Input",
             type: "nftInfoInput",
           },
+          {
+            title: "Insert NFT",
+            type: "insertNft",
+          },
         ]
       },
 
