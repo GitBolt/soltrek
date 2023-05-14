@@ -46,7 +46,7 @@ export namespace CandyMachine {
         },
 
       }, { commitment: "finalized" });
-      
+
       console.log("CandyMachine Created: ", candyMachine)
       return { error: false, cm: candyMachine, collection: collectionNft }
     }
@@ -55,6 +55,41 @@ export namespace CandyMachine {
       return { error: e.toString(), cm: undefined, collection: undefined }
     }
   }
+
+  export const getCandyMachine = async (network: string, cmAddress: PublicKey) => {
+    const connection = new Connection(network);
+    const metaplex = new Metaplex(connection);
+
+    try {
+      const res = await metaplex.candyMachines().findByAddress({
+        address: cmAddress,
+      });
+      return {
+        error: false, data: {
+          address: res.address,
+          authorityAddress: res.authorityAddress,
+          collectionMintAddress: res.collectionMintAddress,
+          symbol: res.symbol,
+          sellerFeeBasisPoints: res.sellerFeeBasisPoints,
+          creators: res.creators,
+          candyGuard: res.candyGuard,
+
+          isFullyLoaded: res.isFullyLoaded,
+          isMutable: res.isMutable,
+          itemsAvailable: res.itemsAvailable,
+          itemsLoaded: res.itemsLoaded,
+          itemsMinted: res.itemsMinted,
+          maxEditionSupply: res.maxEditionSupply,
+          itemSettings: res.itemSettings
+        }
+      }
+    }
+    catch (e: any) {
+      console.log("Error getting CM: ", e.toString())
+      return { error: e.toString(), res: '' }
+    }
+  }
+
 
   export const deleteCandyMachine = async (network: string, authority_pk: Uint8Array, cmAddress: PublicKey, guardAddress: PublicKey) => {
     const connection = new Connection(network);
@@ -95,6 +130,31 @@ export namespace CandyMachine {
       });
 
       return { error: false, res: res.response.signature }
+    }
+    catch (e: any) {
+      console.log("Error deleting CM: ", e.toString())
+      return { error: e.toString(), res: '' }
+    }
+  }
+
+
+  export const mintNFT = async (network: string, authority_pk: Uint8Array, cmAddress: PublicKey) => {
+    const connection = new Connection(network);
+    const metaplex = new Metaplex(connection);
+    const kp = Keypair.fromSecretKey(authority_pk)
+    metaplex.use(keypairIdentity(kp))
+
+    try {
+      const candyMachine = await metaplex.candyMachines().findByAddress({
+        address: new PublicKey(cmAddress)
+      })
+
+      const res = await metaplex.candyMachines().mint({
+        candyMachine,
+        collectionUpdateAuthority: kp.publicKey,
+      })
+
+      return { error: false, res: res }
     }
     catch (e: any) {
       console.log("Error deleting CM: ", e.toString())

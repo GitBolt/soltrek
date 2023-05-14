@@ -8,7 +8,7 @@ import base58 from "bs58";
 import { useNetworkContext } from "@/context/configContext";
 import { CandyMachine } from "@/sdks/candyMachine";
 
-const InsertNFT: FC<NodeProps> = (props) => {
+const MintNFT: FC<NodeProps> = (props) => {
   const { getNode, getEdges, setNodes, setEdges } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
@@ -49,7 +49,6 @@ const InsertNFT: FC<NodeProps> = (props) => {
   useEffect(() => {
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
-      "config",
       "pk",
       "cmAddress"
     ]);
@@ -60,8 +59,8 @@ const InsertNFT: FC<NodeProps> = (props) => {
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
 
-    if (!values["config"] || !values["pk"] || !values["cmAddress"] || !shouldRun) return;
-    const configs = values["config"]
+    console.log(values)
+    if (!values["pk"] || !values["cmAddress"] || !shouldRun) return;
 
     let privKey = values["pk"]
     let cmAddress = values["cmAddress"]
@@ -76,24 +75,20 @@ const InsertNFT: FC<NodeProps> = (props) => {
         console.log("Keypair Error: ", e)
       }
     }
+    console.log(3)
     setLoading(true)
     setError('')
     const run = async () => {
-      const res = await CandyMachine.insertNFT(
+      const res = await CandyMachine.mintNFT(
         selectedNetwork,
         parsed,
         cmAddress,
-        configs.name,
-        configs.uri,
       )
-
       console.log(res)
       if (res.error) {
         setError(res.error)
         return
       }
-
-      // setAddress(cm!.address.toBase58())
     }
 
     run().then(() => setLoading(false))
@@ -132,8 +127,8 @@ const InsertNFT: FC<NodeProps> = (props) => {
         pos="left"
         type="target"
         style={{ marginTop: "-1rem" }}
-        id="config"
-        label="NFT Config"
+        id="cmAddress"
+        label="Candy Machine Address"
       />
 
       <CustomHandle
@@ -141,21 +136,15 @@ const InsertNFT: FC<NodeProps> = (props) => {
         type="target"
         style={{ marginTop: "3rem" }}
         id="pk"
-        label="Authority (Private Key)"
+        label="Private Key"
       />
 
 
-      <CustomHandle
-        pos="left"
-        type="target"
-        style={{ marginTop: "7rem" }}
-        id="cmAddress"
-        label="Candy Machine Address"
-      />
+
     </BaseNode>
   );
 };
 
-export default InsertNFT;
+export default MintNFT;
 
 

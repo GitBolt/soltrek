@@ -40,7 +40,6 @@ const IntegerInputNode: FC<NodeProps> = (props) => {
 
   // Pushing new data to all input nodes connected
   useEffect(() => {
-    console.log("Target Nodes: ", targetNodes)
     if (!targetNodes) return
     updateNodeData(targetNodes)
     // eslint-disable-next-line react-hooks/exhaustive-deps

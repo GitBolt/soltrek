@@ -88,7 +88,6 @@ export const Navbar = ({
 
 
   const handlePlaygroundSave = async () => {
-    console.log("SUIIIIII", currentPlayground)
     if (!user) {
       toast({
         status: "error",
@@ -143,7 +142,6 @@ export const Navbar = ({
     }
 
     if (response.ok) {
-      console.log("Res okay")
       const data = await response.json()
       setCurrentPlayground(data)
       toast({

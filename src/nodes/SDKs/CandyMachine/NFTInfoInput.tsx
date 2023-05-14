@@ -56,7 +56,7 @@ const NFTInfoInput: FC<NodeProps<InputNodeType>> = (props) => {
 
         <Flex flexFlow="column" gap="1.5rem" mt="3rem">
           <Box>
-            <Text color="blue.100" fontSize="1.2rem">Name</Text>
+            <Text color="blue.100" fontSize="1.1rem">Name (Ideally enter the NFT number)</Text>
             <Input
               variant="node"
               value={config.name}
@@ -68,7 +68,7 @@ const NFTInfoInput: FC<NodeProps<InputNodeType>> = (props) => {
 
           <Box>
 
-            <Text color="blue.100" fontSize="1.2rem">Metadata URI</Text>
+            <Text color="blue.100" fontSize="1.1rem">Metadata URI (Excluding prefix)</Text>
             <Input
               variant="node"
               value={config.uri}

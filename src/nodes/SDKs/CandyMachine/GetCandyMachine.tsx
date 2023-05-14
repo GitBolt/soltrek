@@ -18,6 +18,7 @@ import { PublicKey } from "@solana/web3.js";
 import { publicKey } from "@metaplex-foundation/umi";
 import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
 import { stringify } from "@/util/helper";
+import { CandyMachine } from "@/sdks/candyMachine";
 
 
 const GetCandyMachine: FC<NodeProps> = (props) => {
@@ -61,33 +62,12 @@ const GetCandyMachine: FC<NodeProps> = (props) => {
       "address",
     ]);
     if (!values["address"]) return;
-    fetchCandyMachine(umi, publicKey(values["address"]))
+
+    CandyMachine.getCandyMachine(selectedNetwork, new PublicKey(values["address"]))
       .then((res) => {
-        setData(stringify(
-          {
-            authority: new PublicKey(new Uint8Array(res.authority.bytes)).toBase58(),
-            collectionMint: new PublicKey(new Uint8Array(res.collectionMint.bytes)).toBase58(),
-            data: {
-              configLineSettings: res.data.configLineSettings,
-              creators: res.data.creators.map((creator) => {
-                return ({
-                  address: new PublicKey(new Uint8Array(creator.address.bytes)).toBase58(),
-                  percentageShare: creator.percentageShare,
-                  verified: creator.verified,
-                })
-              })
-            },
-            discriminator: new PublicKey(new Uint8Array(res.discriminator)).toBase58(),
-            items: res.items,
-            itemsLoaded: res.itemsLoaded,
-            itemsRedeemed: res.itemsRedeemed,
-            mintAuthority: new PublicKey(new Uint8Array(res.authority.bytes)).toBase58(),
-            publicKey: new PublicKey(new Uint8Array(res.publicKey.bytes)).toBase58(),
-            tokenStandard: res.tokenStandard,
-            version: res.version,
-          })); console.log(res)
+        if (!res.error)
+          setData(stringify(res.data))
       })
-      .catch((e) => setError(e.toString()))
 
     setEdges((edgs) =>
       edgs.map((ed) => {
@@ -103,7 +83,8 @@ const GetCandyMachine: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
 
-  const CODE = `fetchCandyMachine(umi, publicKey(address)).then((res) => console.log(res))`;
+  const cleanedCode = CandyMachine.getCandyMachine.toString().replace(/_.*?(\.|import)/g, '');
+  const CODE = `export const getCandyMachine = ${cleanedCode}`;
 
   return (
     <BaseNode

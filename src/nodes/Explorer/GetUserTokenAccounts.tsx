@@ -53,7 +53,6 @@ const GetUserTokens: FC<NodeProps> = (props) => {
     const run = async () => {
       try {
         const connection = new Connection(selectedNetwork)
-        console.log(1)
         const filters: GetProgramAccountsFilter[] = [
           {
             dataSize: 165,    //size of account (bytes)
@@ -65,13 +64,11 @@ const GetUserTokens: FC<NodeProps> = (props) => {
             },
           }];
 
-        console.log(2)
         const accounts = await connection.getParsedProgramAccounts(
           TOKEN_PROGRAM_ID, //new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
           { filters: filters }
         );
         let finalData: any[] = []
-        console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
         accounts.forEach((account, i) => {
           const parsedAccountInfo: any = account.account.data;
           const mintAddress: string = parsedAccountInfo["parsed"]["info"]["mint"];

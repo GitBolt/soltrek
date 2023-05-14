@@ -28,7 +28,6 @@ const GetTransactionNode: FC<NodeProps> = (props) => {
 
     connection.getParsedTransaction(values["txId"])
       .then((res) => {
-        console.log(res)
         if (!res) return
         setTxDetails(stringify(res))
       })
