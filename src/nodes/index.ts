@@ -34,6 +34,7 @@ import DeleteCandyMachine from "./SDKs/CandyMachine/DeleteCandyMachine";
 import GetUserTokens from "./Explorer/GetUserTokenAccounts";
 import InsertNFT from "./SDKs/CandyMachine/InsertNFT";
 import MintNFT from "./SDKs/CandyMachine/MintNFT";
+import FetchNFTs from "./SDKs/CandyMachine/FetchNFTs";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -70,6 +71,7 @@ export const nodeTypes = {
   nftInfoInput: NFTInfoInput,
   insertNft: InsertNFT,
   getUserTokens: GetUserTokens,
+  fetchNFTs: FetchNFTs,
   mintNFT: MintNFT,
   deleteCandyMachine: DeleteCandyMachine,
 };

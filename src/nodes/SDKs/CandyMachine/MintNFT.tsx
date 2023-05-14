@@ -97,15 +97,15 @@ const MintNFT: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
 
-  const cleanedCode = CandyMachine.createCandyMachine.toString().replace(/_.*?(\.|import)/g, '');
-  const CODE = `export const createCandyMachine = ${cleanedCode}`;
+  const cleanedCode = CandyMachine.mintNFT.toString().replace(/_.*?(\.|import)/g, '');
+  const CODE = `export const mintNFT = ${cleanedCode}`;
 
   return (
     <BaseNode
       code={CODE}
       {...props}
       height="20rem"
-      title="Candy Machine - Insert NFT"
+      title="Candy Machine - Mint NFT"
 
     >
 
@@ -126,7 +126,7 @@ const MintNFT: FC<NodeProps> = (props) => {
       <CustomHandle
         pos="left"
         type="target"
-        style={{ marginTop: "-1rem" }}
+        style={{ marginTop: "-2rem" }}
         id="cmAddress"
         label="Candy Machine Address"
       />

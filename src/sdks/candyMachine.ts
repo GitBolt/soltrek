@@ -132,7 +132,7 @@ export namespace CandyMachine {
       return { error: false, res: res.response.signature }
     }
     catch (e: any) {
-      console.log("Error deleting CM: ", e.toString())
+      console.log("Error inserting nft: ", e.toString())
       return { error: e.toString(), res: '' }
     }
   }
@@ -157,7 +157,49 @@ export namespace CandyMachine {
       return { error: false, res: res }
     }
     catch (e: any) {
-      console.log("Error deleting CM: ", e.toString())
+      console.log("Error minting nft: ", e.toString())
+      return { error: e.toString(), res: '' }
+    }
+  }
+
+  export const fetchNFTs = async (network: string, address: PublicKey) => {
+    const connection = new Connection(network);
+    const metaplex = new Metaplex(connection);
+
+    try {
+      const res = await metaplex.nfts().findAllByOwner({
+        owner: new PublicKey(address)
+      })
+      const data: any[] = []
+      console.log(res)
+
+      for await (const nft of res) {
+        let nftInfo: any
+        try {
+          nftInfo = await fetch(nft.uri)
+        } catch (e) {
+          nftInfo = { ok: false }
+        }
+
+        if (nftInfo.ok) {
+          console.log(nft)
+          const nftData = await nftInfo.json()
+          data.push({
+            name: nftData.name,
+            symbol: nftData.symbol,
+            description: nftData.description,
+            image: nftData.image
+          })
+        };
+      }
+
+      console.log("data", data)
+      return {
+        error: false, res: data
+      }
+    }
+    catch (e: any) {
+      console.log("Error fetching nfts: ", e.toString())
       return { error: e.toString(), res: '' }
     }
   }
