@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import BaseNode from '@/layouts/BaseNode';
 import { Position, NodeProps, Connection, useReactFlow, useNodeId } from 'reactflow';
-import { Box, Button, Checkbox, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Checkbox, Divider, Flex, Input, Text } from '@chakra-ui/react';
 import { CustomHandle } from '@/layouts/CustomHandle';
 import { toBigNumber } from '@metaplex-foundation/js';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -24,7 +24,7 @@ const CreateNFTMetadata: FC<NodeProps<InputNodeType>> = (props) => {
 			{ trait_type: "Color", value: "Magenta" },
 		]
 	})
-	const [uri, setUri] = useState<string>('')
+	const [output, setOutput] = useState('')
 
 	const [targetNodeIds, setTargetNodeIds] = useState<string[]>([])
 	const { setNodes, getNode, setEdges } = useReactFlow()
@@ -39,7 +39,7 @@ const CreateNFTMetadata: FC<NodeProps<InputNodeType>> = (props) => {
 				if (node.id === nodeId) {
 					node.data = {
 						...node.data,
-						[id as string]: uri,
+						[id as string]: output,
 					};
 				}
 				return node;
@@ -53,11 +53,13 @@ const CreateNFTMetadata: FC<NodeProps<InputNodeType>> = (props) => {
 	};
 
 	useEffect(() => {
+		console.log("Change")
 		const dataKeys: string[] = Object.keys(currentNode?.data || {});
 
 		const run = dataKeys.find(
 			(key) => key.startsWith("btn") && currentNode?.data[key] == true
 		);
+
 		if (run) {
 			setEdges((edgs) =>
 				edgs.map((ed) => {
@@ -70,7 +72,7 @@ const CreateNFTMetadata: FC<NodeProps<InputNodeType>> = (props) => {
 			);
 			uploadJson(JSON.stringify(metadata)).then((res) => {
 				console.log(res)
-				setUri(res!)
+				setOutput(res!)
 			}).then(() => setEdges((edgs) =>
 				edgs.map((ed) => {
 					if (ed.source == id) {
@@ -90,34 +92,39 @@ const CreateNFTMetadata: FC<NodeProps<InputNodeType>> = (props) => {
 		if (!targetNodeIds) return
 		targetNodeIds.forEach((target) => updateNodeData(target))
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [uri])
+	}, [output])
 
 
 	return (
 		<div>
-			<BaseNode {...props} title="Candy Machine Configurations" height="20rem">
+			<BaseNode {...props} title="Create NFT Metadata" height="20rem" width="10rem">
 
-				<Flex flexFlow="column" gap="1.5rem" mt="3rem" mx="6rem">
-					<Box>
-						<Text color="blue.100" fontSize="1.1rem">Name</Text>
-						<Input
-							variant="node"
-							value={metadata.name}
-							placeholder={props.data.placeholder || "Enter name"}
-							id={props.id}
-							onChange={(e) => setMetadata({ ...metadata, name: e.target.value })}
-						/>
-					</Box>
+				<Flex flexFlow="column" gap="1.5rem" mt="2rem" mx="2rem">
 
-					<Box>
-						<Text color="blue.100" fontSize="1.1rem">Symbol</Text>
-						<Input
-							variant="node"
-							value={metadata.symbol}
-							placeholder={props.data.placeholder || "Enter symbol"}
-							id={props.id}
-							onChange={(e) => setMetadata({ ...metadata, symbol: e.target.value })}
-						/>
+					<Box style={{ whiteSpace: "nowrap", width: "20rem" }}>
+						<Box style={{ display: 'inline-block', width: "11rem", marginRight: "1rem" }}
+						>
+							<Text color="blue.100" fontSize="1.1rem">Name</Text>
+							<Input
+								variant="node"
+								value={metadata.name}
+								placeholder={props.data.placeholder || "Enter name"}
+								id={props.id}
+								onChange={(e) => setMetadata({ ...metadata, name: e.target.value })}
+							/>
+						</Box>
+
+						<Box style={{ display: 'inline-block', width: "7rem" }}
+						>
+							<Text color="blue.100" fontSize="1.1rem">Symbol</Text>
+							<Input
+								variant="node"
+								value={metadata.symbol}
+								placeholder={props.data.placeholder || "Enter symbol"}
+								id={props.id}
+								onChange={(e) => setMetadata({ ...metadata, symbol: e.target.value })}
+							/>
+						</Box>
 					</Box>
 
 					<Box>
@@ -131,6 +138,7 @@ const CreateNFTMetadata: FC<NodeProps<InputNodeType>> = (props) => {
 						/>
 					</Box>
 
+					<Divider />
 					<Box>
 						<Text color="blue.100" fontSize="1.1rem">Image URI</Text>
 						<Input
@@ -144,11 +152,13 @@ const CreateNFTMetadata: FC<NodeProps<InputNodeType>> = (props) => {
 
 					<Flex flexFlow="column" gap="1rem" mb="2rem">
 						<Text color="blue.100" fontSize="1.1rem">Add properties</Text>
-						<Button w="20%" fontSize="1.2rem" h="2rem" variant="magenta" onClick={() => setMetadata({ ...metadata, attributes: [...metadata.attributes, { trait_type: '', value: '' }] })}>Add</Button>
+						<Button w="30%" fontSize="1.2rem" h="2rem" variant="magenta" onClick={() => setMetadata({ ...metadata, attributes: [...metadata.attributes, { trait_type: '', value: '' }] })}>Add</Button>
 						{metadata.attributes && metadata.attributes.length && metadata.attributes.map((attribute, index) => (
-							<Flex key={index} gap="1rem" align="center">
+							<div key={index} style={{ whiteSpace: 'nowrap', width: "20rem" }}>
 								<Input
 									variant="node"
+									w="9rem"
+									mr="1rem"
 									value={attribute.trait_type}
 									placeholder={props.data.placeholder || "Enter trait type"}
 									id={props.id}
@@ -160,10 +170,13 @@ const CreateNFTMetadata: FC<NodeProps<InputNodeType>> = (props) => {
 										};
 										setMetadata({ ...metadata, attributes: newAttributes });
 									}}
-
+									style={{ display: 'inline-block' }}
 								/>
 								<Input
+									w="9rem"
 									variant="node"
+									mr="1rem"
+
 									value={attribute.value}
 									placeholder={props.data.placeholder || "Enter trait value"}
 									id={props.id}
@@ -175,22 +188,27 @@ const CreateNFTMetadata: FC<NodeProps<InputNodeType>> = (props) => {
 										};
 										setMetadata({ ...metadata, attributes: newAttributes });
 									}}
-
+									style={{ display: 'inline-block' }}
 								/>
 
 								<DeleteIcon
-
-									color="magenta.100" w="1.2rem" h="1.2rem" onClick={() => {
+									color="magenta.100"
+									w="1.2rem"
+									h="1.2rem"
+									onClick={() => {
 										const newAttributes = metadata.attributes.filter((_, i) => i !== index)
 										setMetadata({ ...metadata, attributes: newAttributes })
-									}} />
-							</Flex>
+									}}
+									style={{ display: 'inline-block' }}
+								/>
+
+							</div>
 						))}
 					</Flex>
 
 				</Flex>
-				<CustomHandle pos={Position.Left} type="target" label="Upload" id="run" />
-				<CustomHandle pos={Position.Right} type="source" label="Metadata" id="uri" onConnect={(e: any) => onConnect(e)} />
+				<CustomHandle pos={Position.Left} style={{ marginTop: "-3rem" }} type="target" label="Upload" id="run" />
+				<CustomHandle pos={Position.Right} style={{ marginTop: "-3rem" }} type="source" label="Metadata" id="uri" onConnect={(e: any) => onConnect(e)} />
 			</BaseNode>
 		</div>
 	);

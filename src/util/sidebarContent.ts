@@ -127,10 +127,6 @@ export const sidebarContent: SidebarContentType[] = [
             type: "candyMachineInput",
           },
           {
-            title: "NFT Info Input",
-            type: "nftInfoInput",
-          },
-          {
             title: "Insert NFT",
             type: "insertNft",
           },
@@ -212,7 +208,7 @@ export const sidebarContent: SidebarContentType[] = [
         type: "getPrice",
       },
       {
-        title: "Create NFT Metdata",
+        title: "Create NFT Metadata",
         type: "createNftMetadata",
       },
     ],

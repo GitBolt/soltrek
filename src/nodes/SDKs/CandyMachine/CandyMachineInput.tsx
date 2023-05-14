@@ -17,6 +17,7 @@ const CandyMachineInput: FC<NodeProps<InputNodeType>> = (props) => {
   const { publicKey } = useWallet()
   const [config, setConfig] = useState<CandyMachineTypes.ConfigBuilder>({
     sellerFeeBasisPoints: 2.5,
+    collectionMetadata: "",
     symbol: "TREK",
     collectionName: "SOL TREK",
     maxEditionSupply: toBigNumber(0),
@@ -73,10 +74,9 @@ const CandyMachineInput: FC<NodeProps<InputNodeType>> = (props) => {
 
   return (
     <div>
-      <BaseNode {...props} title="Candy Machine Configurations" height="70rem">
+      <BaseNode {...props} title="Candy Machine Configurations" height="75rem">
 
-        <Flex flexFlow="column" gap="1.5rem" mt="3rem">
-
+        <Flex flexFlow="column" gap="1.5rem" mt="1rem">
 
           <Box>
             <Text color="blue.100" fontSize="1.2rem">Collection Name</Text>
@@ -89,6 +89,16 @@ const CandyMachineInput: FC<NodeProps<InputNodeType>> = (props) => {
             />
           </Box>
 
+          <Box>
+            <Text color="blue.100" fontSize="1.2rem">Collection Metadata URI</Text>
+            <Input
+              variant="node"
+              value={config.collectionMetadata}
+              placeholder={props.data.placeholder || "Enter metadata uri"}
+              id={props.id}
+              onChange={(e) => setConfig({ ...config, collectionMetadata: e.target.value })}
+            />
+          </Box>
 
           <Divider />
           <Text color="gray.300" mt="-1rem" fontSize="1.2rem">Shared Settings</Text>

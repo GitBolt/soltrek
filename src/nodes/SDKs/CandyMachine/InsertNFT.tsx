@@ -3,53 +3,28 @@ import { NodeProps, useNodeId, useReactFlow, Connection as RCon } from "reactflo
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
-import { Spinner, Text } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import base58 from "bs58";
 import { useNetworkContext } from "@/context/configContext";
 import { CandyMachine } from "@/sdks/candyMachine";
+import { CheckIcon } from "@chakra-ui/icons";
 
 const InsertNFT: FC<NodeProps> = (props) => {
-  const { getNode, getEdges, setNodes, setEdges } = useReactFlow();
+  const { getNode, getEdges } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
   const { selectedNetwork } = useNetworkContext()
 
-  const [address, setAddress] = useState<any>();
+  const [success, setSuccess] = useState<string>('NFT 1');
   const [error, setError] = useState<any>('');
-  const [targetNodes, setTargetNodes] = useState<string[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-
-
-  // Update target nodes (accepting input) data with 100ms delay (required to work properly)
-  const updateNodeData = (nodeIds: string[], data: any) => {
-    setTimeout(() => {
-      setNodes(nodes => nodes.map(node =>
-        nodeIds.includes(node.id)
-          ? { ...node, data: { ...node.data, [id as string]: data } }
-          : node
-      ));
-    }, 100);
-  };
-
-
-  const onConnect = (e: RCon) => {
-    if (!e.target) return
-    setTargetNodes([...targetNodes, e.target])
-    updateNodeData([e.target], address)
-  };
-
-
-  useEffect(() => {
-    if (!targetNodes) return
-    updateNodeData(targetNodes, address)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
 
 
   useEffect(() => {
     const edges = getEdges();
     const values = handleValue(currentNode, edges, [
-      "config",
+      "name",
+      "uri",
       "pk",
       "cmAddress"
     ]);
@@ -60,8 +35,9 @@ const InsertNFT: FC<NodeProps> = (props) => {
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
 
-    if (!values["config"] || !values["pk"] || !values["cmAddress"] || !shouldRun) return;
-    const configs = values["config"]
+    if (!values["uri"] || !values["name"] || !values["pk"] || !values["cmAddress"] || !shouldRun) return;
+    const uri = values["uri"]
+    const name = values["name"]
 
     let privKey = values["pk"]
     let cmAddress = values["cmAddress"]
@@ -78,13 +54,14 @@ const InsertNFT: FC<NodeProps> = (props) => {
     }
     setLoading(true)
     setError('')
+    setSuccess('')
     const run = async () => {
       const res = await CandyMachine.insertNFT(
         selectedNetwork,
         parsed,
         cmAddress,
-        configs.name,
-        configs.uri,
+        name,
+        uri,
       )
 
       console.log(res)
@@ -92,8 +69,7 @@ const InsertNFT: FC<NodeProps> = (props) => {
         setError(res.error)
         return
       }
-
-      // setAddress(cm!.address.toBase58())
+      setSuccess(name)
     }
 
     run().then(() => setLoading(false))
@@ -102,14 +78,14 @@ const InsertNFT: FC<NodeProps> = (props) => {
   }, [currentNode?.data]);
 
 
-  const cleanedCode = CandyMachine.createCandyMachine.toString().replace(/_.*?(\.|import)/g, '');
-  const CODE = `export const createCandyMachine = ${cleanedCode}`;
+  const cleanedCode = CandyMachine.insertNFT.toString().replace(/_.*?(\.|import)/g, '');
+  const CODE = `export const insertNFT = ${cleanedCode}`;
 
   return (
     <BaseNode
       code={CODE}
       {...props}
-      height="20rem"
+      height="30rem"
       title="Candy Machine - Insert NFT"
 
     >
@@ -119,10 +95,19 @@ const InsertNFT: FC<NodeProps> = (props) => {
       {error ?
         <Text fontSize="1.5rem" transform="translate(7rem, 3rem)" mr="10rem" zIndex="3" color="blue.400" maxW="30rem" fontWeight={600}>{error.toLocaleString()}</Text> : null}
 
+      {success && (
+        <Flex flexFlow="column" align="center" justify="center" mt="50%" transform="translate(2rem)">
+          <CheckIcon style={{ width: "3rem", height: "3rem" }} color="lime" />
+          <Text textAlign="center" fontSize="2rem" color="blue.100" maxW="90%">Inserted NFT {success}</Text>
+        </Flex>
+
+      )}
+
+
       <CustomHandle
         pos="left"
         type="target"
-        style={{ marginTop: "-5rem" }}
+        style={{ marginTop: "-8rem" }}
         id="run"
         label="Run"
       />
@@ -131,15 +116,24 @@ const InsertNFT: FC<NodeProps> = (props) => {
       <CustomHandle
         pos="left"
         type="target"
-        style={{ marginTop: "-1rem" }}
-        id="config"
-        label="NFT Config"
+        style={{ marginTop: "-3.5rem" }}
+        id="name"
+        label="NFT Name"
       />
 
       <CustomHandle
         pos="left"
         type="target"
-        style={{ marginTop: "3rem" }}
+        style={{ marginTop: "1rem" }}
+        id="uri"
+        label="NFT URI"
+      />
+
+
+      <CustomHandle
+        pos="left"
+        type="target"
+        style={{ marginTop: "5rem" }}
         id="pk"
         label="Authority (Private Key)"
       />
@@ -148,7 +142,7 @@ const InsertNFT: FC<NodeProps> = (props) => {
       <CustomHandle
         pos="left"
         type="target"
-        style={{ marginTop: "7rem" }}
+        style={{ marginTop: "9.5rem" }}
         id="cmAddress"
         label="Candy Machine Address"
       />

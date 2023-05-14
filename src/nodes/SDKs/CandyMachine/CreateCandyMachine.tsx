@@ -3,10 +3,11 @@ import { NodeProps, useNodeId, useReactFlow, Connection as RCon } from "reactflo
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
-import { Spinner, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 import base58 from "bs58";
 import { useNetworkContext } from "@/context/configContext";
 import { CandyMachine } from "@/sdks/candyMachine";
+import { CheckIcon } from "@chakra-ui/icons";
 
 const CreateCandyMachine: FC<NodeProps> = (props) => {
   const { getNode, getEdges, setNodes, setEdges } = useReactFlow();
@@ -77,6 +78,7 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
     }
 
     setLoading(true)
+    setError('')
     const run = async () => {
       const { error: createError, cm, collection } = await CandyMachine.createCandyMachine(
         selectedNetwork,
@@ -114,6 +116,12 @@ const CreateCandyMachine: FC<NodeProps> = (props) => {
       {error ?
         <Text fontSize="1.5rem" transform="translate(7rem, 3rem)" mr="10rem" zIndex="3" color="blue.400" maxW="30rem" fontWeight={600}>{error.toLocaleString()}</Text> : null}
 
+      {address && (
+        <Flex flexFlow="column" align="center" justify="center" mt="10%" transform="translate(1rem)">
+          <CheckIcon style={{ width: "3rem", height: "3rem" }} color="lime" />
+          <Text textAlign="center" fontSize="1.4rem" color="blue.100" maxW="90%">Created Candymachine</Text>
+        </Flex>
+      )}
       <CustomHandle
         pos="left"
         type="target"

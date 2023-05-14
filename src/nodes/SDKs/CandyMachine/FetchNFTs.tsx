@@ -32,6 +32,7 @@ const FetchNFTs: FC<NodeProps> = (props) => {
 
     setLoading(true)
     setError('')
+    setNFTs(undefined)
     const run = async () => {
       const res = await CandyMachine.fetchNFTs(
         selectedNetwork,
@@ -45,6 +46,7 @@ const FetchNFTs: FC<NodeProps> = (props) => {
       }
 
       setNFTs(res.res)
+      console.log(res.res)
     }
 
     run().then(() => setLoading(false))
@@ -60,7 +62,6 @@ const FetchNFTs: FC<NodeProps> = (props) => {
     <BaseNode
       code={CODE}
       {...props}
-      height="20rem"
       title="Candy Machine - Fetch NFTs"
 
     >
@@ -70,19 +71,18 @@ const FetchNFTs: FC<NodeProps> = (props) => {
       {error ?
         <Text fontSize="1.5rem" transform="translate(7rem, 3rem)" mr="10rem" zIndex="3" color="blue.400" maxW="30rem" fontWeight={600}>{error.toLocaleString()}</Text> : null}
 
-        {nfts && nfts.length && nfts.map((nft: any) => (
-          <Flex borderBottom="1px solid" borderColor="gray.200" p="1rem 0" key={nft.image} gap="1rem" mb="2rem" align="center" justify="center">
-            <Box w="4rem" h="4rem" borderRadius="1rem">
-              <img src={nft.image} alt="Nft Image" width="100%" height="100%" style={{objectFit:"cover", borderRadius:"1rem"}} />
-            </Box>
-            <Text fontSize="2rem" color="blue.200">{nft.name}</Text>
-            <Text fontSize="1.5rem" color="gray.300">{nft.symbol}</Text>
-          </Flex>
-        ))}
+      {nfts && nfts.length ? nfts.map((nft: any) => (
+        <Flex borderBottom="1px solid" borderColor="gray.200" p="1rem 0" key={nft.image} gap="1rem" mb="2rem" align="center" justify="center">
+          <Box w="4rem" h="4rem" borderRadius="1rem">
+            <img src={nft.image} alt="Nft Image" width="100%" height="100%" style={{ objectFit: "cover", borderRadius: "1rem" }} />
+          </Box>
+          <Text fontSize="2rem" color="blue.200">{nft.name}</Text>
+          <Text fontSize="1.5rem" color="gray.300">{nft.symbol}</Text>
+        </Flex>
+      )) : <Text color="blue.400" fontSize="2rem">Nothing found</Text>}
       <CustomHandle
         pos="left"
         type="target"
-        style={{ marginTop: "3rem" }}
         id="address"
         label="Address"
       />

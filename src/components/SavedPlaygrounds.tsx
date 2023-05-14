@@ -100,7 +100,7 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
                     align="start"
                     w="100%"
                     h="5rem">
-                    <Text fontSize="2rem" color="blue.100" fontWeight="500">{playground.name}</Text>
+                    <Text fontSize="1.6rem" color="blue.100" fontWeight="500" textOverflow="ellipsis">{playground.name}</Text>
                     <Flex justifyContent="space-between" w="100%">
                       <Text fontSize="1.2rem" color="blue.300" fontWeight="200">Created at {new Date(Date.parse(playground.createdAt)).toLocaleString()}</Text>
                       {playground.multiplayer && <Text fontSize="1.2rem" color="magenta.100" fontWeight="500">Multiplayer</Text>}

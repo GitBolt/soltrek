@@ -39,6 +39,7 @@ export namespace CandyMachineTypes {
     sellerFeeBasisPoints: number,
     symbol: string,
     collectionName: string,
+    collectionMetadata: string,
     maxEditionSupply: BigNumber,
     isMutable: boolean,
     itemsAvailable: BigNumber,

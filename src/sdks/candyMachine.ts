@@ -19,11 +19,11 @@ export namespace CandyMachine {
     const connection = new Connection(network);
     const metaplex = new Metaplex(connection);
     metaplex.use(keypairIdentity(Keypair.fromSecretKey(authority_pk)))
-
+    console.log("Candy Machine Configs: ", configs)
     try {
       const { nft: collectionNft } = await metaplex.nfts().create({
-        name: "My Collection NFT",
-        uri: "https://bafkreic6e7wwviz7acm37qwlgspfgq7jgoowt2iy7l3jspkwln3ra37w3e.ipfs.nftstorage.link/",
+        name: configs.collectionName,
+        uri: configs.collectionMetadata,
         sellerFeeBasisPoints: configs.sellerFeeBasisPoints * 100,
       }, { commitment: "finalized" });
 
