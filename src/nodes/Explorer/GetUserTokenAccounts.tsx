@@ -123,7 +123,7 @@ const GetUserTokens: FC<NodeProps> = (props) => {
       {error ?
         <Text fontSize="1.5rem" transform="translate(0, 3rem)" zIndex="3" color="blue.400" fontWeight={600}>{error.toLocaleString()}</Text> : null}
 
-      <CustomHandle pos="left" type="target" label="Address" id="pubKey" />
+      <CustomHandle pos="left" type="target" label="Address" id="pubKey" style={{ marginTop: "0.9rem" }} />
     </BaseNode >
   );
 

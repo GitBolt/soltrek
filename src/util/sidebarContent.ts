@@ -104,6 +104,25 @@ export const sidebarContent: SidebarContentType[] = [
           },
         ]
       },
+      {
+        title: "HXRO - Dexterity",
+        type: "hxroNetwork",
+        icon: "/logos/HXRO.svg",
+        sub: [
+          {
+            title: "Create TRG",
+            type: "dexCreateTRG"
+          },
+          {
+            title: "View TRG Account",
+            type: "dexViewTRG"
+          },
+          {
+            title: "Deposit Amount",
+            type: "dexDepositAmount"
+          },
+        ]
+      },
 
       {
         title: "CandyMachine",

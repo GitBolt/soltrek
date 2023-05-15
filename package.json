@@ -15,6 +15,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/inter": "^4.5.15",
+    "@hxronetwork/dexterity-ts": "^1.5.23",
     "@hxronetwork/parimutuelsdk": "^1.0.25",
     "@metaplex-foundation/js": "^0.18.3",
     "@metaplex-foundation/mpl-candy-machine": "^6.0.0-alpha.12",

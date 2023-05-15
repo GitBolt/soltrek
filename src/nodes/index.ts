@@ -35,6 +35,11 @@ import InsertNFT from "./SDKs/CandyMachine/InsertNFT";
 import MintNFT from "./SDKs/CandyMachine/MintNFT";
 import FetchNFTs from "./SDKs/CandyMachine/FetchNFTs";
 import CreateNFTMetadata from "./Util/CreateNFTMetadata";
+import HXROCreateTRG from "./SDKs/HXRODexterity/CreateTRG";
+import HXROViewTRG from "./SDKs/HXRODexterity/ViewTRGAccount";
+import DexViewTRG from "./SDKs/HXRODexterity/ViewTRGAccount";
+import DexCreateTRG from "./SDKs/HXRODexterity/CreateTRG";
+import DexDepositAmount from "./SDKs/HXRODexterity/DepositAmount";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -74,4 +79,7 @@ export const nodeTypes = {
   mintNFT: MintNFT,
   createNftMetadata: CreateNFTMetadata,
   deleteCandyMachine: DeleteCandyMachine,
+  dexViewTRG: DexViewTRG,
+  dexCreateTRG: DexCreateTRG,
+  dexDepositAmount: DexDepositAmount,
 };
