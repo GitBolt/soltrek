@@ -39,6 +39,7 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
   };
 
   const handleNodeAdd = (type: string, title: string) => {
+    console.log(type,)
     addNode(type)
     Mixpanel.track("node_add", { type, title })
   }
@@ -158,7 +159,7 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
                           fontWeight="500"
                           color="blue.300"
                           fontSize="1.5rem"
-                          onClick={() => handleNodeAdd(item.type, item.title)}
+                          onClick={() => handleNodeAdd(subItem.type, item.title)}
                         >
                           {subItem.title}
                         </Button>
