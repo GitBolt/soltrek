@@ -1,11 +1,16 @@
 import React, { useState, useEffect, FC } from "react";
-import { NodeProps, useNodeId, useReactFlow, Connection as RFConnection } from "reactflow";
+import {
+  NodeProps,
+  useNodeId,
+  useReactFlow,
+  Connection as RFConnection
+} from "reactflow";
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { truncatedPublicKey } from "@/util/helper";
 import { HXRO } from "@/sdks/hxro";
 import { handleValue } from "@/util/handleNodeValue";
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 import { useNetworkContext } from "@/context/configContext";
 import { HXROTypes } from "@/types/protocols";
 
@@ -46,14 +51,6 @@ const HXROGetUserPositions: FC<NodeProps> = (props) => {
     });
   };
 
-  // useEffect(() => {
-  //   Object.keys(outputs).forEach((item) => {
-  //     outputs[item].forEach((displayNodeIds: any) => {
-  //       updateNodeData(displayNodeIds, item)
-  //     })
-  //   })
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [addresses]);
 
   useEffect(() => {
     setIsLoading(false)
@@ -101,7 +98,6 @@ const HXROGetUserPositions: FC<NodeProps> = (props) => {
               <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Position Type: {item.position.long > 0 ? "Long" : "Short"}</Text>
               <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Amount: {item.position.long > 0 ? item.position.long : item.position.short}</Text>
               <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Status: {item.market.status.toUpperCase()}</Text>
-              {/* <Text fontSize="1rem" color="blue.500" whiteSpace="pre-wrap">Strike: {item.strike}</Text> */}
             </Flex>
             <CustomHandle
               pos="right"
