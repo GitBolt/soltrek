@@ -19,6 +19,7 @@ import { createNodeId, createNodePos } from "@/util/randomData";
 import { SearchResult, searcher } from "@/util/searcher";
 import { useCustomModal } from "@/context/modalContext";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { Mixpanel } from "@/util/mixepanel";
 
 
 export const CommandPalette = () => {
@@ -44,7 +45,7 @@ export const CommandPalette = () => {
   }
 
   const handleKeyDown = (event: any) => {
-    if (event.key === "k" &&(event.ctrlKey || event.metaKey)) {
+    if (event.key === "k" && (event.ctrlKey || event.metaKey)) {
       event.preventDefault();
       cmdPalette.onOpen();
       inputRef.current?.focus();
@@ -60,6 +61,7 @@ export const CommandPalette = () => {
       if (!filteredItems) return
 
       addNode(selectedResult || "stringInput");
+      Mixpanel.track("node_add", { type: selectedResult, from_cmd: true })
     }
 
     if (event.key === "ArrowUp" && cmdPalette.isOpen) {
@@ -167,7 +169,7 @@ export const CommandPalette = () => {
 
                   <Flex justify="start" align="center" gap="2rem">
                     <Box w="1.8rem" h="1.8rem">
-                      <img src={item.icon} height="100%" width="100%" />
+                      <img src={item.icon} height="100%" width="100%" alt="Icon"/>
                     </Box>
 
 
@@ -192,7 +194,7 @@ export const CommandPalette = () => {
                     >
                       <Flex justify="start" align="center" gap="2rem" opacity="0.5">
                         <Box w="1.8rem" h="1.8rem">
-                          <img src={item.icon} height="100%" width="100%" />
+                          <img src={item.icon} height="100%" width="100%" alt="Icon"/>
                         </Box>
                         <Text fontSize="1.6rem" color="blue.200" fontWeight={500}>
                           {item.title}
@@ -219,7 +221,7 @@ export const CommandPalette = () => {
                           savedPg.onOpen()
                         }} align="center" gap="2rem">
                         <Box w="1.8rem" h="1.8rem">
-                          <img src="/icons/Load.svg" height="100%" width="100%" />
+                          <img src="/icons/Load.svg" height="100%" width="100%" alt="Icon"/>
                         </Box>
                         <Text fontSize="1.6rem" color="blue.200" fontWeight={500}>
                           Load playground

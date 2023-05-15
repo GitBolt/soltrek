@@ -8,7 +8,7 @@ import {
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
-import { sendSPL, CodeSPL } from "@/util/sendToken";
+import { sendSPL } from "@/util/sendToken";
 import { PublicKey, TransactionInstruction } from "@solana/web3.js";
 
 const SendToken: FC<NodeProps> = (props) => {
@@ -63,8 +63,11 @@ const SendToken: FC<NodeProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
 
+  const cleanedCode = sendSPL.toString().replace(/_.*?(\.|import)/g, '');
+  const CODE = `export const sendSPL = ${cleanedCode}`;
+
   return (
-    <BaseNode height="160px" code={CodeSPL} {...props} title="Send Tokens">
+    <BaseNode height="160px" code={CODE} {...props} title="Send Tokens">
       <CustomHandle
         pos="left"
         type="target"

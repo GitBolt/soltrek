@@ -9,7 +9,7 @@ import {
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
-import { sendSOL, CodeSOL } from "@/util/sendToken";
+import { sendSOL } from "@/util/sendToken";
 import { TransactionInstruction } from "@solana/web3.js";
 
 const SendSOL: FC<NodeProps> = (props) => {
@@ -57,8 +57,12 @@ const SendSOL: FC<NodeProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
 
+  const cleanedCode = sendSOL.toString().replace(/_.*?(\.|import)/g, '');
+  const CODE = `export const sendSOL = ${cleanedCode}`;
+
+
   return (
-    <BaseNode height="130px" code={CodeSOL} {...props} title="Send SOL">
+    <BaseNode height="130px" code={CODE} {...props} title="Send SOL">
       <CustomHandle
         pos="left"
         type="target"

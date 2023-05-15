@@ -70,7 +70,6 @@ const FileInputNode: FC<NodeProps> = (props) => {
           }
           return ed;
         })
-
       );
     }
 

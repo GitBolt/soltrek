@@ -6,7 +6,8 @@ import { sidebarContent } from "@/util/sidebarContent";
 import { CommandPalette } from "@/components/CommandPalette";
 import { Navbar } from "@/layouts/Navbar";
 import { useEdgesState, useNodesState } from "reactflow";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Mixpanel } from "@/util/mixepanel";
 
 const Home: NextPage = () => {
 
@@ -14,6 +15,10 @@ const Home: NextPage = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [pgName, setPgName] = useState<string>('Untitled')
 
+  useEffect(() => {
+    Mixpanel.track("home_page_load")
+  } , [])
+  
   return (
     <>
       <Flex flexFlow="column" h="100%">

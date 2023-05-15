@@ -18,7 +18,6 @@
     "@hxronetwork/parimutuelsdk": "^1.0.25",
     "@metaplex-foundation/js": "^0.18.3",
     "@metaplex-foundation/mpl-candy-machine": "^6.0.0-alpha.12",
-    "@metaplex-foundation/mpl-token-metadata": "^2.11.1",
     "@metaplex-foundation/umi": "^0.7.6",
     "@metaplex-foundation/umi-bundle-defaults": "^0.7.6",
     "@monaco-protocol/client": "^4.0.0",
@@ -44,6 +43,7 @@
     "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",
     "js-beautify": "^1.14.7",
+    "mixpanel-browser": "^2.47.0",
     "next": "13.1.6",
     "nft.storage": "^7.0.3",
     "prisma": "^4.13.0",
@@ -67,6 +67,7 @@
   "devDependencies": {
     "@types/bs58": "^4.0.1",
     "@types/js-beautify": "^1.13.3",
+    "@types/mixpanel-browser": "^2.38.1",
     "@types/react-icons": "^3.0.0",
     "@types/react-syntax-highlighter": "^15.5.6",
     "@types/uuid": "^9.0.1"

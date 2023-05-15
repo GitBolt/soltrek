@@ -5,17 +5,11 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalBody,
   ModalCloseButton,
-  Button,
   Text,
-  VStack,
-  useDisclosure,
   Box,
-  SimpleGrid,
   Flex,
   Divider,
-  useToast,
 } from '@chakra-ui/react'
 import { useReactFlow } from 'reactflow'
 import { SavedPlaygroundType } from '@/types/playground'
@@ -138,7 +132,7 @@ const PreviewImage = ({ src }: { src: string }) => {
       <img
         src={src}
         alt="Preview image"
-        style={{ height:"100%", width:"100%", objectFit: "cover", display: loaded ? 'block' : 'none' }}
+        style={{ height: "100%", width: "100%", objectFit: "cover", display: loaded ? 'block' : 'none' }}
         onLoad={() => setLoaded(true)}
       />
     </>

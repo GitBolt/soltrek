@@ -9,6 +9,7 @@ import { createNodeId, createNodePos } from '@/util/randomData';
 import { getUser } from '@/util/program/user';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet';
+import { Mixpanel } from '@/util/mixepanel';
 
 type Props = {
   sidebarContent: SidebarContentType[],
@@ -37,55 +38,10 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
     });
   };
 
-  // const { toObject } = useReactFlow()
-
-  // const onLoad = () => {
-  //   const data = localStorage.getItem('state')
-  //   if (!data) return
-  //   const parsed = JSON.parse(data)
-  //   setNodes(parsed.nodes || [])
-  //   setEdges(parsed.edges || [])
-  //   setViewport(parsed.viewport || [])
-  // }
-
-
-  // const onSave = async () => {
-  //   if (!wallet) return
-
-  // const tx = new Transaction()
-
-  // if (!user) {
-  //   const userIx = await createUser(wallet as NodeWallet)
-  //   if (!userIx) return
-  //   tx.add(userIx)
-  // }
-
-  // const playgroundIx = await createPlayground(wallet as NodeWallet, toObject())
-  // if (!playgroundIx) return
-
-  // tx.add(playgroundIx)
-
-  // localStorage.setItem("state", JSON.stringify(toObject()))
-
-
-  // const connection = new Connection("http://127.0.0.1:8899")
-  // const res = await connection.getProgramAccounts(new PublicKey(IDLData.metadata.address))
-  // console.log(res)
-  // const { blockhash } = await connection.getLatestBlockhash()
-
-  // tx.recentBlockhash = blockhash
-  // tx.feePayer = wallet.publicKey
-
-  // await wallet.signTransaction(tx)
-  // try {
-  //   const txId = await connection.sendRawTransaction(tx.serialize())
-  //   console.log(txId)
-  // } catch (e) {
-  //   console.log(e)
-  // }
-
-
-  // }
+  const handleNodeAdd = (type: string, title: string) => {
+    addNode(type)
+    Mixpanel.track("node_add", { type, title })
+  }
 
   useEffect(() => {
     if (!wallet) return
@@ -187,7 +143,7 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
                 borderRadius="0"
                 variant="sidebar"
                 color={item.sub?.length ? "white.100" : "blue.200"}
-                onClick={() => item.sub ? toggleSublist(index) : addNode(item.type!)}
+                onClick={() => item.sub ? toggleSublist(index) : handleNodeAdd(item.type, item.title)}
                 rightIcon={item.sub ? (showSublist[index] ? <ChevronDownIcon /> : <ChevronRightIcon />) : undefined}>
                 {item.title}
               </Button>
@@ -202,7 +158,7 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
                           fontWeight="500"
                           color="blue.300"
                           fontSize="1.5rem"
-                          onClick={() => addNode(subItem.type)}
+                          onClick={() => handleNodeAdd(item.type, item.title)}
                         >
                           {subItem.title}
                         </Button>
