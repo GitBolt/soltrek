@@ -121,7 +121,21 @@ const TransactionNode: FC<NodeProps> = (props) => {
     <BaseNode code={CodeTx} height="160px" {...props} title="Transaction">
 
       {error ?
-        <Text fontSize="1.1rem" bg="#C5303080" borderRadius="1rem" p="0.2rem" textAlign="center" transform="translate(1rem, 3rem)" zIndex="3" maxW="60%" color="white" fontWeight={600}>{error.toLocaleString()}</Text> : null}
+        <Text
+          fontSize="1.2rem"
+          bg="#C5303080"
+          borderRadius="1rem"
+          p="0.5rem 1rem"
+          textAlign="center"
+          transform="translate(0rem, 3rem)"
+          zIndex="3"
+          maxW="50%"
+          mx="3rem"
+          color="white"
+          fontWeight={600}>
+          {error.toLocaleString()}
+        </Text> :
+        null}
 
       <CustomHandle
         pos="left"
@@ -131,10 +145,11 @@ const TransactionNode: FC<NodeProps> = (props) => {
         optional
         style={{ marginTop: "-4rem" }}
       />
+
       <CustomHandle
         pos="left"
         type="target"
-        id="btn"
+        id="run"
         label="Send"
         style={{ marginTop: "-1rem" }}
       />

@@ -20,7 +20,6 @@
     "@metaplex-foundation/mpl-candy-machine": "^6.0.0-alpha.12",
     "@metaplex-foundation/umi": "^0.7.6",
     "@metaplex-foundation/umi-bundle-defaults": "^0.7.6",
-    "@monaco-protocol/client": "^4.0.0",
     "@next/font": "13.1.6",
     "@noble/hashes": "^1.2.0",
     "@prisma/client": "^4.13.0",
