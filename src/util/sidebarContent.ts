@@ -131,7 +131,6 @@ export const sidebarContent: SidebarContentType[] = [
       //     },
       //   ]
       // },
-
       {
         title: "CandyMachine",
         type: "candyMachine",
