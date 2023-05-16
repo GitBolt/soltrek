@@ -41,6 +41,7 @@ import DexViewTRG from "./SDKs/HXRODexterity/ViewTRGAccount";
 import DexCreateTRG from "./SDKs/HXRODexterity/CreateTRG";
 import DexDepositAmount from "./SDKs/HXRODexterity/DepositAmount";
 import DexWithdrawAmount from "./SDKs/HXRODexterity/WithdrawAmount";
+import DexPlaceLimitOrder from "./SDKs/HXRODexterity/PlaceLimitOrder";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -84,4 +85,5 @@ export const nodeTypes = {
   dexCreateTRG: DexCreateTRG,
   dexDepositAmount: DexDepositAmount,
   dexWithdrawAmount: DexWithdrawAmount,
+  dexPlaceLimitOrder: DexPlaceLimitOrder,
 };

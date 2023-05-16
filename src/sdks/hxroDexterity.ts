@@ -80,7 +80,7 @@ export namespace HXRODexterity {
       await account()
       await trader.deposit(dexterity.Fractional.New(amount, 0))
       await account()
-      return {error: '', res: `Deposited ${amount}. Balance Change: ${prevAmount} -> ${newAmount}`}
+      return { error: '', res: `Deposited ${amount}. Balance Change: ${prevAmount} -> ${newAmount}` }
     } catch (e: any) {
       return { error: e.toString(), res: '' }
     }
@@ -112,7 +112,62 @@ export namespace HXRODexterity {
       await account()
       await trader.withdraw(dexterity.Fractional.New(amount, 0))
       await account()
-      return {error: '', res: `Withdrawed ${amount}. Balance Change: ${prevAmount} -> ${newAmount}`}
+      return { error: '', res: `Withdrawed ${amount}. Balance Change: ${prevAmount} -> ${newAmount}` }
+    } catch (e: any) {
+      return { error: e.toString(), res: '' }
+    }
+  }
+
+  export const placeLimitOrder = async (
+    selectedNetwork: string,
+    type: "long" | "short",
+    kp: Uint8Array,
+    trgPubkey: PublicKey,
+    productName: string,
+    quote_size: number,
+    price: number,
+  ) => {
+    const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
+    try {
+      const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
+
+      const trader = new dexterity.Trader(manifest, trgPubkey);
+
+      const streamAccount = () => {
+        console.log(
+          'Portfolio Value:',
+          trader.getPortfolioValue().toString(),
+          'Position Value:',
+          trader.getPositionValue().toString(),
+          'Net Cash:',
+          trader.getNetCash().toString(),
+          'PnL:',
+          trader.getPnL().toString()
+        );
+      };
+      const account = async () => {
+        await trader.connect(NaN, streamAccount);
+      };
+
+      await account()
+
+      let perpIndex: any;
+      for (const [name, { index }] of trader.getProducts()) {
+        console.log('saw', name, ' ', index);
+        if (name !== productName) {
+          continue;
+        }
+        perpIndex = index;
+        break;
+      }
+      await account()
+      const QUOTE_SIZE = dexterity.Fractional.New(quote_size, 0);
+      const dollars = dexterity.Fractional.New(price, 0);
+
+      trader.newOrder(perpIndex, type == "long" ? true : false, dollars, QUOTE_SIZE).then(async () => {
+        console.log(`Placed Buy Limit Order at $${dollars}`);
+        await account();
+      })
     } catch (e: any) {
       return { error: e.toString(), res: '' }
     }

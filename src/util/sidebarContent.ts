@@ -125,6 +125,10 @@ export const sidebarContent: SidebarContentType[] = [
             title: "Withdraw Amount",
             type: "dexWithdrawAmount"
           },
+          {
+            title: "Place Limit Order",
+            type: "dexPlaceLimitOrder"
+          },
         ]
       },
 
