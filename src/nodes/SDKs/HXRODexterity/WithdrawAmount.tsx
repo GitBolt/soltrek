@@ -11,7 +11,7 @@ import { useNetworkContext } from "@/context/configContext";
 import { HXRODexterity } from "@/sdks/hxroDexterity";
 import { PublicKey } from "@metaplex-foundation/js";
 
-const DexDepositAmount: FC<NodeProps> = (props) => {
+const DexWithdrawAmount: FC<NodeProps> = (props) => {
   const { getNode, getEdges, setNodes, setEdges } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
@@ -47,7 +47,7 @@ const DexDepositAmount: FC<NodeProps> = (props) => {
       })
     );
 
-    HXRODexterity.depositAmount(
+    HXRODexterity.withdrawAmount(
       selectedNetwork,
       new Uint8Array(base58.decode(values["privateKey"])),
       new PublicKey(values["trgPubkey"]),
@@ -71,7 +71,7 @@ const DexDepositAmount: FC<NodeProps> = (props) => {
       code={CODE}
       {...props}
       height="17rem"
-      title="HXRO - Deposit Amount"
+      title="HXRO - Withdraw Amount"
     >
       {error ?
         <Text fontSize="1.5rem" transform="translate(0, 3rem)" zIndex="3" color="blue.400" fontWeight={600}>{error.toLocaleString()}</Text> : null}
@@ -117,4 +117,4 @@ const DexDepositAmount: FC<NodeProps> = (props) => {
   );
 };
 
-export default DexDepositAmount;
+export default DexWithdrawAmount;

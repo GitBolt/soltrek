@@ -121,6 +121,10 @@ export const sidebarContent: SidebarContentType[] = [
             title: "Deposit Amount",
             type: "dexDepositAmount"
           },
+          {
+            title: "Withdraw Amount",
+            type: "dexWithdrawAmount"
+          },
         ]
       },
 

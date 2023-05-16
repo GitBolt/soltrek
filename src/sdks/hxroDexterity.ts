@@ -9,31 +9,50 @@ export namespace HXRODexterity {
     kp: Uint8Array,
   ) => {
     const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
-    const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
-    console.log(manifest)
+    try {
+      const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
 
-    const mpgs = Array.from(manifest.fields.mpgs.values());
-    const selectedMPG = mpgs.map(
-      (value) => value.pubkey,
-    );
-    const trgPubkey = await manifest.createTrg(selectedMPG[0]);
-    return trgPubkey.toBase58()
+      const mpgs = Array.from(manifest.fields.mpgs.values());
+      const selectedMPG = mpgs.map(
+        (value) => value.pubkey,
+      );
+      const trgPubkey = await manifest.createTrg(selectedMPG[0]);
+      return { res: trgPubkey.toBase58(), error: '' }
+
+    } catch (e: any) {
+      return { error: e.toString(), res: '' }
+    }
   }
 
 
-  export const viewTRGAcount = async (
+  export const viewTRGAccount = async (
     selectedNetwork: string,
     kp: Uint8Array,
     trgPubkey: PublicKey,
   ) => {
-    console.log("Values: ", trgPubkey)
-    
-    const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
-    const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
-    const trader = new dexterity.Trader(manifest, trgPubkey);
-    console.log("Trader: ", trader)
-    const res = trader.getNetCash().toString()
-    console.log("Net Cash: ", res)
+    try {
+      const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
+      const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
+      const trader = new dexterity.Trader(manifest, trgPubkey);
+      let data: any = {}
+
+      const viewAccount = async () => {
+        data = {
+          ...data,
+          netCash: trader.getNetCash().toNumber(),
+          pnl: trader.getPnL().toNumber(),
+          totalWithdrawn: trader.getTotalWithdrawn().toNumber(),
+          totalDeposited: trader.getTotalDeposited().toNumber()
+
+        }
+
+      };
+      const account = async () => await trader.connect(NaN, viewAccount)
+      await account()
+      return { res: data, error: '' }
+    } catch (e: any) {
+      return { error: e.toString(), res: '' }
+    }
   }
 
   export const depositAmount = async (
@@ -43,63 +62,59 @@ export namespace HXRODexterity {
     amount: number,
   ) => {
     const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
-    const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
-    console.log(manifest, trgPubkey)
-    const trader = new dexterity.Trader(manifest, trgPubkey);
-    const res = await trader.deposit(dexterity.Fractional.New(amount, 0))
-    console.log(res)
+    try {
+      const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
+
+      const trader = new dexterity.Trader(manifest, trgPubkey);
+      let prevAmount = 0
+      let newAmount = 0
+      const viewAccount = async () => {
+        const cash = trader.getNetCash().toNumber()
+        if (prevAmount == 0) {
+          prevAmount = cash
+        } else {
+          newAmount = cash
+        }
+      };
+      const account = async () => await trader.connect(NaN, viewAccount)
+      await account()
+      await trader.deposit(dexterity.Fractional.New(amount, 0))
+      await account()
+      return {error: '', res: `Deposited ${amount}. Balance Change: ${prevAmount} -> ${newAmount}`}
+    } catch (e: any) {
+      return { error: e.toString(), res: '' }
+    }
   }
 
 
-  export const getStore = async (
+  export const withdrawAmount = async (
     selectedNetwork: string,
-    storePubKey: string,
+    kp: Uint8Array,
+    trgPubkey: PublicKey,
+    amount: number,
   ) => {
-
-    const connection = new Connection(selectedNetwork)
-    const config = selectedNetwork.includes("devnet") ? sdk.DEVNET_CONFIG : sdk.MAINNET_CONFIG
-    const parimutuelWeb3 = new sdk.ParimutuelWeb3(config, connection)
-
-    let store
+    const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
     try {
-      store = await parimutuelWeb3.getStore(
-        new PublicKey(storePubKey),
-      )
-      return { txId: '', store }
-    }
-    catch (err: any) {
-      console.log(err)
-      return { error: true, message: err.message || JSON.stringify(err) || '' }
-    }
-  }
+      const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
 
-  export const getUserPositions = async (
-    selectedNetwork: string,
-    marketPair: sdk.MarketPairEnum,
-    userPublicKey: string,
-  ) => {
-
-    const connection = new Connection(selectedNetwork)
-    const config = selectedNetwork.includes("devnet") ? sdk.DEVNET_CONFIG : sdk.MAINNET_CONFIG
-    const parimutuelWeb3 = new sdk.ParimutuelWeb3(config, connection)
-
-    const markets = await parimutuelWeb3.getMarkets(marketPair)
-    const contractSize = markets[0]?.info.market.contractSize.toNumber()
-    let positions
-    try {
-      positions = await parimutuelWeb3.getUserPositions(
-        new PublicKey(userPublicKey),
-        markets
-      )
-      const parsedPositions = positions
-        .map((position) => parseMyPositions(position, marketPair, markets, USDC_DECIMALS, contractSize))
-        .sort((a, b) => b.time.startTime - a.time.startTime)
-
-      return { txId: '', positions: parsedPositions }
-    }
-    catch (err: any) {
-      console.log(err)
-      return { error: true, message: err.message || JSON.stringify(err) || '' }
+      const trader = new dexterity.Trader(manifest, trgPubkey);
+      let prevAmount = 0
+      let newAmount = 0
+      const viewAccount = async () => {
+        const cash = trader.getNetCash().toNumber()
+        if (prevAmount == 0) {
+          prevAmount = cash
+        } else {
+          newAmount = cash
+        }
+      };
+      const account = async () => await trader.connect(NaN, viewAccount)
+      await account()
+      await trader.withdraw(dexterity.Fractional.New(amount, 0))
+      await account()
+      return {error: '', res: `Withdrawed ${amount}. Balance Change: ${prevAmount} -> ${newAmount}`}
+    } catch (e: any) {
+      return { error: e.toString(), res: '' }
     }
   }
 

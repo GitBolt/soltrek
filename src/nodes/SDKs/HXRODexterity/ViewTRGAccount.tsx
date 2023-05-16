@@ -3,50 +3,22 @@ import { NodeProps, useNodeId, useReactFlow, Connection as RCon } from "reactflo
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
-import { HXRO } from "@/sdks/hxro";
-import { Button, Text } from "@chakra-ui/react";
-import { SDKResponse } from "@/types/response";
+import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
 import base58 from "bs58";
 import { useNetworkContext } from "@/context/configContext";
 import { HXRODexterity } from "@/sdks/hxroDexterity";
 import { PublicKey } from "@metaplex-foundation/js";
+import { stringify } from "@/util/helper";
 
 const DexViewTRG: FC<NodeProps> = (props) => {
   const { getNode, getEdges, setNodes, setEdges } = useReactFlow();
   const id = useNodeId();
   const currentNode = getNode(id as string);
-
+  const [loading, setLoading] = useState<boolean>(false)
   const { selectedNetwork } = useNetworkContext()
 
-  const [address, setAddress] = useState<string>('');
+  const [data, setData] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const [targetNodes, setTargetNodes] = useState<string[]>([])
-
-
-  // Update target nodes (accepting input) data with 100ms delay (required to work properly)
-  const updateNodeData = (nodeIds: string[]) => {
-    setTimeout(() => {
-      setNodes(nodes => nodes.map(node =>
-        nodeIds.includes(node.id)
-          ? { ...node, data: { ...node.data, [id as string]: address } }
-          : node
-      ));
-    }, 100);
-  };
-
-  // Updating a new input node with data from this node as soon as it's connected
-  const onConnect = (e: RCon) => {
-    if (!e.target) return
-    setTargetNodes([...targetNodes, e.target])
-    updateNodeData([e.target])
-  };
-
-  // Pushing new data to all input nodes connected
-  useEffect(() => {
-    if (!targetNodes) return
-    updateNodeData(targetNodes)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address])
 
 
   useEffect(() => {
@@ -57,7 +29,9 @@ const DexViewTRG: FC<NodeProps> = (props) => {
     ]);
     console.log(values)
     if (!values["privateKey"] || !values["trgPubkey"]) return;
-
+    setError('')
+    setData('')
+    setLoading(true)
     setEdges((edgs) =>
       edgs.map((ed) => {
         if (ed.source == id) {
@@ -68,29 +42,52 @@ const DexViewTRG: FC<NodeProps> = (props) => {
       })
     );
 
-    HXRODexterity.viewTRGAcount(
+    HXRODexterity.viewTRGAccount(
       selectedNetwork,
       new Uint8Array(base58.decode(values["privateKey"])),
       new PublicKey(values["trgPubkey"])
     ).then((res) => {
+      if (res?.error) {
+        setError(res.error)
+        return
+      }
+      setData(`
+      Net Cash: ${res.res.netCash}
+      \n
+      PnL: ${res.res.pnl}
+      \n
+      Total Deposited: ${res.res.totalDeposited}
+      \n
+      Total Withdrawed: ${res.res.totalWithdrawn}
+
+      `)
+      setLoading(false)
       console.log("SDK Res: ", res)
-      //   setAddress(res)
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNode?.data]);
 
 
-  const cleanedCode = HXRODexterity.viewTRGAcount.toString().replace(/_.*?(\.|import)/g, '');
+  const cleanedCode = HXRODexterity.viewTRGAccount.toString().replace(/_.*?(\.|import)/g, '');
   const CODE = `export const viewTRGAcount = ${cleanedCode}`;
   return (
     <BaseNode
       code={CODE}
       {...props}
       title="HXRO - View TRG"
-      >
+    >
       {error ?
         <Text fontSize="1.5rem" transform="translate(0, 3rem)" zIndex="3" color="blue.400" fontWeight={600}>{error.toLocaleString()}</Text> : null}
+
+      {data && <Flex align="start" flexFlow="column" ml="8rem" mr="1rem">
+        {data && data.split("\n").map((d) => (
+          <Text key={d} textAlign="left" fontSize="1.1rem" zIndex="3" color="blue.200" fontWeight={600}>{d}</Text>
+        ))
+        }
+      </Flex>
+      }
+      {loading && <Spinner size="lg" style={{ width: "5rem", height: "5rem" }} color="blue.100" thickness="0.5rem" />}
 
       <CustomHandle
         pos="left"

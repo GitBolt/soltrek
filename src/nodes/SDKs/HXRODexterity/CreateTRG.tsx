@@ -1,12 +1,15 @@
 import React, { useState, useEffect, FC } from "react";
-import { NodeProps, useNodeId, useReactFlow, Connection as RCon } from "reactflow";
+import base58 from "bs58";
+import {
+  NodeProps,
+  useNodeId,
+  useReactFlow,
+  Connection as RCon
+} from "reactflow";
 import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
-import { HXRO } from "@/sdks/hxro";
 import { Text } from "@chakra-ui/react";
-import { SDKResponse } from "@/types/response";
-import base58 from "bs58";
 import { useNetworkContext } from "@/context/configContext";
 import { HXRODexterity } from "@/sdks/hxroDexterity";
 
@@ -19,6 +22,7 @@ const DexCreateTRG: FC<NodeProps> = (props) => {
 
   const [address, setAddress] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [success, setSuccess] = useState<string>('');
   const [targetNodes, setTargetNodes] = useState<string[]>([])
 
 
@@ -58,6 +62,7 @@ const DexCreateTRG: FC<NodeProps> = (props) => {
     const run = dataKeys.find(
       (key) => key.startsWith("btn") && currentNode?.data[key] == true
     );
+
     if (!values["privateKey"] || !run) return;
     setEdges((edgs) =>
       edgs.map((ed) => {
@@ -73,17 +78,21 @@ const DexCreateTRG: FC<NodeProps> = (props) => {
       selectedNetwork,
       new Uint8Array(base58.decode(values["privateKey"])),
     ).then((res) => {
-      console.log("SDK Res: ", res)
-      setAddress(res)
+      if (res.error) {
+        setError(res.error)
+        return
+      }
+      setSuccess(`Created TRG`)
+      setAddress(res.res)
       setEdges((edgs) =>
-      edgs.map((ed) => {
-        if (ed.source == id) {
-          ed.animated = false;
+        edgs.map((ed) => {
+          if (ed.source == id) {
+            ed.animated = false;
+            return ed;
+          }
           return ed;
-        }
-        return ed;
-      })
-    );
+        })
+      );
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
