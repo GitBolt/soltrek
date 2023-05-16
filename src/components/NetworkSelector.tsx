@@ -63,6 +63,7 @@ export const NetworkSelector = () => {
 
       <Menu>
         <MenuButton
+          className="buttons"
           as={Button}
           w="13.5rem"
           borderRadius="0.5rem"
