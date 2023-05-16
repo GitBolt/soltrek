@@ -28,8 +28,8 @@ const GetSNS: FC<NodeProps> = (props) => {
             setTokenDetails(undefined)
             setError("Error with domain")
           } else {
-            setTokenDetails(JSON.stringify(data, null, 2));
-            setValue(JSON.stringify(data, null, 2));
+            setTokenDetails(JSON.stringify(data.result, null, 2));
+            setValue(JSON.stringify(data.result, null, 2));
           }
         })
         .catch((error) => {
