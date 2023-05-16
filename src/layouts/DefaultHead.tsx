@@ -10,7 +10,7 @@ export const DefaultHead = () => {
             <meta name="image" content="https://soltrek.spaceoperator.com/og.png" />
             <meta property="og:title" content={"SOL Trek"} />
             <meta property="og:description" content={"Learn and develop with Solana, visually."} />
-            <meta property="og:image" content= />
+            <meta property="og:image" content="https://soltrek.spaceoperator.com/og.png" />
             <meta property="og:type" content="website" />
             <meta property="og:url" content="https://soltrek.spaceoperator.com/og.png" />
             <meta property="og:site_name" content={"SOL Trek"} />
