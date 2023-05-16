@@ -12,6 +12,7 @@ import { theme } from '@/util/theme'
 import { Wallet } from "@/context/walletContext";
 import { NetworkProvider } from '@/context/configContext';
 import { ModalProvider } from '@/context/modalContext';
+import { DefaultHead } from '@/layouts/DefaultHead';
 
 export default function SolBuild({ Component, pageProps }: AppProps) {
 
@@ -21,6 +22,7 @@ export default function SolBuild({ Component, pageProps }: AppProps) {
         <ReactFlowProvider>
           <NetworkProvider>
             <ModalProvider>
+              <DefaultHead />
               <Component {...pageProps} />
             </ModalProvider>
           </NetworkProvider>
