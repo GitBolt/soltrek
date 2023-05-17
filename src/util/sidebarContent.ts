@@ -129,6 +129,10 @@ export const sidebarContent: SidebarContentType[] = [
             title: "Place Limit Order",
             type: "dexPlaceLimitOrder"
           },
+          {
+            title: "Cancel All Limit Order",
+            type: "dexCancelAllOrders"
+          },
         ]
       },
       {

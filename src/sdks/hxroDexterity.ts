@@ -187,5 +187,36 @@ export namespace HXRODexterity {
     }
   }
 
+  export const cancelAllOrders = async (
+    selectedNetwork: string,
+    kp: Uint8Array,
+    trgPubkey: PublicKey,
+    productName: string,
+  ) => {
+    const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
+    try {
+      const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
+
+      const trader = new dexterity.Trader(manifest, trgPubkey);
+      let prevAmount = 0
+      let newAmount = 0
+      const viewAccount = async () => {
+        const cash = trader.getNetCash().toNumber()
+        if (prevAmount == 0) {
+          prevAmount = cash
+        } else {
+          newAmount = cash
+        }
+      };
+      const account = async () => await trader.connect(NaN, viewAccount)
+      await account()
+      await trader.cancelAllOrders(productName)
+      await account()
+      return { error: '', res: `Successfully Cancelled All Orders` }
+    } catch (e: any) {
+      return { error: e.toString(), res: '' }
+    }
+  }
+
 
 }
