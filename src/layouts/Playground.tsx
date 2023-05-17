@@ -131,6 +131,7 @@ const Playground = function Playground({
         pannable />
       <Background
         color="#4B4967"
+        
         variant={BackgroundVariant.Dots} />
     </ReactFlow>
   );

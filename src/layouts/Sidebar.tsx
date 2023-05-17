@@ -106,7 +106,7 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
 
       <Flex sx={{
         w: "75%",
-        background: "#14141bc9",
+        background: "bg.100",
         borderRight: "1px solid",
         borderColor: "gray.100",
         flexFlow: "column",

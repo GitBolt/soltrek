@@ -78,6 +78,7 @@ const DexCreateTRG: FC<NodeProps> = (props) => {
       selectedNetwork,
       new Uint8Array(base58.decode(values["privateKey"])),
     ).then((res) => {
+      console.log("SDK res: ", res)
       if (res.error) {
         setError(res.error)
         return
