@@ -48,13 +48,14 @@ const DexViewTRG: FC<NodeProps> = (props) => {
       selectedNetwork,
       new Uint8Array(base58.decode(values["privateKey"])),
       new PublicKey(values["trgPubkey"]),
-      values["privateKey"]
+      values["productName"]
     ).then((res) => {
       console.log("View TRG Account Res: ", res)
       if (res?.error) {
         setError(res.error)
         return
       }
+
       setData(res.res)
       setLoading(false)
       console.log("SDK Res: ", res)
@@ -73,13 +74,16 @@ const DexViewTRG: FC<NodeProps> = (props) => {
       height="15rem"
       title="HXRO - View TRG"
     >
+
+      {loading && <Spinner size="lg" style={{ width: "5rem", height: "5rem" }} color="blue.100" thickness="0.5rem" />}
+
       {error ?
         <Text fontSize="1.5rem" transform="translate(0, 3rem)" zIndex="3" color="blue.400" fontWeight={600}>{error.toLocaleString()}</Text> : null}
 
       {data && (
         <Flex direction="column" ml="8rem" mr="2rem">
 
-          <Box fontSize="1.2rem" color="blue.100" ml="1rem" mt="1rem">
+          <Box fontSize="1.2rem" color="blue.200" ml="1rem" mt="1rem" fontWeight={700}>
             <Text>Net Cash: {data.netCash.toLocaleString()}</Text>
             <Text>PnL: {data.pnl.toLocaleString()}</Text>
             <Text>Total Withdrawn: {data.totalWithdrawn.toLocaleString()}</Text>
@@ -89,7 +93,7 @@ const DexViewTRG: FC<NodeProps> = (props) => {
           <Flex direction="column">
             {data.openOrders && data.openOrders.length > 0 && (
               <Box p={4} mb={4}>
-                <Divider w="100%" borderColor="gray.300" my="0.5rem" />
+                <Divider w="100%" borderColor="gray.200" my="0.5rem" />
                 <Text fontWeight="bold" color="blue.100" fontSize="1.2rem" mb="1rem">
                   Open Orders
                 </Text>
@@ -105,10 +109,10 @@ const DexViewTRG: FC<NodeProps> = (props) => {
                   <Tbody>
                     {data.openOrders.map((order, index) => (
                       <Tr backgroundColor="red" key={index}>
-                        <Td backgroundColor="bg.300 !important" color="blue.100" fontSize="0.9rem">{order.type}</Td>
-                        <Td backgroundColor="bg.300 !important" color="blue.100" fontSize="0.9rem">{order.price}</Td>
-                        <Td backgroundColor="bg.300 !important" color="blue.100" fontSize="0.9rem">{order.productName}</Td>
-                        <Td backgroundColor="bg.300 !important" color="blue.100" fontSize="0.9rem">{order.quantity}</Td>
+                        <Td backgroundColor="bg.200 !important" color="blue.100" fontSize="0.9rem">{order.type}</Td>
+                        <Td backgroundColor="bg.200 !important" color="blue.100" fontSize="0.9rem">{order.price}</Td>
+                        <Td backgroundColor="bg.200 !important" color="blue.100" fontSize="0.9rem">{order.productName}</Td>
+                        <Td backgroundColor="bg.200 !important" color="blue.100" fontSize="0.9rem">{order.quantity}</Td>
                       </Tr>
                     ))}
                   </Tbody>
@@ -121,8 +125,6 @@ const DexViewTRG: FC<NodeProps> = (props) => {
         </Flex>
       )}
 
-
-      {loading && <Spinner size="lg" style={{ width: "5rem", height: "5rem" }} color="blue.100" thickness="0.5rem" />}
 
       <CustomHandle
         pos="left"

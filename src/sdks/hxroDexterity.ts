@@ -35,7 +35,7 @@ export namespace HXRODexterity {
       const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
       const trader = new dexterity.Trader(manifest, trgPubkey);
       let data: any = {}
-
+      console.log(productName, kp, trgPubkey)
       const viewAccount = async () => {
         if (productName) {
           const orders = trader.getOpenOrders(productName)
@@ -158,13 +158,11 @@ export namespace HXRODexterity {
           trader.getPnL().toString()
         );
       };
-      console.log(1)
       const account = async () => {
         await trader.connect(NaN, streamAccount);
       };
 
       await account()
-      console.log(2)
       let perpIndex: any;
       for (const [name, { index }] of trader.getProducts()) {
         console.log('saw', name, ' ', index);
@@ -178,10 +176,12 @@ export namespace HXRODexterity {
       const QUOTE_SIZE = dexterity.Fractional.New(quote_size, 0);
       const dollars = dexterity.Fractional.New(price, 0);
 
-      const res = trader.newOrder(perpIndex, type == "long" ? true : false, dollars, QUOTE_SIZE).then(async () => {
+      trader.newOrder(perpIndex, type == "long" ? true : false, dollars, QUOTE_SIZE).then(async () => {
         console.log(`Placed Buy Limit Order at $${dollars}`);
         await account();
       })
+
+      return {error: '', res: "Successfuly Placed Limit Order"}
     } catch (e: any) {
       return { error: e.toString(), res: '' }
     }
