@@ -165,10 +165,11 @@ export namespace HXRODexterity {
       await account()
       let perpIndex: any;
       for (const [name, { index }] of trader.getProducts()) {
-        console.log('saw', name, ' ', index);
-        if (name !== productName) {
+        console.log('Got: ', name, ' ', index, " ");
+        if (name.trim() !== productName) {
           continue;
         }
+        console.log("Setting PERP Index: ", index)
         perpIndex = index;
         break;
       }
@@ -181,7 +182,7 @@ export namespace HXRODexterity {
         await account();
       })
 
-      return {error: '', res: "Successfuly Placed Limit Order"}
+      return { error: '', res: "Successfuly Placed Limit Order" }
     } catch (e: any) {
       return { error: e.toString(), res: '' }
     }
