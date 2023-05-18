@@ -9,19 +9,18 @@ export namespace HXRODexterity {
     kp: Uint8Array,
   ) => {
     const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
-    try {
-      const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
+    const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
+    console.log(manifest)
+    const mpgs = Array.from(manifest.fields.mpgs.values());
+    console.log(mpgs)
+    const selectedMPG = mpgs.map(
+      (value) => value.pubkey,
+    );
 
-      const mpgs = Array.from(manifest.fields.mpgs.values());
-      const selectedMPG = mpgs.map(
-        (value) => value.pubkey,
-      );
-      const trgPubkey = await manifest.createTrg(selectedMPG[0]);
-      return { res: trgPubkey.toBase58(), error: '' }
+    console.log(selectedMPG)
+    const trgPubkey = await manifest.createTrg(selectedMPG[0]);
+    return { res: trgPubkey.toBase58(), error: '' }
 
-    } catch (e: any) {
-      return { error: e.toString(), res: '' }
-    }
   }
 
 
@@ -29,14 +28,28 @@ export namespace HXRODexterity {
     selectedNetwork: string,
     kp: Uint8Array,
     trgPubkey: PublicKey,
+    productName?: string,
   ) => {
     try {
       const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
       const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
       const trader = new dexterity.Trader(manifest, trgPubkey);
       let data: any = {}
-
+      console.log(productName, kp, trgPubkey)
       const viewAccount = async () => {
+        if (productName) {
+          const orders = trader.getOpenOrders(productName)
+          const filteredOrders: any[] = []
+          orders.forEach((order) => {
+            filteredOrders.push({
+              type: order.isBid ? "long" : "short",
+              price: order.price.toNumber(),
+              productName: order.productName,
+              quantity: order.qty.toNumber()
+            })
+          })
+          data = { ...data, openOrders: filteredOrders }
+        }
         data = {
           ...data,
           netCash: trader.getNetCash().toNumber(),
@@ -132,7 +145,7 @@ export namespace HXRODexterity {
       const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
 
       const trader = new dexterity.Trader(manifest, trgPubkey);
-
+      console.log(0)
       const streamAccount = () => {
         console.log(
           'Portfolio Value:',
@@ -150,7 +163,6 @@ export namespace HXRODexterity {
       };
 
       await account()
-
       let perpIndex: any;
       for (const [name, { index }] of trader.getProducts()) {
         console.log('saw', name, ' ', index);
@@ -168,6 +180,39 @@ export namespace HXRODexterity {
         console.log(`Placed Buy Limit Order at $${dollars}`);
         await account();
       })
+
+      return {error: '', res: "Successfuly Placed Limit Order"}
+    } catch (e: any) {
+      return { error: e.toString(), res: '' }
+    }
+  }
+
+  export const cancelAllOrders = async (
+    selectedNetwork: string,
+    kp: Uint8Array,
+    trgPubkey: PublicKey,
+    productName: string,
+  ) => {
+    const wallet = new NodeWallet(Keypair.fromSecretKey(kp));
+    try {
+      const manifest = await dexterity.getManifest(selectedNetwork, false, wallet);
+
+      const trader = new dexterity.Trader(manifest, trgPubkey);
+      let prevAmount = 0
+      let newAmount = 0
+      const viewAccount = async () => {
+        const cash = trader.getNetCash().toNumber()
+        if (prevAmount == 0) {
+          prevAmount = cash
+        } else {
+          newAmount = cash
+        }
+      };
+      const account = async () => await trader.connect(NaN, viewAccount)
+      await account()
+      await trader.cancelAllOrders(productName)
+      await account()
+      return { error: '', res: `Successfully Cancelled All Orders` }
     } catch (e: any) {
       return { error: e.toString(), res: '' }
     }

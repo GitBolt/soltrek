@@ -3,3 +3,11 @@ export type SDKResponse = {
     message?: string,
     txId?: string
 }
+
+export type DexGetAccount = {
+    netCash: number,
+    pnl: number,
+    totalWithdrawn: number,
+    totalDeposited: number,
+    openOrders? : any[]
+}

@@ -110,10 +110,24 @@ export const NetworkSelector = () => {
             _hover={{ background: "linear-gradient(243.86deg, rgba(38, 42, 55, 0.8) 10%,rgba(38, 42, 55, 0.4) 100%)" }}
             bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
             onClick={async () => {
-              updateNetwork(process.env.NEXT_PUBLIC_DEFAULT_RPC || "")
+              updateNetwork(process.env.NEXT_PUBLIC_DEFAULT_RPC || "https://api.devnet.solana.com")
             }}
           >
             Devnet
+          </MenuItem>
+
+          <MenuItem
+            style={{ backdropFilter: "blur(10px)" }}
+            h="4rem"
+            fontSize="1.5rem"
+            color="gray.400"
+            _hover={{ background: "linear-gradient(243.86deg, rgba(38, 42, 55, 0.8) 10%,rgba(38, 42, 55, 0.4) 100%)" }}
+            bg="linear-gradient(243.86deg, rgba(38, 42, 55, 0.5) 0%, rgba(36, 55, 78, 0) 100.97%)"
+            onClick={async () => {
+              updateNetwork(process.env.NEXT_PUBLIC_TEST_RPC || "https://api.testnet.solana.com")
+            }}
+          >
+            Testnet
           </MenuItem>
 
           <MenuItem

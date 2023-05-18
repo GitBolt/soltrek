@@ -4,7 +4,7 @@ import BaseNode from "@/layouts/BaseNode";
 import { CustomHandle } from "@/layouts/CustomHandle";
 import { handleValue } from "@/util/handleNodeValue";
 import { HXRO } from "@/sdks/hxro";
-import { Button, Text } from "@chakra-ui/react";
+import { Button, Spinner, Text } from "@chakra-ui/react";
 import { SDKResponse } from "@/types/response";
 import base58 from "bs58";
 import { useNetworkContext } from "@/context/configContext";
@@ -20,6 +20,7 @@ const DexPlaceLimitOrder: FC<NodeProps> = (props) => {
 
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const edges = getEdges();
@@ -38,7 +39,7 @@ const DexPlaceLimitOrder: FC<NodeProps> = (props) => {
     );
 
     if (Object.values(values).filter(i => i).length != 6 || !run) return;
-
+    setLoading(true)
     setError("")
     setSuccess('')
     setEdges((edgs) =>
@@ -60,11 +61,12 @@ const DexPlaceLimitOrder: FC<NodeProps> = (props) => {
       values["quoteSize"],
       values["price"]
     ).then((res) => {
-      // if (res.error) {
-      //   setError(res.error)
-      //   return
-      // }
-      // setSuccess(res.res)
+      if (res.error) {
+        setError(res.error)
+        return
+      }
+      setSuccess(res.res)
+      setLoading(false)
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,6 +82,8 @@ const DexPlaceLimitOrder: FC<NodeProps> = (props) => {
       height="25rem"
       title="HXRO - Place Limit Order"
     >
+      {loading && <Spinner size="lg" style={{ width: "5rem", height: "5rem" }} color="blue.100" thickness="0.5rem" />}
+
       {error ?
         <Text fontSize="1.5rem" transform="translate(0, 3rem)" zIndex="3" color="blue.400" fontWeight={600}>{error.toLocaleString()}</Text> : null}
 

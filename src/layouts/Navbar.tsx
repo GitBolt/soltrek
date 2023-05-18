@@ -182,7 +182,7 @@ export const Navbar = ({
   }, [publicKey, user, pgName]);
 
   return (
-    <Flex w="100%" p="0 1rem" h="6rem" zIndex="5" bg="#1C1C26" pos="static" top="0" align="center" justify="space-between" gap="1rem">
+    <Flex w="100%" p="0 1rem" h="6rem" zIndex="5" bg="bg.200" pos="static" top="0" align="center" justify="space-between" gap="1rem">
 
 
       <SavedPlaygrounds user={user} setCurrentPlayground={setCurrentPlayground} />
