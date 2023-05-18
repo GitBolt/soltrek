@@ -133,6 +133,10 @@ export const sidebarContent: SidebarContentType[] = [
             title: "Cancel All Limit Order",
             type: "dexCancelAllOrders"
           },
+          {
+            title: "Orderbook",
+            type: "dexOrderbook"
+          },
         ]
       },
       {

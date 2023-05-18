@@ -32,6 +32,12 @@ export namespace HXROTypes {
     locked: { price: number };
     settled: { price: number };
   };
+
+
+  export type Cumilitive = {
+    price: number;
+    ordersSize: number;
+  }
 }
 
 export namespace CandyMachineTypes {

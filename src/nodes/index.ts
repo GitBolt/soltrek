@@ -41,6 +41,7 @@ import DexDepositAmount from "./SDKs/HXRODexterity/DepositAmount";
 import DexWithdrawAmount from "./SDKs/HXRODexterity/WithdrawAmount";
 import DexPlaceLimitOrder from "./SDKs/HXRODexterity/PlaceLimitOrder";
 import DexCancelAllOrders from "./SDKs/HXRODexterity/CancelAllOrders";
+import DexOrderbook from "./SDKs/HXRODexterity/Orderbook";
 
 export const nodeTypes = {
   stringInput: StringInputNode,
@@ -86,4 +87,5 @@ export const nodeTypes = {
   dexWithdrawAmount: DexWithdrawAmount,
   dexPlaceLimitOrder: DexPlaceLimitOrder,
   dexCancelAllOrders: DexCancelAllOrders,
+  dexOrderbook: DexOrderbook,
 };
