@@ -27,7 +27,7 @@ export const AddAccess = ({ playground, setCurrentPlayground }: Props) => {
   const [value, setValue] = useState('')
   const { accessModal } = useCustomModal()
   const toast = useToast()
-  const { onCopy, hasCopied } = useClipboard(playground ? `localhost:3000/playground/${playground.id}` : '')
+  const { onCopy, hasCopied } = useClipboard(playground ? `https://soltrek.spaceoperator.com/playground/${playground.id}` : '')
 
   const giveAccess = async () => {
     if (!value || value.length < 30) {
