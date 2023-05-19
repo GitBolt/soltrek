@@ -74,7 +74,7 @@ const Home: NextPage = ({ playground }: any) => {
 export default Home;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const res = await fetch(`http://localhost:3000/api/playground/get/id/${context.query.id}`)
+  const res = await fetch(`https://soltrek.spaceoperator.com/api/playground/get/id/${context.query.id}`)
   const data = await res.json()
   return { props: { playground: { ...data, createdAt: '' } } }
 }
