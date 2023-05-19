@@ -49,7 +49,7 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
     })
     const data = await response.json()
     if (response.ok) {
-      window.open(`/playground/${data.id}`, '_ blank')
+      window.open(`/playground/${data.id}`, '_blank')
       // router.push(, "")
       console.log("New Pg Data: ", data)
       setCurrentPlayground(data)

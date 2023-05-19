@@ -10,9 +10,15 @@ import { useEffect, useState, useRef } from "react";
 import { useNodesState, useEdgesState, NodeChange, EdgeChange } from "reactflow";
 import { Flex } from "@chakra-ui/react";
 
-const socket = io(process.env.NEXT_PUBLIC_SERVER_URL as string);
 
 const Home: NextPage = ({ playground }: any) => {
+
+  const socket = io(process.env.NEXT_PUBLIC_SERVER_URL as string, {
+    query: {
+      playgroundId: playground.id
+    }
+  });
+  
   const [editAccess, setEditAccess] = useState(false)
   const [pgName, setPgName] = useState<string>('')
   const socketRef = useRef(socket)
