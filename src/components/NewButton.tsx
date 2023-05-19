@@ -97,7 +97,7 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
         >
           Single Player
         </MenuItem>
-        {user && (
+        {/* {user && (
           <MenuItem
             bg="#1e1c28"
             color="#ec307f"
@@ -109,7 +109,7 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
           >
             Multiplayer
           </MenuItem>
-        )}
+        )} */}
       </MenuList>
     </Menu>
   );
