@@ -17,6 +17,7 @@ import { SavedPlaygroundType } from '@/types/playground'
 import { useCustomModal } from '@/context/modalContext'
 import { truncatedPublicKey } from '@/util/helper'
 import { CheckIcon, CopyIcon } from '@chakra-ui/icons'
+import { useRouter } from 'next/router'
 
 type Props = {
   playground: SavedPlaygroundType,
@@ -24,10 +25,12 @@ type Props = {
 }
 
 export const AddAccess = ({ playground, setCurrentPlayground }: Props) => {
+
+  const router = useRouter()
   const [value, setValue] = useState('')
   const { accessModal } = useCustomModal()
   const toast = useToast()
-  const { onCopy, hasCopied } = useClipboard(playground ? `${process.env.NEXT_PUBLIC_URL}/playground/${playground.id}` : '')
+  const { onCopy, hasCopied } = useClipboard(playground ? `${process.env.NEXT_PUBLIC_URL}/playground/${router.query.id}` : '')
 
   const giveAccess = async () => {
     if (!value || value.length < 30) {
@@ -42,7 +45,7 @@ export const AddAccess = ({ playground, setCurrentPlayground }: Props) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ new_wallet: value, playgroundId: playground.id })
+      body: JSON.stringify({ new_wallet: value, playgroundId: router.query.id })
     })
     if (res.ok) {
       toast({
@@ -50,7 +53,7 @@ export const AddAccess = ({ playground, setCurrentPlayground }: Props) => {
         title: "Gave edit access"
       })
 
-      const res = await fetch(`/api/playground/get/id/${playground.id}`)
+      const res = await fetch(`/api/playground/get/id/${router.query.id}`)
       const data = await res.json()
       setCurrentPlayground(data)
 
