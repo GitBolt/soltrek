@@ -262,7 +262,7 @@ export const theme = extendTheme({
         const loadingBase = status === "loading" && {
           container: {
             ...base.container,
-            background: "linear-gradient(45deg,#a63a59, #c4379a)",
+            background: "linear-gradient(45deg,#2d2d97, #5858a8)",
           },
           spinner: {
             ...base.icon,

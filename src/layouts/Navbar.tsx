@@ -72,10 +72,12 @@ export const Navbar = ({
       if (multiplayer) {
         const res = await fetch(`/api/playground/get/id/${router.query.id}`)
         const pgData = await res.json()
+        console.log("RES: ", pgData)
         setCurrentPlayground(pgData)
         setEditAccess(
           userData.id == pgData.userId ||
-          pgData.edit_access.includes(publicKey.toBase58())
+          (pgData.edit_access &&
+            pgData.edit_access.includes(publicKey.toBase58()))
         )
       }
     }

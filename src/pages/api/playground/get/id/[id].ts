@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const playground = await prisma.playground.findFirst({
       where: {
-        id: Number(id),
+        id: id as string,
       },
     })
     res.status(200).json(playground)

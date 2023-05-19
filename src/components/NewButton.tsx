@@ -9,6 +9,7 @@ import {
   MenuList,
   MenuItem,
   Button,
+  useToast,
 } from '@chakra-ui/react';
 
 // Icons
@@ -27,9 +28,13 @@ type Props = {
 
 export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, setEdges }: Props) => {
   const router = useRouter()
+  const toast = useToast()
 
   const startMultiplayer = async () => {
-
+    toast({
+      status: "loading",
+      title: "Spinning up a new playground"
+    })
     const response = await fetch('/api/playground/new', {
       method: 'POST',
       headers: {
@@ -43,10 +48,12 @@ export const NewButton = ({ user, setCurrentPlayground, setNodes, setViewport, s
       }),
     })
     const data = await response.json()
-    setCurrentPlayground(data)
     if (response.ok) {
-      router.push(`/playground/${data.id}`)
+      window.open(`/playground/${data.id}`, '_ blank')
+      // router.push(, "")
+      console.log("New Pg Data: ", data)
       setCurrentPlayground(data)
+      toast.closeAll()
     }
   }
 

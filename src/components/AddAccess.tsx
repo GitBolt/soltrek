@@ -89,7 +89,7 @@ export const AddAccess = ({ playground, setCurrentPlayground }: Props) => {
             <Divider mt="2rem" />
             <Text textAlign="start" fontSize="2rem" color="blue.400" fontWeight="600" alignSelf="start">Editors</Text>
 
-            {playground && playground.edit_access.length ? playground.edit_access.map((item) => (
+            {playground && playground.edit_access && playground.edit_access.length ? playground.edit_access.map((item) => (
               <Text key={item} color="white" opacity="80%" fontSize="1.5rem" alignSelf="start" fontWeight="400">{truncatedPublicKey(item, 13)}</Text>
             )) : null}
           </Flex>
