@@ -54,7 +54,7 @@ export const getProgram = async (protocolAddress: PublicKey, wallet: anchor.Wall
 }
 
 export const anchorProgram = (wallet: anchor.Wallet, network?: string) => {
-  const provider = getProvider(wallet, network || "http://127.0.0.1:8899");
+  const provider = getProvider(wallet, network || process.env.NEXT_PUBLIC_DEFAULT_RPC);
   const idl = IDLData as anchor.Idl;
   const program = new anchor.Program(
     idl,
