@@ -104,9 +104,9 @@ export namespace HXRODexterity {
       const viewAccount = async () => {
         const cash = trader.getNetCash().toNumber()
         if (prevAmount == 0) {
-          prevAmount = cash
-        } else {
           newAmount = cash
+        } else {
+          prevAmount = cash
         }
       };
       const account = async () => await trader.connect(NaN, viewAccount)
