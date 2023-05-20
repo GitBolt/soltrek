@@ -9,13 +9,10 @@ import {
   Flex,
   Divider,
   useDisclosure,
-  ModalCloseButton,
   Text,
   ListItem,
-  List,
   UnorderedList,
 } from '@chakra-ui/react'
-import { CheckIcon, CopyIcon } from '@chakra-ui/icons'
 
 
 export const Onboard = () => {
@@ -46,15 +43,15 @@ export const Onboard = () => {
               </ListItem>
 
               <ListItem>
-              Connect wallet is not required, but it&apos;s recommended to enable saving, loading, and sharing of your playgrounds.
+                Connect wallet is not required, but it&apos;s recommended to enable saving, loading, and sharing of your playgrounds.
               </ListItem>
 
               <ListItem>
-              Nodes are the functional blocks, edges are the magenta lines connecting nodes, and handles are the input/output points of nodes.
+                Nodes are the functional blocks, edges are the magenta lines connecting nodes, and handles are the input/output points of nodes.
               </ListItem>
 
               <ListItem>
-              A keypair setup is ready for you. Get started by connecting the button&apos;s handle to the &apos;generate&apos; handle of the Mnemonic. Then, connect the private and public keys to their respective output nodes. Finally, click the button to initiate your first flow!
+                A keypair setup is ready for you. Get started by connecting the button&apos;s handle to the &apos;generate&apos; handle of the Mnemonic. Then, connect the private and public keys to their respective output nodes. Finally, click the button to initiate your first flow!
               </ListItem>
             </UnorderedList>
 

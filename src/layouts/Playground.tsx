@@ -94,9 +94,11 @@ const Playground = function Playground({
         })
         return node;
       }))
+      onNodeChange(nodes)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [backspacePress]);
 
+  
   useEffect(() => {
     if (ctrlAPress.split("-")[0] == "true") {
       setNodes((nodes) => nodes.map((nd) => { return { ...nd, selected: true } }))
@@ -131,7 +133,7 @@ const Playground = function Playground({
         pannable />
       <Background
         color="#4B4967"
-        
+
         variant={BackgroundVariant.Dots} />
     </ReactFlow>
   );

@@ -19,44 +19,42 @@ const Home: NextPage = ({ playground }: any) => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    // Create the socket connection when the component mounts
     socketRef.current = io(process.env.NEXT_PUBLIC_SERVER_URL as string, {
       query: {
         playgroundId: playground.id,
       },
     });
 
-    // Listen for "serverUpdate" event
     socketRef.current.on('serverUpdate', (data) => {
+      console.log(data, "Received from Server")
       setNodes(data.nodes);
-
       if (data.edges) {
         setEdges(data.edges);
       }
     });
 
-    // Clean up the socket connection when the component unmounts
     return () => {
       if (socketRef.current) {
         socketRef.current.disconnect();
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playground.id]);
+
 
   const nodeChangeHandler = (changes: NodeChange[]) => {
     if (socketRef.current) {
-      socketRef.current.emit('update', { nodes });
+      socketRef.current.emit('update', { nodes, edges });
     }
     onNodesChange(changes);
   };
 
   const edgeChangeHandler = (changes: EdgeChange[]) => {
     if (socketRef.current) {
-      socketRef.current.emit('update', { edges });
+      socketRef.current.emit('update', { edges, nodes });
     }
     onEdgesChange(changes);
   };
-
 
 
   useEffect(() => {
@@ -66,6 +64,7 @@ const Home: NextPage = ({ playground }: any) => {
     setEdges(data.edges)
     setPgName(playground.name)
   }, [playground, setEdges, setNodes])
+
 
   return (
     <>
