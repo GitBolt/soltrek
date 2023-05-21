@@ -20,7 +20,7 @@ const BaseNode: FC<
         <CodeModel isOpen={isOpen} onClose={onClose} code={CodeState} />
       )}
       <Flex
-        background="linear-gradient(96.6deg, #222037 2.37%, #191728 101.12%)"
+        background="bg.gradient"
         minW={width ? width : "220px"}
         h="auto"
         minH={height ? height : "100px"}

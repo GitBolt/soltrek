@@ -6,28 +6,27 @@ import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import type { AppProps } from 'next/app'
-import { ChakraProvider } from '@chakra-ui/react'
 import { ReactFlowProvider } from 'reactflow'
-import { theme } from '@/util/theme'
 import { Wallet } from "@/context/walletContext";
 import { NetworkProvider } from '@/context/configContext';
 import { ModalProvider } from '@/context/modalContext';
 import { DefaultHead } from '@/layouts/DefaultHead';
+import { ThemeProvider } from '@/context/themeContext';
 
-export default function SolBuild({ Component, pageProps }: AppProps) {
+export default function SOLTrek({ Component, pageProps }: AppProps) {
 
   return (
-    <Wallet>
-      <ChakraProvider theme={theme}>
-        <ReactFlowProvider>
-          <NetworkProvider>
-            <ModalProvider>
-              <DefaultHead />
-              <Component {...pageProps} />
-            </ModalProvider>
-          </NetworkProvider>
-        </ReactFlowProvider>
-      </ChakraProvider>
-    </Wallet>
+      <Wallet>
+        <ThemeProvider>
+          <ReactFlowProvider>
+            <NetworkProvider>
+              <ModalProvider>
+                <DefaultHead />
+                <Component {...pageProps} />
+              </ModalProvider>
+            </NetworkProvider>
+          </ReactFlowProvider>
+        </ThemeProvider>
+      </Wallet>
   )
 }

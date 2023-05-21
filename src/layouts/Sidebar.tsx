@@ -10,6 +10,7 @@ import { getUser } from '@/util/program/user';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet';
 import { Mixpanel } from '@/util/mixepanel';
+import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 
 type Props = {
   sidebarContent: SidebarContentType[],
@@ -171,8 +172,12 @@ const Sidebar = ({ sidebarContent, multiplayer }: Props) => {
               )}
             </ListItem>
           ))}
+
         </List>
 
+        <Box mt="auto">
+          <ThemeSwitcher />
+        </Box>
       </Flex>
     </Flex>
 
