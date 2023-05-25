@@ -24,7 +24,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Flex flexFlow="column" h="100%">
-        <Onboard />
+        {/* <Onboard /> */}
         <Navbar pgName={pgName} setPgName={setPgName} />
         <Sidebar sidebarContent={sidebarContent} />
         <CommandPalette />
