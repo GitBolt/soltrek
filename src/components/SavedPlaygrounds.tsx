@@ -53,8 +53,8 @@ export const SavedPlaygrounds = ({ user, setCurrentPlayground }: Props) => {
       router.push(`/`)
       savedPg.onClose()
     }
-
   }
+  
   return (
     <>
       <Modal size="10xl" isOpen={savedPg.isOpen} onClose={savedPg.onClose}>

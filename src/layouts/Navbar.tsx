@@ -13,6 +13,7 @@ import { AddAccess } from "@/components/AddAccess"
 import { useRouter } from "next/router"
 import { NewButton } from "@/components/NewButton"
 import dynamic from "next/dynamic"
+import { LoadSave } from "@/components/LoadSave"
 
 const Wallets = dynamic(() => import("../components/ConnectWalletButton"), { ssr: false });
 
@@ -194,8 +195,10 @@ export const Navbar = ({
       {((multiplayer && user && currentPlayground && user.id == currentPlayground?.userId) || (!multiplayer && user)) &&
         <Flex align="center" gap="1rem">
 
-          <Button variant="filled" h="3rem" fontSize="1.7rem" w="8rem" onClick={handlePlaygroundSave}>Save</Button>
-          <Button variant="outline" h="3rem" fontSize="1.7rem" w="8rem" onClick={savedPg.onOpen}>Load</Button>
+          <LoadSave
+            savedPg={savedPg}
+            handlePlaygroundSave={handlePlaygroundSave}
+          />
           <NetworkSelector />
         </Flex>
       }
