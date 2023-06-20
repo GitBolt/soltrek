@@ -115,13 +115,6 @@ export const createNewMint = async (
       payer: payer.publicKey,
       updateAuthority: mintAuthority,
     },
-    {
-      createMetadataAccountArgsV2:
-      {
-        data: metadata,
-        isMutable: true
-      }
-    }
   );
   ix.push(ix5);
 
