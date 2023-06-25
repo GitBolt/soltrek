@@ -10,6 +10,7 @@
 
 # SOL Trek
 
+
 SOL Trek is a Solana learning playground that allows new developers to learn, develop and play with Solana without needing to write code.
 
 ## How does it work?
