@@ -80,7 +80,7 @@ const FileInputNode: FC<NodeProps> = (props) => {
 
   return (
     <div>
-      <BaseNode {...props} title="String Input">
+      <BaseNode {...props} title="File Input">
         <Button
           w="100%"
           h="3rem"
